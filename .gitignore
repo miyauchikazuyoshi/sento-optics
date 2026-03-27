@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store
+
+# LaTeX build artifacts
+drafts/*.aux
+drafts/*.log
+drafts/*.bbl
+drafts/*.blg
+drafts/*.out
+drafts/*.toc
+drafts/*.fdb_latexmk
+drafts/*.fls
+drafts/*.synctex.gz
+
+# Claude internal
+.claude/

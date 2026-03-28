@@ -209,24 +209,33 @@ variable $\delta$ without requiring a unique definition.
   operational definition}
 \label{sec:Deff}
 
-$D_\mathrm{eff}$ is defined as the \textbf{number of reciprocal-space
-directions along which the electronic band dispersion $E(\bm{k})$
-exhibits significant dispersion near the Fermi level or band edges},
-independently of the crystallographic dimensionality. Specifically:
+$D_\mathrm{eff}$ is defined as the \textbf{effective rank of the
+group-velocity tensor} evaluated for electronic states near the Fermi
+level or band edges:
 
 \begin{equation}
-  D_\mathrm{eff} = \#\{i : W_i > W_\mathrm{thresh}\},
+  D_\mathrm{eff}
+    = \operatorname{rank}_\mathrm{eff}\!\bigl(\langle v_\alpha\, v_\beta \rangle\bigr),
   \label{eq:Deff}
 \end{equation}
 
-\noindent where $W_i$ is the bandwidth along the $i$-th principal
-reciprocal-lattice direction within the energy window relevant to
-visible-light transitions ($0$--$4$~eV from the band edge), and
-$W_\mathrm{thresh}$ is a threshold bandwidth (we adopt
-$W_\mathrm{thresh} = 0.5$~eV as a practical cutoff).
+\noindent where $v_\alpha = \hbar^{-1}\,\partial E(\bm{k})/\partial k_\alpha$
+is the band group velocity and the average is taken over states within
+an energy window $\Delta E$ of the band edge (we adopt
+$\Delta E = 1$~eV). The effective rank counts the number of principal
+directions along which $\langle v_\alpha\, v_\beta \rangle$ exceeds a
+threshold $v_\mathrm{thresh}^2$ (we use
+$v_\mathrm{thresh} = 10^{4}$~m\,s$^{-1}$, corresponding to a
+bandwidth $W \approx 0.5$~eV over a typical Brillouin-zone extent).
+Equivalently, $D_\mathrm{eff}$ equals the number of principal
+directions with significant band dispersion, but defined through the
+velocity tensor rather than bandwidths, making it directly computable
+from DFT band structures or Wannier-interpolated Hamiltonians without
+reference to any optical measurement.
 
-This definition is \emph{purely electronic and structural}; it makes no
-reference to optical measurements and therefore avoids circularity.
+This definition is \emph{purely electronic and structural}: it depends
+only on the band dispersion $E(\bm{k})$ and therefore avoids
+circularity with the optical response it is used to classify.
 
 \begin{table}[h]
 \caption{Crystallographic vs.\ effective conduction dimensionality.}

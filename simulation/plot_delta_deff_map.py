@@ -7,8 +7,9 @@
 出力: simulation/figures/ 以下にPNG画像を保存
 """
 
-import matplotlib.pyplot as plt
 import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 import numpy as np
 
 matplotlib.rcParams['font.family'] = ['Hiragino Sans', 'Arial Unicode MS', 'sans-serif']
@@ -280,5 +281,5 @@ fig3.tight_layout()
 fig3.savefig("simulation/figures/fig3_invmass_deff_map.png", dpi=200, bbox_inches="tight")
 print("Saved: simulation/figures/fig3_invmass_deff_map.png")
 
-plt.show()
+plt.close("all")
 print("\nDone.")

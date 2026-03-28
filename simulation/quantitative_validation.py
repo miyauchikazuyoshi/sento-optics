@@ -8,6 +8,7 @@
 """
 
 import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from itertools import combinations
@@ -389,5 +390,5 @@ fig5.tight_layout()
 fig5.savefig("simulation/figures/fig5_classification_result.png", dpi=200, bbox_inches="tight")
 print("Saved: simulation/figures/fig5_classification_result.png")
 
-plt.show()
+plt.close("all")
 print("\nDone.")

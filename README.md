@@ -28,9 +28,11 @@ Band gap *E*_g alone cannot explain why graphite (E_g ≈ 0) is black while meta
 
 | Milestone | Result |
 |-----------|--------|
-| Decision tree (E_g + D_eff → optical class) | **7/7 correct** (100% classification) |
+| E_g + D_eff decision tree → optical class | **6/7 correct** (85.7%) — only graphene single-layer misclassified |
+| δ(1/m*) × D_eff machine classification | **3/7 correct** (42.9%) — threshold-sensitive; see Sec. 4 |
 | δ proxy intercorrelation | **r = 0.73–0.89** (3 independent proxies) |
 | δ–E_g inverse correlation | **r = −0.70** (literature data), **r = −0.86** (TB model) |
+| Graphene–graphite distinction | Requires layer count N as additional parameter (Beer–Lambert) |
 | Prior art search | **No existing unified framework found** (as of March 2026) |
 | All data from published literature | **No first-principles calculations required** |
 
@@ -46,7 +48,7 @@ Band gap *E*_g alone cannot explain why graphite (E_g ≈ 0) is black while meta
 | Graphene | ~9 eV | 2 | 0 | πα = 2.3%/layer |
 | Graphite | ~9 eV (in-plane) | 2 | ~0 | Black + cleavage-plane luster |
 
-**Control: h-BN** (same D_eff = 2 layered sp² structure as graphite, but low δ → transparent/white)
+**Control: h-BN** (same layered sp² crystal structure as graphite, but low δ due to B–N electronegativity difference → D_eff = 0, transparent/white)
 
 ## Repository Structure
 

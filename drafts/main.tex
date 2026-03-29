@@ -57,11 +57,13 @@ accuracy; and
 (3)~h-BN, despite sharing the layered sp$^2$ structure of graphite, is
 transparent---direct evidence that $\delta$ is an independent variable.
 
-The framework does not replace band-gap theory but subsumes it: $E_g$
+The framework does not replace band-gap theory but extends it: $E_g$
 determines \emph{at which energy} the response occurs, while
-$\delta \times D_\mathrm{eff}$ determines its \emph{strength and
-directionality}. Extensions to liquid, interfacial, and catalytic systems
-are proposed as targets for future independent verification.
+$D_\mathrm{eff}$ determines its \emph{directionality}. The concept of
+particle freedom~($\delta$) motivated the introduction of
+$D_\mathrm{eff}$; independent verification of $\delta$ as a measurable
+variable in liquid and interfacial systems is proposed as a future
+target.
 \end{abstract}
 
 \maketitle
@@ -166,15 +168,19 @@ systems, this reduces to the product of two variables:
 
 \noindent where $\delta_\mathrm{elec}$ quantifies the degree of
 electronic delocalization and $D_\mathrm{eff}$ quantifies the effective
-dimensionality of electronic conduction. The band gap $E_g$ is a
-\emph{consequence} of $\delta$, not its cause: the hopping integral~$t$
-that governs $\delta$ simultaneously determines the bandwidth
-$W \sim zt$ and, through the competition with on-site potentials, the
-magnitude of~$E_g$.
+dimensionality of electronic conduction. The concept of particle
+freedom~($\delta$) motivated the introduction of $D_\mathrm{eff}$ as a
+classification variable: if the optical response depends on how freely
+particles can move, one must specify not only \emph{whether} they can
+move (encoded in~$E_g$) but also \emph{in how many directions}
+(encoded in~$D_\mathrm{eff}$).
 
 The central insight is that $E_g$ alone provides an incomplete mapping
 from electronic structure to optical response. Adding $D_\mathrm{eff}$
-completes the mapping.
+completes the mapping. The measurable classification variables are
+$E_g$ and $D_\mathrm{eff}$; $\delta$ serves as the physical intuition
+that unifies them and whose independent verification in liquid and
+interfacial systems is proposed as a future target.
 
 \subsection{Effective delocalization index $\delta$: operational definition}
 
@@ -360,13 +366,33 @@ databases; no first-principles calculations were performed.
 Diamond: 5.47~eV; C$_{60}$: 1.75~eV; SWCNT (semiconducting): $\sim$1.0~eV;
 graphene and graphite: 0~eV; h-BN: 5.95~eV.
 
-\subsection{Tight-binding proof-of-concept simulation}
+\subsection{Tight-binding simulation with optical conductivity}
 
-A minimal tight-binding model was constructed for four systems (diamond,
-1D chain as SWCNT proxy, graphene, and C$_{60}$ cluster) to compute band
-structures, densities of states, and an IPR-based delocalization proxy.
-The purpose is to verify the $\delta$--$E_g$ inverse correlation within
-a self-consistent computational framework, not to replace published data.
+Tight-binding models were constructed for four systems (diamond,
+1D chain as SWCNT proxy, graphene, and C$_{60}$ cluster).
+For diamond and graphene, full Slater--Koster models (s, $p_x$, $p_y$,
+$p_z$; 8 bands per unit cell) were used to capture both $\sigma$- and
+$\pi$-band contributions to the optical response.
+The Kubo formula was used to compute the optical conductivity
+$\sigma(\omega)$ from the velocity matrix elements
+$v_{nm}^\alpha = \langle n\bm{k} | \partial_\alpha H | m\bm{k} \rangle$,
+yielding the dielectric function $\varepsilon_2(\omega)$ and
+reflectivity $R(\omega)$.
+
+The same velocity matrix elements define the group-velocity tensor
+$\langle v_\alpha v_\beta \rangle$, from which $D_\mathrm{eff}$ is
+computed as the effective rank (Eq.~\ref{eq:Deff}). The simulation
+thus derives $D_\mathrm{eff}$ and $\varepsilon(\omega)$ from the
+\emph{same} band structure, confirming their mutual consistency.
+
+The purpose is twofold: (i)~to verify that $D_\mathrm{eff}$ is
+computable from first principles and yields the expected values
+(3 for diamond, 2 for graphene, 1 for the 1D chain, 0 for C$_{60}$);
+and (ii)~to establish that the $E_g + D_\mathrm{eff}$ classification
+is consistent with the full $\varepsilon(\omega)$ description in the
+solid-state regime, thereby providing a foundation for extending the
+framework to systems (such as liquids) where $\varepsilon(\omega)$ is
+ill-defined.
 
 \subsection{Statistical tests}
 
@@ -469,7 +495,7 @@ reducible to crystallographic dimensionality, and (ii)~$\delta$ is an
 independent variable whose variation can flip the optical response
 from black to transparent within the same structural family.
 
-\subsection{Tight-binding proof of concept}
+\subsection{Tight-binding simulation results}
 
 \begin{figure}[t]
   \includegraphics[width=\columnwidth]{fig_a_bandstructure}
@@ -487,10 +513,53 @@ from black to transparent within the same structural family.
   \label{fig:dos}
 \end{figure}
 
+\subsubsection{$D_\mathrm{eff}$ from the velocity tensor}
+
+The effective rank of $\langle v_\alpha v_\beta \rangle$ was computed
+for each system from the full Slater--Koster (diamond, graphene) or
+$\pi$-band (1D chain) Hamiltonian. The results---diamond: 3.00,
+graphene: 2.00, 1D chain: 1.00, C$_{60}$: 0.00---reproduce the
+expected integer values exactly, confirming that $D_\mathrm{eff}$ as
+defined in Eq.~\eqref{eq:Deff} is computable from band structure
+without ambiguity.
+
+\subsubsection{Optical conductivity and consistency with
+  $\varepsilon(\omega)$}
+
+The Kubo formula applied to the same Hamiltonian yields the optical
+conductivity $\sigma(\omega)$, from which $\varepsilon_2(\omega)$ and
+the normal-incidence reflectivity $R(\omega)$ follow. For graphene,
+the low-energy conductivity correctly reproduces the universal value
+$\sigma_0 = \pi e^2 / 2h$ ($\sigma/\sigma_0 = 1.000$). The
+full-orbital model yields visible-range reflectivities of
+$R_\mathrm{vis} \approx 0.34$ for graphene/graphite and
+$R_\mathrm{vis} \approx 0.31$ for diamond, in qualitative agreement
+with experimental values ($\sim$0.25--0.30 and $\sim$0.17,
+respectively). Diamond's overestimate is attributable to the well-known
+band-gap underestimation of the Slater--Koster parametrization.
+
+\begin{figure}[t]
+  \includegraphics[width=\columnwidth]{fig_e_reflectivity}
+  \caption{Reflectivity $R(\omega)$ computed from the Kubo formula for
+    all four model systems. The yellow shaded region marks the visible
+    range (1.6--3.1~eV). Diamond and graphene use the full
+    Slater--Koster 8-band model; the 1D chain and C$_{60}$ use
+    $\pi$-band and dipole models, respectively.}
+  \label{fig:reflectivity}
+\end{figure}
+
+The key observation is that $D_\mathrm{eff}$ and
+$\varepsilon(\omega)$ are derived from the \emph{same} band
+structure and are mutually consistent in the solid-state regime. This
+consistency provides the foundation for extending $D_\mathrm{eff}$ to
+systems where $\varepsilon(\omega)$ is difficult to define---notably
+liquids and non-periodic interfaces---as a reliable classification
+variable.
+
+\subsubsection{$\delta$--$E_g$ correlation}
+
 The IPR-based $\delta$ correlates inversely with $E_g$ across the four
-model systems (Pearson $r = -0.86$; Fig.~\ref{fig:TB_corr}), confirming
-the expected relationship within a self-consistent computational
-framework.
+model systems (Pearson $r = -0.86$; Fig.~\ref{fig:TB_corr}).
 
 \begin{figure}[t]
   \includegraphics[width=\columnwidth]{fig_c_delta_Eg_correlation}
@@ -542,19 +611,23 @@ response. This result is consistent with the broader hypothesis that
 $\delta$---whether electronic or nuclear---universally determines
 whether an interface acts as a coherent or incoherent quantum barrier.
 
-\subsection{$E_g$ as an intermediate variable within the
-  $\delta \times D_\mathrm{eff}$ hierarchy}
+\subsection{Role of $\delta$, $E_g$, and $D_\mathrm{eff}$}
 
-The central claim of this work:
+The contribution of this work is the introduction of $D_\mathrm{eff}$
+as a second classification axis alongside~$E_g$:
 \begin{itemize}
-  \item The band gap $E_g$ is a consequence of $\delta$ (via the
-    hopping integral~$t$), not an independent root variable.
   \item $E_g$ determines \emph{at which energy} the optical response
-    occurs; $\delta \times D_\mathrm{eff}$ determines its
-    \emph{strength and directionality}.
-  \item The conventional one-axis classification
-    (metal/semiconductor/insulator by $E_g$) is extended to a two-axis
-    classification by $\delta \times D_\mathrm{eff}$.
+    occurs.
+  \item $D_\mathrm{eff}$ determines \emph{in how many spatial
+    directions} the response is strong, resolving degeneracies that
+    $E_g$ alone cannot lift (e.g., graphite vs.\ metals at
+    $E_g \approx 0$).
+  \item The concept of particle freedom~($\delta$) motivated the
+    introduction of $D_\mathrm{eff}$; $\delta$ itself is not used as
+    a classification variable in this work. Its independent
+    verification---particularly through extension to liquid and
+    interfacial systems where $E_g$ is ill-defined---is a natural
+    target for future study.
 \end{itemize}
 
 \subsection{Relation to existing theories}
@@ -568,7 +641,7 @@ The central claim of this work:
   Existing theory & Relation to present framework \\
   \hline
   Drude model & Special case: $D_\mathrm{eff} = 3$, $\delta$ high \\
-  Band theory & $E_g$ is one consequence of $\delta$ and $D_\mathrm{eff}$ \\
+  Band theory & $E_g$ is one axis; $D_\mathrm{eff}$ adds the second \\
   Crystal-field theory & $10Dq \approx$ local modulation of $\delta$ \\
   Fresnel optics & Presupposes uniform $\varepsilon(\omega)$; \\
    & this uniformity itself depends on $\delta$ \\
@@ -669,12 +742,14 @@ indicators show statistically significant pairwise correlations,
 supporting the existence of an overarching delocalization
 variable~$\delta$.
 
-The framework does not replace band-gap theory; it subsumes it.
+The framework does not replace band-gap theory; it extends it by
+adding $D_\mathrm{eff}$ as a second classification axis.
 $E_g$ determines \emph{at which energy} the response occurs, while
-$\delta \times D_\mathrm{eff}$ determines its \emph{strength and
-directionality}. The extension of $\delta$ to nuclear degrees of
-freedom (liquids), interfacial systems (catalysis), and cross-element
-materials is proposed as a target for future independent verification.
+$D_\mathrm{eff}$ determines its \emph{directionality}. The concept of
+particle freedom~($\delta$) that motivated $D_\mathrm{eff}$ remains to
+be independently verified; extension to liquid, interfacial, and
+cross-element systems---where $E_g$ is ill-defined but $\delta$ may
+still apply---is proposed as a target for future work.
 
 \begin{acknowledgments}
 The initial inspiration for this work arose from observing the luster

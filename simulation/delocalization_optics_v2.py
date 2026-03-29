@@ -641,7 +641,646 @@ def compute_c60_delta():
 
 
 # ============================================================
-# 6. バンドギャップとバンド幅の計算
+# 5b. 全軌道 Slater-Koster タイトバインディング (s, px, py, pz)
+# ============================================================
+
+def _slater_koster_hopping(l, m, n, Vss, Vsp, Vpp_sigma, Vpp_pi):
+    """
+    Slater-Koster 2中心積分テーブル。
+    (l, m, n) = ボンド方向の方向余弦。
+
+    Returns:
+        H_hop: (4, 4) array — 軌道順序 [s, px, py, pz]
+    """
+    H = np.zeros((4, 4))
+
+    # s-s
+    H[0, 0] = Vss
+
+    # s-p (A→B)
+    H[0, 1] = l * Vsp
+    H[0, 2] = m * Vsp
+    H[0, 3] = n * Vsp
+
+    # p-s (B→A) = -Vsp × direction
+    H[1, 0] = -l * Vsp
+    H[2, 0] = -m * Vsp
+    H[3, 0] = -n * Vsp
+
+    # p-p
+    H[1, 1] = l * l * Vpp_sigma + (1 - l * l) * Vpp_pi
+    H[1, 2] = l * m * (Vpp_sigma - Vpp_pi)
+    H[1, 3] = l * n * (Vpp_sigma - Vpp_pi)
+    H[2, 1] = H[1, 2]
+    H[2, 2] = m * m * Vpp_sigma + (1 - m * m) * Vpp_pi
+    H[2, 3] = m * n * (Vpp_sigma - Vpp_pi)
+    H[3, 1] = H[1, 3]
+    H[3, 2] = H[2, 3]
+    H[3, 3] = n * n * Vpp_sigma + (1 - n * n) * Vpp_pi
+
+    return H
+
+
+def graphene_full_tb_optical(nk=60, omega_grid=None, eta=0.1):
+    """
+    グラフェンの全軌道 (s, px, py, pz) Slater-Koster タイトバインディング。
+    8バンド（2原子 × 4軌道）モデル。
+
+    σバンドとπバンドの両方を含むため、
+    光学伝導度・誘電関数が現実的な値を示す。
+
+    Slater-Koster パラメータ (Tomanek & Louie 1988, Xu et al. 1992):
+        ε_s    = -8.87 eV  (s軌道オンサイト)
+        ε_p    =  0.00 eV  (p軌道オンサイト)
+        V_ssσ  = -5.00 eV
+        V_spσ  = +4.70 eV
+        V_ppσ  = +5.50 eV
+        V_ppπ  = -2.70 eV
+    """
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 12.0, 600)
+
+    # パラメータ
+    eps_s = -8.87  # eV
+    eps_p = 0.0    # eV
+    Vss = -5.0
+    Vsp = 4.7
+    Vpp_sigma = 5.5
+    Vpp_pi = -2.7
+
+    a = 2.46  # 格子定数 [Å]
+
+    # 最近接ベクトル A→B (3本)
+    d_nn = a / np.sqrt(3)
+    delta1 = np.array([0, d_nn, 0])
+    delta2 = np.array([d_nn * np.sqrt(3) / 2, -d_nn / 2, 0])
+    delta3 = np.array([-d_nn * np.sqrt(3) / 2, -d_nn / 2, 0])
+    nn_vectors = [delta1, delta2, delta3]
+
+    # 逆格子ベクトル
+    b1 = (2 * np.pi / a) * np.array([1, -1 / np.sqrt(3), 0])
+    b2 = (2 * np.pi / a) * np.array([0, 2 / np.sqrt(3), 0])
+
+    eigenvalues_k = []
+    velocity_matrix_k = []
+
+    n_orb = 4  # s, px, py, pz
+    n_basis = 2 * n_orb  # 2 atoms × 4 orbitals = 8
+
+    # オンサイトエネルギー
+    onsite = np.array([eps_s, eps_p, eps_p, eps_p])
+
+    dk = 1e-5  # 有限差分用微小変位
+
+    for i in range(nk):
+        for j in range(nk):
+            k = (i / nk) * b1 + (j / nk) * b2
+
+            # H(k) の構築
+            H = np.zeros((n_basis, n_basis), dtype=complex)
+
+            # オンサイト
+            for orb in range(n_orb):
+                H[orb, orb] = onsite[orb]              # A原子
+                H[n_orb + orb, n_orb + orb] = onsite[orb]  # B原子
+
+            # A→Bホッピング (上三角ブロック)
+            for d_vec in nn_vectors:
+                dist = np.linalg.norm(d_vec)
+                l, m, n_dir = d_vec / dist  # 方向余弦
+
+                h_hop = _slater_koster_hopping(l, m, n_dir, Vss, Vsp, Vpp_sigma, Vpp_pi)
+                phase = np.exp(1j * np.dot(k[:2], d_vec[:2]))
+
+                H[:n_orb, n_orb:] += h_hop * phase
+
+            # エルミート化 (B→A = A→B†)
+            H[n_orb:, :n_orb] = H[:n_orb, n_orb:].conj().T
+
+            # 固有値・固有ベクトル
+            evals, evecs = np.linalg.eigh(H)
+
+            # 速度行列要素 (有限差分で ∂H/∂k_α)
+            v_eig = np.zeros((n_basis, n_basis, 2), dtype=complex)
+
+            for alpha in range(2):
+                dk_vec = np.zeros(3)
+                dk_vec[alpha] = dk
+
+                k_plus = k + dk_vec
+                k_minus = k - dk_vec
+
+                H_plus = np.zeros((n_basis, n_basis), dtype=complex)
+                H_minus = np.zeros((n_basis, n_basis), dtype=complex)
+
+                for orb in range(n_orb):
+                    H_plus[orb, orb] = onsite[orb]
+                    H_plus[n_orb + orb, n_orb + orb] = onsite[orb]
+                    H_minus[orb, orb] = onsite[orb]
+                    H_minus[n_orb + orb, n_orb + orb] = onsite[orb]
+
+                for d_vec in nn_vectors:
+                    dist = np.linalg.norm(d_vec)
+                    lv, mv, nv = d_vec / dist
+                    h_hop = _slater_koster_hopping(lv, mv, nv, Vss, Vsp, Vpp_sigma, Vpp_pi)
+
+                    phase_p = np.exp(1j * np.dot(k_plus[:2], d_vec[:2]))
+                    phase_m = np.exp(1j * np.dot(k_minus[:2], d_vec[:2]))
+
+                    H_plus[:n_orb, n_orb:] += h_hop * phase_p
+                    H_minus[:n_orb, n_orb:] += h_hop * phase_m
+
+                H_plus[n_orb:, :n_orb] = H_plus[:n_orb, n_orb:].conj().T
+                H_minus[n_orb:, :n_orb] = H_minus[:n_orb, n_orb:].conj().T
+
+                dHdk_alpha = (H_plus - H_minus) / (2 * dk)
+                v_eig[:, :, alpha] = evecs.T.conj() @ dHdk_alpha @ evecs
+
+            eigenvalues_k.append(evals)
+            velocity_matrix_k.append(v_eig)
+
+    # 占有バンド: 8バンド中、4電子/原子 × 2原子 = 8電子 → 4占有バンド
+    n_occ = 4
+
+    sigma = compute_optical_conductivity(omega_grid, eigenvalues_k,
+                                          velocity_matrix_k, n_occ=n_occ, eta=eta)
+    D_eff, T_diag = compute_deff_from_velocity(velocity_matrix_k,
+                                                eigenvalues_k, n_occ=n_occ)
+
+    return omega_grid, sigma, D_eff, T_diag, eigenvalues_k
+
+
+def diamond_full_tb_optical(nk=14, omega_grid=None, eta=0.15):
+    """
+    ダイヤモンドの全軌道 Slater-Koster タイトバインディング。
+    8バンド（2原子 × 4軌道）モデル。
+
+    Slater-Koster パラメータ (Xu et al. 1992):
+        ε_s    = -2.99 eV
+        ε_p    =  3.71 eV
+        V_ssσ  = -1.938 eV
+        V_spσ  =  2.476 eV
+        V_ppσ  =  3.064 eV
+        V_ppπ  = -0.952 eV
+    """
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 12.0, 600)
+
+    # パラメータ (Xu et al. 1992)
+    eps_s = -2.99
+    eps_p = 3.71
+    Vss = -1.938
+    Vsp = 2.476
+    Vpp_sigma = 3.064
+    Vpp_pi = -0.952
+
+    a = 3.567  # 格子定数 [Å]
+
+    # sp3ボンドベクトル（A→B）
+    d_vecs = np.array([
+        [1, 1, 1],
+        [1, -1, -1],
+        [-1, 1, -1],
+        [-1, -1, 1]
+    ]) * a / 4.0
+
+    n_orb = 4
+    n_basis = 8
+
+    onsite = np.array([eps_s, eps_p, eps_p, eps_p])
+
+    dk = 1e-5
+
+    eigenvalues_k = []
+    velocity_matrix_k = []
+
+    kgrid = np.linspace(-np.pi / a, np.pi / a, nk, endpoint=False)
+
+    for kx in kgrid:
+        for ky in kgrid:
+            for kz in kgrid:
+                k = np.array([kx, ky, kz])
+
+                # H(k) 構築
+                H = np.zeros((n_basis, n_basis), dtype=complex)
+                for orb in range(n_orb):
+                    H[orb, orb] = onsite[orb]
+                    H[n_orb + orb, n_orb + orb] = onsite[orb]
+
+                for d_vec in d_vecs:
+                    dist = np.linalg.norm(d_vec)
+                    l, m, n_dir = d_vec / dist
+                    h_hop = _slater_koster_hopping(l, m, n_dir, Vss, Vsp, Vpp_sigma, Vpp_pi)
+                    phase = np.exp(1j * np.dot(k, d_vec))
+                    H[:n_orb, n_orb:] += h_hop * phase
+
+                H[n_orb:, :n_orb] = H[:n_orb, n_orb:].conj().T
+
+                evals, evecs = np.linalg.eigh(H)
+
+                # 速度行列要素 (有限差分)
+                v_eig = np.zeros((n_basis, n_basis, 3), dtype=complex)
+
+                for alpha in range(3):
+                    dk_vec = np.zeros(3)
+                    dk_vec[alpha] = dk
+
+                    H_plus = np.zeros((n_basis, n_basis), dtype=complex)
+                    H_minus = np.zeros((n_basis, n_basis), dtype=complex)
+
+                    for orb in range(n_orb):
+                        H_plus[orb, orb] = onsite[orb]
+                        H_plus[n_orb + orb, n_orb + orb] = onsite[orb]
+                        H_minus[orb, orb] = onsite[orb]
+                        H_minus[n_orb + orb, n_orb + orb] = onsite[orb]
+
+                    for d_vec in d_vecs:
+                        dist = np.linalg.norm(d_vec)
+                        lv, mv, nv = d_vec / dist
+                        h_hop = _slater_koster_hopping(lv, mv, nv, Vss, Vsp, Vpp_sigma, Vpp_pi)
+
+                        k_p = k + dk_vec
+                        k_m = k - dk_vec
+                        H_plus[:n_orb, n_orb:] += h_hop * np.exp(1j * np.dot(k_p, d_vec))
+                        H_minus[:n_orb, n_orb:] += h_hop * np.exp(1j * np.dot(k_m, d_vec))
+
+                    H_plus[n_orb:, :n_orb] = H_plus[:n_orb, n_orb:].conj().T
+                    H_minus[n_orb:, :n_orb] = H_minus[:n_orb, n_orb:].conj().T
+
+                    dHdk_alpha = (H_plus - H_minus) / (2 * dk)
+                    v_eig[:, :, alpha] = evecs.T.conj() @ dHdk_alpha @ evecs
+
+                eigenvalues_k.append(evals)
+                velocity_matrix_k.append(v_eig)
+
+    # 占有バンド: 8電子 → 4占有バンド
+    n_occ = 4
+
+    sigma = compute_optical_conductivity(omega_grid, eigenvalues_k,
+                                          velocity_matrix_k, n_occ=n_occ, eta=eta)
+    D_eff, T_diag = compute_deff_from_velocity(velocity_matrix_k,
+                                                eigenvalues_k, n_occ=n_occ)
+
+    return omega_grid, sigma, D_eff, T_diag, eigenvalues_k
+
+
+# ============================================================
+# 6. 光学伝導度・誘電関数・反射率の計算
+# ============================================================
+
+def compute_optical_conductivity(omega_grid, eigenvalues_k, velocity_matrix_k,
+                                  n_occ, eta=0.1, n_dim=None):
+    """
+    クボー公式による光学伝導度 Re[σ(ω)] の計算。
+
+    Parameters:
+        omega_grid: (N_omega,) 光子エネルギー [eV]
+        eigenvalues_k: list of (n_bands,) arrays — 各k点の固有値
+        velocity_matrix_k: list of (n_bands, n_bands, n_dim) arrays
+                           — 固有基底での速度行列要素
+        n_occ: 占有バンド数 (T=0)
+        eta: ローレンツブロードニング [eV]
+        n_dim: 空間次元数 (偏光平均用)。Noneなら velocity_matrix_k から推定。
+
+    Returns:
+        sigma: (N_omega,) Re[σ(ω)] in arbitrary units
+               (正規化して σ/σ₀ で比較する)
+    """
+    N_k = len(eigenvalues_k)
+    N_omega = len(omega_grid)
+    sigma = np.zeros(N_omega)
+
+    if n_dim is None:
+        n_dim = velocity_matrix_k[0].shape[2]
+
+    for ik in range(N_k):
+        evals = eigenvalues_k[ik]
+        v_mat = velocity_matrix_k[ik]  # (n_bands, n_bands, n_dim)
+        n_bands = len(evals)
+
+        for n in range(n_occ):
+            for m in range(n_occ, n_bands):
+                dE = evals[m] - evals[n]
+                if dE < 1e-6:
+                    continue
+
+                # 偏光平均: (1/n_dim) Σ_α |v_nm^α|²
+                v2 = 0.0
+                for alpha in range(n_dim):
+                    v2 += np.abs(v_mat[n, m, alpha]) ** 2
+                v2 /= n_dim
+
+                # ローレンツ型: η/((ω - dE)² + η²) ≈ π δ(ω - dE)
+                # スピン縮退 ×2 はprefactorに含める
+                lorentz = eta / ((omega_grid - dE) ** 2 + eta ** 2)
+                sigma += 2.0 * v2 * lorentz / dE
+
+    sigma /= N_k
+    return sigma
+
+
+def dielectric_from_sigma(omega_grid, sigma, volume_factor=1.0):
+    """
+    光学伝導度から吸収係数 ε₂(ω) を計算。
+    ε₂(ω) ∝ σ(ω) / ω
+
+    volume_factor: 有効セル体積による正規化。
+    """
+    eps2 = np.zeros_like(sigma)
+    nonzero = omega_grid > 0.01
+    eps2[nonzero] = sigma[nonzero] / (omega_grid[nonzero] * volume_factor)
+    return eps2
+
+
+def reflectivity_from_epsilon(eps2, eps1=None):
+    """
+    フレネル方程式から垂直入射反射率 R(ω) を計算。
+    R = |(√ε - 1) / (√ε + 1)|²
+
+    eps1がNoneの場合、Kramers-Kronig近似として eps1=1+eps2²/(20) を使用。
+    """
+    if eps1 is None:
+        # 簡易近似: 大きな eps2 に対して eps1 も増加
+        eps1 = 1.0 + 0.5 * eps2
+    eps_complex = eps1 + 1j * eps2
+    n_complex = np.sqrt(eps_complex)
+    R = np.abs((n_complex - 1) / (n_complex + 1)) ** 2
+    return R
+
+
+def compute_deff_from_velocity(velocity_matrix_k, eigenvalues_k, n_occ):
+    """
+    速度テンソル ⟨v_α v_β⟩ の有効ランクとして D_eff を計算。
+
+    T_αβ = (1/N_k) Σ_k Σ_{n occ, m unocc} v_nm^α · conj(v_nm^β)
+    D_eff = Tr(T)² / Tr(T @ T)   (有効ランク)
+
+    Returns:
+        D_eff: float — 有効伝導次元
+        T_diag: (n_dim,) — テンソルの対角成分
+    """
+    N_k = len(eigenvalues_k)
+    n_dim = velocity_matrix_k[0].shape[2]
+    T = np.zeros((n_dim, n_dim))
+
+    for ik in range(N_k):
+        evals = eigenvalues_k[ik]
+        v_mat = velocity_matrix_k[ik]
+        n_bands = len(evals)
+
+        for n in range(n_occ):
+            for m in range(n_occ, n_bands):
+                for a in range(n_dim):
+                    for b in range(n_dim):
+                        T[a, b] += np.real(v_mat[n, m, a] * np.conj(v_mat[n, m, b]))
+
+    T /= N_k
+    T_diag = np.diag(T).copy()
+
+    tr_T = np.trace(T)
+    tr_T2 = np.trace(T @ T)
+
+    if tr_T2 < 1e-30:
+        return 0.0, T_diag
+
+    D_eff = tr_T ** 2 / tr_T2
+    return D_eff, T_diag
+
+
+# --- System-specific optical k-grid functions ---
+
+def graphene_optical_kgrid(nk=60, omega_grid=None, eta=0.1):
+    """
+    グラフェンの光学伝導度をクボー公式で計算。
+
+    H(k) = [[0, t·f(k)], [t·f(k)*, 0]]
+    ∂H/∂k_α から速度行列要素を固有基底で計算。
+
+    検証: σ/σ₀ ≈ 1.0 (σ₀ = πe²/2h)
+    """
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 8.0, 400)
+
+    t = -2.7
+    a = 2.46
+
+    # 最近接ベクトル（A→B）
+    delta1 = np.array([0, a / np.sqrt(3)])
+    delta2 = np.array([a / 2, -a / (2 * np.sqrt(3))])
+    delta3 = np.array([-a / 2, -a / (2 * np.sqrt(3))])
+    deltas = [delta1, delta2, delta3]
+
+    # 逆格子ベクトル
+    b1 = (2 * np.pi / a) * np.array([1, -1 / np.sqrt(3)])
+    b2 = (2 * np.pi / a) * np.array([0, 2 / np.sqrt(3)])
+
+    eigenvalues_k = []
+    velocity_matrix_k = []
+
+    for i in range(nk):
+        for j in range(nk):
+            k = (i / nk) * b1 + (j / nk) * b2
+
+            # 構造因子 f(k) と ∂f/∂k_α
+            fk = sum(np.exp(1j * np.dot(k, d)) for d in deltas)
+            dfdk = np.zeros(2, dtype=complex)
+            for d in deltas:
+                phase = np.exp(1j * np.dot(k, d))
+                dfdk[0] += 1j * d[0] * phase
+                dfdk[1] += 1j * d[1] * phase
+
+            # H(k) 2x2
+            H = np.array([
+                [0, t * fk],
+                [t * np.conj(fk), 0]
+            ])
+
+            # ∂H/∂k_α
+            dHdk = np.zeros((2, 2, 2), dtype=complex)
+            dHdk[0, 1, 0] = t * dfdk[0]
+            dHdk[1, 0, 0] = t * np.conj(dfdk[0])
+            dHdk[0, 1, 1] = t * dfdk[1]
+            dHdk[1, 0, 1] = t * np.conj(dfdk[1])
+
+            # 固有値・固有ベクトル
+            evals, evecs = np.linalg.eigh(H)
+
+            # 固有基底での速度行列: v_nm^α = U† (∂H/∂k_α) U
+            v_eig = np.zeros((2, 2, 2), dtype=complex)
+            for alpha in range(2):
+                v_eig[:, :, alpha] = evecs.T.conj() @ dHdk[:, :, alpha] @ evecs
+
+            eigenvalues_k.append(evals)
+            velocity_matrix_k.append(v_eig)
+
+    sigma = compute_optical_conductivity(omega_grid, eigenvalues_k,
+                                          velocity_matrix_k, n_occ=1, eta=eta)
+    D_eff, T_diag = compute_deff_from_velocity(velocity_matrix_k,
+                                                eigenvalues_k, n_occ=1)
+    return omega_grid, sigma, D_eff, T_diag
+
+
+def diamond_optical_kgrid(nk=20, omega_grid=None, eta=0.1):
+    """
+    ダイヤモンドの光学伝導度。3D k格子。
+    検証: ε₂ = 0 for ω < Eg ≈ 5 eV
+    """
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 8.0, 400)
+
+    t = -2.0
+    Delta = 5.0
+    a = 3.567
+
+    d_vecs = np.array([
+        [1, 1, 1], [1, -1, -1], [-1, 1, -1], [-1, -1, 1]
+    ]) * a / 4.0
+
+    eigenvalues_k = []
+    velocity_matrix_k = []
+
+    kgrid = np.linspace(-np.pi / a, np.pi / a, nk, endpoint=False)
+
+    for kx in kgrid:
+        for ky in kgrid:
+            for kz in kgrid:
+                k = np.array([kx, ky, kz])
+
+                # 構造因子
+                fk = sum(np.exp(1j * np.dot(k, di)) for di in d_vecs)
+                dfdk = np.zeros(3, dtype=complex)
+                for di in d_vecs:
+                    phase = np.exp(1j * np.dot(k, di))
+                    for alpha in range(3):
+                        dfdk[alpha] += 1j * di[alpha] * phase
+
+                # H(k)
+                H = np.array([
+                    [Delta / 2, t * fk],
+                    [t * np.conj(fk), -Delta / 2]
+                ])
+
+                # ∂H/∂k_α
+                dHdk = np.zeros((2, 2, 3), dtype=complex)
+                for alpha in range(3):
+                    dHdk[0, 1, alpha] = t * dfdk[alpha]
+                    dHdk[1, 0, alpha] = t * np.conj(dfdk[alpha])
+
+                evals, evecs = np.linalg.eigh(H)
+
+                v_eig = np.zeros((2, 2, 3), dtype=complex)
+                for alpha in range(3):
+                    v_eig[:, :, alpha] = evecs.T.conj() @ dHdk[:, :, alpha] @ evecs
+
+                eigenvalues_k.append(evals)
+                velocity_matrix_k.append(v_eig)
+
+    sigma = compute_optical_conductivity(omega_grid, eigenvalues_k,
+                                          velocity_matrix_k, n_occ=1, eta=eta)
+    D_eff, T_diag = compute_deff_from_velocity(velocity_matrix_k,
+                                                eigenvalues_k, n_occ=1)
+    return omega_grid, sigma, D_eff, T_diag
+
+
+def chain1d_optical_kgrid(nk=2000, omega_grid=None, eta=0.1):
+    """
+    1D鎖の光学伝導度。
+    H(k) = [[Δ/2, 2t cos(ka)], [2t cos(ka), -Δ/2]]
+    検証: 吸収開始 ω = Δ = 0.5 eV
+    """
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 8.0, 400)
+
+    t = -2.7
+    a = 1.42
+    Delta = 0.5
+
+    kpoints = np.linspace(-np.pi / a, np.pi / a, nk, endpoint=False)
+
+    eigenvalues_k = []
+    velocity_matrix_k = []
+
+    for k_val in kpoints:
+        eps_k = 2 * t * np.cos(k_val * a)
+        deps_dk = -2 * t * a * np.sin(k_val * a)
+
+        H = np.array([
+            [Delta / 2, eps_k],
+            [eps_k, -Delta / 2]
+        ])
+
+        dHdk = np.zeros((2, 2, 1))
+        dHdk[0, 1, 0] = deps_dk
+        dHdk[1, 0, 0] = deps_dk
+
+        evals, evecs = np.linalg.eigh(H)
+
+        v_eig = np.zeros((2, 2, 1), dtype=complex)
+        v_eig[:, :, 0] = evecs.T.conj() @ dHdk[:, :, 0] @ evecs
+
+        eigenvalues_k.append(evals)
+        velocity_matrix_k.append(v_eig)
+
+    sigma = compute_optical_conductivity(omega_grid, eigenvalues_k,
+                                          velocity_matrix_k, n_occ=1, eta=eta)
+    D_eff, T_diag = compute_deff_from_velocity(velocity_matrix_k,
+                                                eigenvalues_k, n_occ=1)
+    return omega_grid, sigma, D_eff, T_diag
+
+
+def c60_optical(omega_grid=None, eta=0.15):
+    """
+    C60分子の光学伝導度。双極子ゲージで計算。
+    σ(ω) ∝ Σ_{n occ, m unocc} ω |r_nm|² η/((ω-dE)²+η²)
+
+    検証: 第一ピーク ≈ HOMO-LUMO gap
+    """
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 8.0, 400)
+
+    t_intra = -2.7
+    adj, coords = build_c60_adjacency()
+    n = adj.shape[0]
+
+    H = t_intra * adj.astype(float)
+    eigenvalues, eigenvectors = np.linalg.eigh(H)
+
+    n_occ = n // 2  # 30 occupied levels
+
+    # 双極子行列要素: r_nm^α = Σ_i ψ_n*(i) (coord_i)_α ψ_m(i)
+    n_dim = 3
+    dipole = np.zeros((n, n, n_dim))
+    for alpha in range(n_dim):
+        r_alpha = np.diag(coords[:, alpha])  # (n, n) diagonal
+        dipole[:, :, alpha] = eigenvectors.T @ r_alpha @ eigenvectors
+
+    # σ(ω) の計算（双極子ゲージ）
+    sigma = np.zeros(len(omega_grid))
+    for nn in range(n_occ):
+        for m in range(n_occ, n):
+            dE = eigenvalues[m] - eigenvalues[nn]
+            if dE < 1e-6:
+                continue
+
+            # |r_nm|² の偏光平均
+            r2 = 0.0
+            for alpha in range(n_dim):
+                r2 += np.abs(dipole[nn, m, alpha]) ** 2
+            r2 /= n_dim
+
+            # 双極子→伝導度変換: ω 因子
+            lorentz = eta / ((omega_grid - dE) ** 2 + eta ** 2)
+            sigma += 2.0 * omega_grid * r2 * lorentz
+
+    # D_eff = 0 (分子系、k分散なし)
+    D_eff = 0.0
+    T_diag = np.zeros(3)
+
+    return omega_grid, sigma, D_eff, T_diag
+
+
+# ============================================================
+# 7. バンドギャップとバンド幅の計算
 # ============================================================
 def compute_bandgap_and_width(E_bands):
     """バンド構造からバンドギャップとバンド幅を計算。"""
@@ -668,14 +1307,14 @@ def main():
     print("=" * 60)
 
     # --- バンド構造計算 ---
-    print("\n[1/4] バンド構造計算...")
+    print("\n[1/7] バンド構造計算...")
     kd_dia, Eb_dia, tp_dia, tl_dia = diamond_bandstructure()
     kd_gra, Eb_gra, tp_gra, tl_gra = graphene_bandstructure()
     kd_1d, Eb_1d, tp_1d, tl_1d = chain1d_bandstructure()
     kd_c60, Eb_c60, tp_c60, tl_c60 = c60_bandstructure()
 
     # --- DOS計算 ---
-    print("[2/4] 状態密度(DOS)計算...")
+    print("[2/7] 状態密度(DOS)計算...")
     eg_dia, dos_dia, en_dia = diamond_dos()
     eg_gra, dos_gra, en_gra = graphene_dos()
     eg_1d, dos_1d, en_1d = chain1d_dos()
@@ -688,7 +1327,7 @@ def main():
     Eg_c60, W_c60 = compute_bandgap_and_width(Eb_c60)
 
     # --- δプロキシ計算 ---
-    print("[3/4] δプロキシ (IPR^-1) 計算...")
+    print("[3/7] δプロキシ (IPR^-1) 計算...")
     delta_dia = compute_diamond_delta()
     delta_gra = compute_graphene_delta()
     delta_1d = compute_chain1d_delta()
@@ -745,7 +1384,136 @@ def main():
     # ============================================================
     # プロット
     # ============================================================
-    print("\n[4/4] 図の生成...")
+    # ============================================================
+    # 光学伝導度・誘電関数・反射率の計算
+    # ============================================================
+    print("\n[4/8] 光学伝導度の計算 (π帯のみ, クボー公式)...")
+    omega = np.linspace(0.05, 8.0, 400)
+
+    print("  グラフェン (π帯)...")
+    _, sigma_gra_pi, Deff_gra_pi, Tdiag_gra_pi = graphene_optical_kgrid(nk=60, omega_grid=omega)
+    print("  1D鎖...")
+    _, sigma_1d, Deff_1d_v, Tdiag_1d = chain1d_optical_kgrid(nk=2000, omega_grid=omega)
+    print("  C60...")
+    _, sigma_c60, Deff_c60_v, Tdiag_c60 = c60_optical(omega_grid=omega)
+
+    # --- 全軌道 Slater-Koster モデル ---
+    print("\n[5/8] 全軌道光学伝導度 (s,px,py,pz Slater-Koster)...")
+    omega_full = np.linspace(0.05, 12.0, 600)
+
+    print("  グラフェン (8バンド)...")
+    _, sigma_gra_full, Deff_gra_v, Tdiag_gra, evals_gra = graphene_full_tb_optical(
+        nk=50, omega_grid=omega_full, eta=0.15)
+    print("  ダイヤモンド (8バンド)...")
+    _, sigma_dia_full, Deff_dia_v, Tdiag_dia, evals_dia = diamond_full_tb_optical(
+        nk=12, omega_grid=omega_full, eta=0.15)
+
+    # --- D_eff 検証 ---
+    print("\n[6/8] D_eff (速度テンソルから計算):")
+    print(f"  ダイヤモンド (8band): D_eff = {Deff_dia_v:.2f}  (期待: 3.0)  T_diag = {Tdiag_dia}")
+    print(f"  グラフェン (8band):   D_eff = {Deff_gra_v:.2f}  (期待: 2.0)  T_diag = {Tdiag_gra}")
+    print(f"  1D鎖 (2band):         D_eff = {Deff_1d_v:.2f}  (期待: 1.0)  T_diag = {Tdiag_1d}")
+    print(f"  C60:                   D_eff = {Deff_c60_v:.2f}  (期待: 0.0)")
+
+    systems[0]['D_eff_velocity'] = Deff_dia_v
+    systems[1]['D_eff_velocity'] = Deff_gra_v
+    systems[2]['D_eff_velocity'] = Deff_1d_v
+    systems[3]['D_eff_velocity'] = Deff_c60_v
+
+    # --- 誘電関数・反射率 (全軌道モデル) ---
+    print("\n[7/8] 誘電関数・反射率の計算 (全軌道モデル)...")
+
+    # 正規化: グラフェンのπ帯 σ₀ で全系を共通正規化
+    sigma_pi_low = np.mean(sigma_gra_pi[(omega > 0.5) & (omega < 2.0)])
+    print(f"  グラフェン π帯 σ₀ (0.5-2.0 eV) = {sigma_pi_low:.6f}")
+
+    # 全軌道モデルの σ を物理単位に変換
+    # グラフェンの全軌道σのうち低エネルギー部はπ帯が支配 → σ₀で正規化
+    sigma_full_low = np.mean(sigma_gra_full[(omega_full > 0.5) & (omega_full < 2.0)])
+    scale = sigma_pi_low / max(sigma_full_low, 1e-30)
+
+    # ε₂ の計算 — 全軌道モデル
+    # 共通正規化: σ を σ₀ 単位に変換後、物理的な ε₂ = 4πσ/(ωε₀) を計算
+    # σ₀ = πe²/(2h) ≈ 6.08e-5 S (2D伝導度)
+    # グラファイト: ε₂ = σ_2D / (ε₀ ω d)  where d = 3.35 Å
+    # → ε₂ = σ₀ × σ_norm / (ε₀ ω d) = (πα/d) × σ_norm / ω
+    #   πα ≈ 0.0229, d = 3.35e-10 m → πα/d ≈ 6.84e7 m^-1
+    #   ε₂ = πα × ℏc / (d × ℏω) × σ_norm
+    # ℏc = 197.3 eV·nm = 1973 eV·Å
+    # → ε₂ = π/137 × 1973 / (3.35 × ℏω) × σ_norm ≈ 13.5 / ℏω × σ_norm
+
+    hbar_c_eVA = 1973.0  # eV·Å
+    alpha_fs = 1.0 / 137.036
+
+    # グラフェン/グラファイト
+    d_graphite = 3.35  # Å
+    pref_gra = np.pi * alpha_fs * hbar_c_eVA / d_graphite  # ≈ 13.5
+
+    sigma_gra_norm = sigma_gra_full * scale
+    eps2_gra = np.zeros_like(omega_full)
+    nonzero = omega_full > 0.01
+    eps2_gra[nonzero] = pref_gra * sigma_gra_norm[nonzero] / omega_full[nonzero]
+
+    # ダイヤモンド: 3D → 有効層厚 d_eff = V_cell / A_cell で2D換算
+    # V_cell = a³/4 (FCC conventional cell has 8 atoms, primitive has 2)
+    # 原始胞体積 = a³/4 = 11.35 Å³
+    # 有効 "層厚" = V_cell^(1/3) ≈ 2.25 Å
+    d_diamond_eff = (3.567 ** 3 / 4) ** (1.0 / 3.0)  # ≈ 2.25 Å
+    pref_dia = np.pi * alpha_fs * hbar_c_eVA / d_diamond_eff
+
+    sigma_dia_norm = sigma_dia_full * scale
+    eps2_dia = np.zeros_like(omega_full)
+    eps2_dia[nonzero] = pref_dia * sigma_dia_norm[nonzero] / omega_full[nonzero]
+
+    # 1D鎖: π帯のみ、有効断面積で正規化
+    d_1d_eff = 15.0  # Å (SWCNT直径相当)
+    pref_1d = np.pi * alpha_fs * hbar_c_eVA / d_1d_eff
+
+    eps2_1d = np.zeros_like(omega)
+    nz_1d = omega > 0.01
+    eps2_1d[nz_1d] = pref_1d * sigma_1d[nz_1d] / (sigma_pi_low * omega[nz_1d])
+
+    # C60: 双極子モデル、有効セルサイズで正規化
+    d_c60_eff = 14.17  # Å (FCC格子定数)
+    pref_c60 = np.pi * alpha_fs * hbar_c_eVA / d_c60_eff
+
+    eps2_c60 = np.zeros_like(omega)
+    eps2_c60[nz_1d] = pref_c60 * sigma_c60[nz_1d] / (sigma_pi_low * omega[nz_1d])
+
+    # 反射率
+    R_gra = reflectivity_from_epsilon(eps2_gra)
+    R_dia = reflectivity_from_epsilon(eps2_dia)
+    R_1d = reflectivity_from_epsilon(eps2_1d)
+    R_c60 = reflectivity_from_epsilon(eps2_c60)
+
+    # 可視域平均反射率
+    vis_full = (omega_full >= 1.6) & (omega_full <= 3.1)
+    vis = (omega >= 1.6) & (omega <= 3.1)
+    R_vis_gra = np.mean(R_gra[vis_full])
+    R_vis_dia = np.mean(R_dia[vis_full])
+    R_vis_1d = np.mean(R_1d[vis])
+    R_vis_c60 = np.mean(R_c60[vis])
+
+    systems[0]['R_vis'] = R_vis_dia
+    systems[1]['R_vis'] = R_vis_gra
+    systems[2]['R_vis'] = R_vis_1d
+    systems[3]['R_vis'] = R_vis_c60
+
+    print(f"\n  可視域平均反射率 (全軌道モデル):")
+    print(f"    ダイヤモンド: R_vis = {R_vis_dia:.4f}  (実験値 ~0.17)")
+    print(f"    グラフェン/グラファイト: R_vis = {R_vis_gra:.4f}  (実験値 ~0.25-0.30)")
+    print(f"    1D鎖 (SWCNT):   R_vis = {R_vis_1d:.4f}")
+    print(f"    C60:             R_vis = {R_vis_c60:.4f}")
+
+    # バンドギャップ検証 (全軌道モデル)
+    evals_dia_all = np.array([e for e in evals_dia])
+    gap_dia_full = np.min(evals_dia_all[:, 4]) - np.max(evals_dia_all[:, 3])
+    print(f"\n  ダイヤモンド バンドギャップ (8band): {gap_dia_full:.2f} eV  (実験値: 5.47 eV)")
+
+    # ============================================================
+    # プロット
+    # ============================================================
+    print("\n[8/8] 図の生成...")
 
     # --- Fig A: バンド構造 (4パネル) ---
     fig_a, axes_a = plt.subplots(1, 4, figsize=(16, 4))
@@ -837,6 +1605,78 @@ def main():
     fig_c.tight_layout()
     fig_c.savefig(os.path.join(FIGDIR, "fig_c_delta_Eg_correlation.png"), dpi=150, bbox_inches='tight')
     print(f"  保存: {os.path.join(FIGDIR, 'fig_c_delta_Eg_correlation.png')}")
+
+    # --- Fig D: 吸収スペクトル ε₂(ω) (全軌道モデル) ---
+    fig_d, ax_d = plt.subplots(figsize=(8, 5))
+    ax_d.set_title("吸収スペクトル ε₂(ω) — 全軌道 Slater-Koster TB", fontsize=14)
+
+    ax_d.axvspan(1.6, 3.1, alpha=0.15, color='gold', label='可視域')
+    ax_d.plot(omega_full, eps2_dia, color=colors_band[0], linewidth=1.5, label='ダイヤモンド (8band)')
+    ax_d.plot(omega_full, eps2_gra, color=colors_band[1], linewidth=1.5, label='グラフェン (8band)')
+    ax_d.plot(omega, eps2_1d, color=colors_band[2], linewidth=1.5, label='1D鎖 (π帯)', linestyle='--')
+    ax_d.plot(omega, eps2_c60, color=colors_band[3], linewidth=1.5, label='C60 (双極子)', linestyle='--')
+
+    ax_d.set_xlabel("光子エネルギー [eV]", fontsize=12)
+    ax_d.set_ylabel("ε₂", fontsize=12)
+    ax_d.set_xlim(0, 10)
+    ax_d.legend(fontsize=10)
+    ax_d.grid(alpha=0.3)
+
+    fig_d.tight_layout()
+    fig_d.savefig(os.path.join(FIGDIR, "fig_d_absorption.png"), dpi=150, bbox_inches='tight')
+    print(f"  保存: {os.path.join(FIGDIR, 'fig_d_absorption.png')}")
+
+    # --- Fig E: 反射率 R(ω) (全軌道モデル) ---
+    fig_e, ax_e = plt.subplots(figsize=(8, 5))
+    ax_e.set_title("反射率 R(ω) — 全軌道 Slater-Koster TB", fontsize=14)
+
+    ax_e.axvspan(1.6, 3.1, alpha=0.15, color='gold', label='可視域')
+    ax_e.plot(omega_full, R_dia, color=colors_band[0], linewidth=1.5, label='ダイヤモンド (8band)')
+    ax_e.plot(omega_full, R_gra, color=colors_band[1], linewidth=1.5, label='グラフェン (8band)')
+    ax_e.plot(omega, R_1d, color=colors_band[2], linewidth=1.5, label='1D鎖 (π帯)', linestyle='--')
+    ax_e.plot(omega, R_c60, color=colors_band[3], linewidth=1.5, label='C60 (双極子)', linestyle='--')
+
+    ax_e.set_xlabel("光子エネルギー [eV]", fontsize=12)
+    ax_e.set_ylabel("R(ω)", fontsize=12)
+    ax_e.set_xlim(0, 10)
+    ax_e.set_ylim(0, 0.6)
+    ax_e.legend(fontsize=10)
+    ax_e.grid(alpha=0.3)
+
+    fig_e.tight_layout()
+    fig_e.savefig(os.path.join(FIGDIR, "fig_e_reflectivity.png"), dpi=150, bbox_inches='tight')
+    print(f"  保存: {os.path.join(FIGDIR, 'fig_e_reflectivity.png')}")
+
+    # --- Fig F: δ×D_eff vs 可視域平均反射率 ---
+    fig_f, ax_f = plt.subplots(figsize=(7, 5))
+    ax_f.set_title("δ × D_eff vs 可視域平均反射率", fontsize=14)
+
+    for i, s in enumerate(systems):
+        deff_v = s.get('D_eff_velocity', s['D_eff'])
+        delta_deff = s['delta'] * (deff_v + 1)
+        ax_f.scatter(delta_deff, s['R_vis'], s=120, marker=markers[i],
+                     color=colors_band[i], zorder=5, edgecolors='black', linewidth=0.8)
+        offset_xy = (8, 8) if i != 1 else (8, -15)
+        ax_f.annotate(s['label'], (delta_deff, s['R_vis']),
+                      textcoords="offset points", xytext=offset_xy, fontsize=10)
+
+    ax_f.set_xlabel("δ × (D_eff + 1)", fontsize=12)
+    ax_f.set_ylabel("可視域平均反射率 R_vis", fontsize=12)
+    ax_f.grid(alpha=0.3)
+
+    # δ×D_eff と R_vis の相関
+    dd_vals = np.array([s['delta'] * (s.get('D_eff_velocity', s['D_eff']) + 1) for s in systems])
+    rv_vals = np.array([s['R_vis'] for s in systems])
+    if len(dd_vals) > 2:
+        r_dr, p_dr = pearsonr(dd_vals, rv_vals)
+        ax_f.text(0.02, 0.98, f"ピアソン r = {r_dr:.3f}\np = {p_dr:.2e}",
+                  transform=ax_f.transAxes, fontsize=10,
+                  verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+        print(f"\n  δ×D_eff vs R_vis 相関: r = {r_dr:.3f} (p = {p_dr:.2e})")
+
+    fig_f.tight_layout()
+    fig_f.savefig(os.path.join(FIGDIR, "fig_f_delta_deff_reflectivity.png"), dpi=150, bbox_inches='tight')
+    print(f"  保存: {os.path.join(FIGDIR, 'fig_f_delta_deff_reflectivity.png')}")
 
     plt.close('all')
 

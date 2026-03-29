@@ -1,0 +1,100 @@
+% =====================================================================
+% References for surface tension & water anomaly simulations
+% Used in: jellium_surface.py, water_delta.py
+% =====================================================================
+
+% ── Liquid metal surface tension (experimental) ─────────────────────
+
+@article{Keene1993,
+  author  = {Keene, B. J.},
+  title   = {Review of data for the surface tension of pure metals},
+  journal = {Int. Mater. Rev.},
+  volume  = {38},
+  pages   = {157--192},
+  year    = {1993},
+  note    = {Critical review of surface tension data for Al, Zn, Mg, Li, Na, K, Cs and others},
+}
+
+@book{IidaGuthrie1988,
+  author    = {Iida, T. and Guthrie, R. I. L.},
+  title     = {The Physical Properties of Liquid Metals},
+  publisher = {Oxford University Press},
+  year      = {1988},
+  note      = {Recommended values for surface tension, density, viscosity of liquid metals},
+}
+
+% ── Wigner-Seitz radii ──────────────────────────────────────────────
+
+@book{AshcroftMermin1976,
+  author    = {Ashcroft, N. W. and Mermin, N. D.},
+  title     = {Solid State Physics},
+  publisher = {Holt, Rinehart and Winston},
+  year      = {1976},
+  note      = {Table 1.1: Wigner-Seitz radii for simple metals (Al: 2.07, Na: 3.93, K: 4.86, Cs: 5.62 Bohr)},
+}
+
+% ── Jellium surface energy (DFT) ───────────────────────────────────
+
+@article{LangKohn1970,
+  author  = {Lang, N. D. and Kohn, W.},
+  title   = {Theory of Metal Surfaces: Charge Density and Surface Energy},
+  journal = {Phys. Rev. B},
+  volume  = {1},
+  pages   = {4555--4568},
+  year    = {1970},
+  note    = {Foundational jellium DFT calculation; surface energies in Table II for $r_s = 2$--6},
+}
+
+% ── LDA exchange-correlation ───────────────────────────────────────
+
+@article{PerdewZunger1981,
+  author  = {Perdew, J. P. and Zunger, A.},
+  title   = {Self-Interaction Correction to Density-Functional Approximations for Many-Electron Systems},
+  journal = {Phys. Rev. B},
+  volume  = {23},
+  pages   = {5048--5079},
+  year    = {1981},
+  note    = {LDA correlation parameterization used in \texttt{correlation\_energy\_density()}},
+}
+
+@article{CeperleyAlder1980,
+  author  = {Ceperley, D. M. and Alder, B. J.},
+  title   = {Ground State of the Electron Gas by a Stochastic Method},
+  journal = {Phys. Rev. Lett.},
+  volume  = {45},
+  pages   = {566--569},
+  year    = {1980},
+  note    = {Quantum Monte Carlo data parameterized by Perdew--Zunger (1981)},
+}
+
+% ── Water density (IAPWS-95 equation of state) ─────────────────────
+
+@article{WagnerPruss2002,
+  author  = {Wagner, W. and Pruss, A.},
+  title   = {The {IAPWS} Formulation 1995 for the Thermodynamic Properties of Ordinary Water Substance for General and Scientific Use},
+  journal = {J. Phys. Chem. Ref. Data},
+  volume  = {31},
+  pages   = {387--535},
+  year    = {2002},
+  note    = {IAPWS-95 standard; basis for NIST WebBook water properties including $\rho_\mathrm{max}$ at 3.98$^\circ$C},
+}
+
+% ── Water surface tension ──────────────────────────────────────────
+
+@article{Vargaftik1983,
+  author  = {Vargaftik, N. B. and Volkov, B. N. and Voljak, L. D.},
+  title   = {International Tables of the Surface Tension of Water},
+  journal = {J. Phys. Chem. Ref. Data},
+  volume  = {12},
+  pages   = {817--820},
+  year    = {1983},
+  note    = {IAPS recommended correlation; $\gamma(20^\circ\mathrm{C}) = 72.75$ mN/m},
+}
+
+@misc{IAPWS2014,
+  author       = {{IAPWS}},
+  title        = {Revised Release on Surface Tension of Ordinary Water Substance},
+  year         = {2014},
+  howpublished = {\url{https://iapws.org}},
+  note         = {Current official IAPWS surface tension correlation},
+}

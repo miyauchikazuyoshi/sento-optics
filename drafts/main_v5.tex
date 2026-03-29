@@ -267,6 +267,28 @@ This definition is \emph{purely electronic and structural}: it depends
 only on the band dispersion $E(\bm{k})$ and therefore avoids
 circularity with the optical response it is used to classify.
 
+\emph{Energy windowing and the h-BN case.}
+The sum in Eq.~\ref{eq:Deff} runs over \emph{all} occupied-to-unoccupied
+interband transitions, without restriction to a particular energy window.
+For h-BN, the $\pi$-band dispersion is substantial ($W_\pi \approx
+2.4$~eV), but the band gap $E_g = 5.95$~eV places all interband
+transitions in the deep UV. The resulting velocity matrix elements
+$v_{nm}$ are nonzero, and $T_{\alpha\beta}$ reflects the in-plane
+anisotropy. However, none of these transitions contribute to the
+\emph{visible-range} optical response, which is the target of our
+classification.
+
+We acknowledge that $D_\mathrm{eff}$ and $E_g$ are not fully
+independent: a large $E_g$ reduces the density of visible-energy
+transitions, indirectly suppressing the optical weight that enters
+$T_{\alpha\beta}$. The key point is that $D_\mathrm{eff}$ provides
+\emph{additional} information beyond $E_g$: among materials with the
+same $E_g \approx 0$ (graphite, metals, SWCNTs), $D_\mathrm{eff}$
+correctly resolves the luster degeneracy that $E_g$ alone cannot lift.
+The partial correlation with $E_g$ is a feature, not a bug---it
+reflects the physical reality that both variables derive from the
+same band structure.
+
 \begin{table}[h]
 \caption{Crystallographic vs.\ effective conduction dimensionality.}
 \label{tab:Deff}
@@ -481,11 +503,21 @@ supercell, 1D chain, C$_{60}$ molecule), we compute:
   \item The inverse participation ratio (IPR) as a function of $W$.
 \end{enumerate}
 
-The spectral correlation serves as a direct measure of optical
-coherence preservation: $\mathrm{corr} \approx 1$ means the optical
-response is unchanged (coherence preserved), while
-$\mathrm{corr} \ll 1$ means the spectral features are destroyed
-(coherence lost).
+The spectral correlation is defined as the Pearson correlation
+coefficient between the clean and disordered optical conductivity
+spectra over the visible range ($1.6$--$3.1$~eV, flat spectral
+weight, $N_\omega = 500$ grid points):
+\begin{equation}
+  \mathrm{corr}(\sigma_0, \sigma_W) =
+  \frac{\sum_i (\sigma_0^i - \bar{\sigma}_0)
+        (\sigma_W^i - \bar{\sigma}_W)}
+  {\sqrt{\sum_i (\sigma_0^i - \bar{\sigma}_0)^2
+         \sum_i (\sigma_W^i - \bar{\sigma}_W)^2}}.
+  \label{eq:corr}
+\end{equation}
+A value near unity means the spectral shape is preserved
+(coherence maintained); $\mathrm{corr} \ll 1$ means spectral
+features are destroyed (coherence lost).
 
 \subsection{Effective gloss under disorder}
 
@@ -498,12 +530,20 @@ is estimated as:
   \label{eq:eff_gloss}
 \end{equation}
 
-\noindent where $\mathrm{corr}^2$ represents the fraction of specularly
-reflected intensity (the square arises because gloss scales with
-the specular-reflection peak \emph{intensity}, which depends on the
-coherent amplitude squared). This is a testable prediction: two
-materials with identical clean-surface reflectivity may have different
-effective gloss if their disorder robustness differs.
+\noindent The $\mathrm{corr}^2$ factor is motivated by the
+analogy to coherent scattering: the specular intensity of a
+disordered interface scales as the square of the coherent
+amplitude fraction. If atomic-scale disorder modulates the local
+$\varepsilon(\omega)$, the fraction of the reflected field that
+adds constructively (specular peak) is proportional to $\mathrm{corr}$,
+and the intensity scales as $\mathrm{corr}^2$. We emphasize that
+this is a \emph{minimal phenomenological model}, not a rigorous
+derivation from surface-scattering theory (e.g.,
+Beckmann--Spizzichino); the latter would require explicit surface
+roughness statistics (RMS height, correlation length) that are not
+modeled here. Nevertheless, Eq.~\ref{eq:eff_gloss} yields a testable
+prediction: two materials with identical clean-surface reflectivity
+may have different effective gloss if their disorder robustness differs.
 
 \subsection{Statistical tests}
 
@@ -557,8 +597,10 @@ optical-response region.
   \includegraphics[width=\columnwidth]{fig6_Eg_Deff_classification}
   \caption{Optical-response classification map in
     $E_g$--$D_\mathrm{eff}$ space. Shaded regions correspond to
-    decision-tree categories (Sec.~\ref{sec:tree}). All seven materials
-    are classified correctly.}
+    decision-tree categories (Sec.~\ref{sec:tree}). Six of seven
+    materials are classified correctly; single-layer graphene
+    ($E_g = 0$, $D_\mathrm{eff} = 2$) is misclassified as
+    ``Black$+$gloss'' (see Table~\ref{tab:classification}).}
   \label{fig:Eg_Deff}
 \end{figure}
 
@@ -917,6 +959,65 @@ perturbations. In molecular systems ($D_\mathrm{eff} = 0$), the
 response depends on discrete energy levels that are individually
 sensitive to local disorder.
 
+\subsubsection{The 1D chain paradox: IPR versus spectral correlation}
+
+An apparent paradox emerges from our simulations: the 1D chain
+exhibits the \emph{fastest} IPR growth under disorder (most rapid
+wavefunction localization) yet the \emph{highest} spectral correlation
+($r > 0.97$ at $W = 5$~eV). This is not contradictory---IPR and
+spectral correlation measure different aspects of localization.
+
+The IPR probes the spatial extent of \emph{individual} eigenstates;
+in 1D, Anderson localization is strongest and eigenstates localize
+rapidly. However, the optical conductivity is a \emph{sum over all
+transitions} $\sigma(\omega) \propto \sum_{nm} |v_{nm}|^2
+\delta(\omega - \omega_{nm})$, and its spectral shape is dominated by
+van~Hove singularities (divergences in the joint density of states at
+band edges). These singularities are \emph{topologically protected}:
+they arise from the band structure topology and persist even when
+individual states are localized, as long as the band edges
+themselves are not destroyed. Thus, the 1D chain's spectral shape is
+robust even though its wavefunctions are spatially localized.
+
+This distinction is physically important: IPR governs DC transport
+(which requires extended states), while spectral correlation governs
+the \emph{optical} response (which depends on the joint density of
+states). A material can be a poor conductor (localized states,
+high IPR) yet retain its optical reflectivity spectrum (high spectral
+correlation).
+
+\subsubsection{Scope and limitations of the Anderson disorder model}
+
+A critical caveat is necessary: the Anderson on-site disorder model
+used here probes \emph{bulk electronic} coherence, not the
+\emph{surface topographic} roughness that dominates specular gloss
+in practice. In the Beckmann--Spizzichino framework, specular
+intensity depends on the surface height distribution (RMS roughness
+$\sigma_h$, correlation length $\tau$) and wavelength---quantities
+not captured by our bulk Hamiltonian.
+
+Our model addresses a related but distinct question: given a
+\emph{flat} interface, how robust is the material's dielectric
+response $\varepsilon(\omega)$ to atomic-scale compositional or
+structural disorder? The physical argument connecting bulk disorder
+to surface gloss proceeds as follows: (i)~surface atoms experience
+a different local environment than bulk atoms (reduced coordination,
+reconstruction, adsorbates), creating an effective on-site energy
+perturbation; (ii)~if $\varepsilon(\omega)$ is robust to such
+perturbations, the near-surface dielectric profile remains uniform,
+and Fresnel reflection is preserved; (iii)~if $\varepsilon(\omega)$
+is fragile, the near-surface region becomes optically inhomogeneous,
+scattering light diffusely even on an atomically flat surface.
+
+This chain of reasoning is plausible but not rigorously derived.
+A complete treatment would require coupling the Anderson disorder
+model to a surface-scattering framework (e.g., the Rayleigh--Rice
+perturbation theory for surface roughness, or microfacet models for
+macroscopic topography). We propose this as a concrete target for
+future work: connecting $\delta \times D_\mathrm{eff}$ to the
+roughness parameters ($\sigma_h$, $\tau$) that enter established
+gloss models.
+
 \subsection{Role of $\delta$, $E_g$, and $D_\mathrm{eff}$}
 
 The contribution of this work is the introduction of $D_\mathrm{eff}$
@@ -1017,6 +1118,15 @@ lacks a dimensionality variable.
     requires a scissors correction and the experimental
     $\varepsilon_\infty = 5.7$~\cite{Palik1998} as input; a fully \emph{ab initio} prediction
     would need a more complete basis set or GW corrections.
+  \item Excitonic and local-field effects, which are large in C$_{60}$
+    and h-BN, are neglected in the independent-particle approximation (IPA)
+    used here. GW/BSE calculations would improve the quantitative accuracy
+    of $\varepsilon(\omega)$.
+  \item The visible-range averaging uses a flat spectral weight. We
+    verified that CIE photopic weighting (Gaussian approximation,
+    peak at $555$~nm) changes $R_\mathrm{vis}$ by $<$12\% and preserves
+    the overall ranking (diamond $<$ graphene $<$ 1D chain); the
+    C$_{60}$/1D relative order is sensitive to the weighting choice.
 \end{enumerate}
 
 \subsection{Outlook}
@@ -1086,6 +1196,13 @@ still apply---is proposed as a target for future work.
 The initial inspiration for this work arose from observing the luster
 of water at a public bathhouse (\textit{sent\=o}).
 \end{acknowledgments}
+
+\section*{Data and code availability}
+
+All simulation code (\texttt{delocalization\_optics\_v2.py}),
+tight-binding parameters, computed $\varepsilon(\omega)$ spectra,
+and figure-generation scripts are publicly available at
+\url{https://github.com/miyauchikazuyoshi/sento-optics}.
 
 \section*{Use of AI-assisted tools}
 

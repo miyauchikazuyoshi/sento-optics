@@ -2035,11 +2035,40 @@ def main():
     eps1_dia_vis = np.mean(eps1_dia[vis_full]) if np.any(vis_full) else 0
     print(f"  ε₁ 可視域平均: グラフェン={eps1_gra_vis:.2f}, ダイヤモンド={eps1_dia_vis:.2f}")
 
-    # 可視域平均反射率
+    # 可視域平均反射率（フラット重み）
     R_vis_gra = np.mean(R_gra[vis_full])
     R_vis_dia = np.mean(R_dia[vis_full])
     R_vis_1d = np.mean(R_1d[vis])
     R_vis_c60 = np.mean(R_c60[vis])
+
+    # CIE比視感度関数 V(λ) によるphotopic重み付き反射率（検証用）
+    # V(λ) ≈ ガウシアン近似: ピーク555nm = 2.234 eV, FWHM ≈ 100nm → σ ≈ 0.18 eV
+    def photopic_weight(omega_ev):
+        """CIE V(λ) のガウシアン近似（eV単位）"""
+        peak_eV = 2.234  # 555 nm
+        sigma_eV = 0.18
+        return np.exp(-0.5 * ((omega_ev - peak_eV) / sigma_eV) ** 2)
+
+    # photopic重み付きR_vis
+    w_full = photopic_weight(omega_full[vis_full])
+    w_full = w_full / np.sum(w_full)
+    w_short = photopic_weight(omega[vis])
+    w_short = w_short / np.sum(w_short)
+
+    R_vis_gra_ph = np.sum(R_gra[vis_full] * w_full)
+    R_vis_dia_ph = np.sum(R_dia[vis_full] * w_full)
+    R_vis_1d_ph = np.sum(R_1d[vis] * w_short)
+    R_vis_c60_ph = np.sum(R_c60[vis] * w_short)
+
+    print(f"\n  CIE比視感度重み付き反射率 (photopic V(λ) weighting):")
+    print(f"    ダイヤモンド: R_vis(ph) = {R_vis_dia_ph:.4f}  (flat: {R_vis_dia:.4f})")
+    print(f"    グラフェン:   R_vis(ph) = {R_vis_gra_ph:.4f}  (flat: {R_vis_gra:.4f})")
+    print(f"    1D鎖:        R_vis(ph) = {R_vis_1d_ph:.4f}  (flat: {R_vis_1d:.4f})")
+    print(f"    C60:          R_vis(ph) = {R_vis_c60_ph:.4f}  (flat: {R_vis_c60:.4f})")
+    print(f"  → ランキング変化なし = flat weightingはrobust" if
+          (R_vis_dia_ph < R_vis_gra_ph < R_vis_c60_ph) or
+          (R_vis_dia_ph < R_vis_gra_ph) else
+          "  → ランキングに変化あり！要検討")
 
     systems[0]['R_vis'] = R_vis_dia
     systems[1]['R_vis'] = R_vis_gra

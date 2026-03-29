@@ -54,9 +54,9 @@ electronic systems and introduce two variables: an effective delocalization
 index~$\delta$ and an effective conduction dimensionality~$D_\mathrm{eff}$.
 Using five carbon allotropes (diamond, C$_{60}$, SWCNT, graphene, graphite)
 and hexagonal boron nitride (h-BN) as a control, we demonstrate that
-a decision tree based on $E_g$ and $D_\mathrm{eff}$ classifies all
-seven materials into the correct optical-response category with 100\%
-accuracy.
+a decision tree based on $E_g$ and $D_\mathrm{eff}$ correctly classifies
+6 of 7 materials (85.7\%), with the sole failure---single-layer
+graphene---requiring the layer count~$N$ as a third variable.
 
 Going beyond classification, we establish a complete microscopic-to-macroscopic
 prediction chain: tight-binding Hamiltonian $\to$ Kubo formula $\to$
@@ -575,18 +575,24 @@ optical-response region.
   C$_{60}$     & 1.75 & 0 & Colored     & Colored     & \checkmark \\
   SWCNT (sc)   & 1.0  & 1 & Colored     & Colored     & \checkmark \\
   SWCNT (m)    & 0    & 1 & Black$-$luster & Black$-$luster & \checkmark \\
-  Graphene     & 0    & 2 & Transparent$^*$ & Transparent & \checkmark \\
+  Graphene     & 0    & 2 & Black$+$gloss$^\dagger$ & Transparent & $\times$ \\
   Graphite     & 0    & 2 & Black$+$gloss & Black$+$gloss & \checkmark \\
   h-BN         & 5.95 & 0 & Transparent & Transparent & \checkmark \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
 
-\noindent Classification accuracy: 7/7 = 100\%.
+\noindent Classification accuracy with two variables ($E_g$, $D_\mathrm{eff}$):
+\textbf{6/7 (85.7\%)}.
 
-$^*$Single-layer graphene absorbs only $\pi\alpha \approx 2.3\%$ per
-layer; the $N$-dependent Beer--Lambert crossover to the graphite regime
-constitutes a second-order correction (Sec.~\ref{sec:framework}).
+$^\dagger$The sole misclassification: single-layer graphene ($E_g = 0$,
+$D_\mathrm{eff} = 2$) is predicted as ``Black$+$gloss'' by the decision
+tree, but is in fact nearly transparent ($\pi\alpha \approx 2.3\%$
+absorption per layer~\cite{Nair2008}). This failure reflects a genuine
+limitation of the two-variable framework: the layer count~$N$ acts as a
+third variable governing the graphene-to-graphite crossover via the
+Beer--Lambert law. Including $N$ restores 7/7 accuracy but at the cost
+of an additional parameter.
 
 \subsection{h-BN as a control system}
 \label{sec:hBN}
@@ -657,12 +663,22 @@ provides $\varepsilon_1(\omega)$ self-consistently from
 $\varepsilon_2(\omega)$.
 
 \begin{figure}[t]
+  \includegraphics[width=\columnwidth]{fig_d_absorption}
+  \caption{Absorption spectrum $\varepsilon_2(\omega)$ computed from the
+    Kubo formula for all four systems. Diamond's interband onset is
+    shifted to $E_g = 5.47$~eV via scissors correction; it is
+    transparent throughout the visible range (yellow shading). The 1D
+    chain shows a van~Hove singularity peak near the gap edge.}
+  \label{fig:absorption}
+\end{figure}
+
+\begin{figure}[t]
   \includegraphics[width=\columnwidth]{fig_e_reflectivity}
-  \caption{Reflectivity $R(\omega)$ computed from the Kubo formula for
-    all four model systems. The yellow shaded region marks the visible
-    range (1.6--3.1~eV). Diamond and graphene use the full
-    Slater--Koster 8-band model; the 1D chain and C$_{60}$ use
-    $\pi$-band and dipole models, respectively.}
+  \caption{Reflectivity $R(\omega)$ computed from $\varepsilon(\omega)$
+    via the Kramers--Kronig relation (Eq.~\ref{eq:KK}). Diamond's
+    visible-range $R_\mathrm{vis} = 0.17$ matches
+    experiment~\cite{Philipp1964}. The yellow shaded region marks the
+    visible range (1.6--3.1~eV).}
   \label{fig:reflectivity}
 \end{figure}
 
@@ -684,6 +700,22 @@ model systems (Pearson $r = -0.86$; Fig.~\ref{fig:TB_corr}).
   \caption{IPR-based delocalization index $\delta$ versus band gap
     $E_g$ from tight-binding calculations ($r = -0.86$).}
   \label{fig:TB_corr}
+\end{figure}
+
+\subsubsection{$\delta \times D_\mathrm{eff}$ versus visible-range reflectivity}
+
+\begin{figure}[t]
+  \includegraphics[width=\columnwidth]{fig_f_delta_deff_reflectivity}
+  \caption{$\delta \times (D_\mathrm{eff} + 1)$ versus visible-range
+    average reflectivity $R_\mathrm{vis}$ for the four model systems.
+    Diamond ($R_\mathrm{vis} = 0.17$) is the outlier: its wide band gap
+    places all interband absorption outside the visible window, so
+    $R_\mathrm{vis}$ is governed by the dielectric constant
+    $\varepsilon_\infty$ rather than by interband transitions. This
+    demonstrates that $\delta \times D_\mathrm{eff}$ predicts
+    \emph{disorder robustness} (gloss retention) rather than
+    clean-surface reflectivity alone.}
+  \label{fig:delta_deff_Rvis}
 \end{figure}
 
 \subsection{Angular reflectivity and gloss prediction}
@@ -1023,9 +1055,10 @@ constituent particles, quantified by a delocalization index~$\delta$.
 As a proof of concept, we constructed a two-variable phenomenological
 framework ($\delta_\mathrm{elec}$, $D_\mathrm{eff}$) and tested it on
 five carbon allotropes and an h-BN control. A decision tree based on
-$E_g$ and $D_\mathrm{eff}$ classifies all seven materials into the
-correct optical-response category (transparent, colored, black, or
-lustrous) with 100\% accuracy.
+$E_g$ and $D_\mathrm{eff}$ correctly classifies 6 of 7 materials
+into the correct optical-response category (transparent, colored,
+black, or lustrous); the sole exception---single-layer graphene---requires
+the layer count~$N$ as a third parameter.
 
 Going beyond classification, we established a complete predictive
 chain from microscopic parameters (hopping integrals, orbital symmetry)

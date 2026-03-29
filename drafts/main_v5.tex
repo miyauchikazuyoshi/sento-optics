@@ -274,15 +274,15 @@ circularity with the optical response it is used to classify.
 \begin{tabular}{lccc}
   Material & Crystal dim. & $D_\mathrm{eff}$ & Rationale \\
   \hline
-  Diamond      & 3D     & 0 & $E_g = 5.47$~eV; no states \\
+  Diamond      & 3D     & 0 & $E_g = 5.47$~eV~\cite{Clark1964}; no states \\
                &        &   & in visible window \\
-  C$_{60}$ fcc & 3D     & 0 & Intermolecular $t \sim 30$~meV; \\
-               &        &   & $W \approx 0.5$~eV \\
+  C$_{60}$ fcc & 3D     & 0 & Intermolecular $t \sim 30$~meV~\cite{Hebard1991}; \\
+               &        &   & $W \approx 0.5$~eV~\cite{Gunnarsson1997} \\
   SWCNT        & 1D     & 1 & Axial dispersion only \\
-  Graphene/    & 2D/3D  & 2 & In-plane $W \approx 9$~eV \\
+  Graphene/    & 2D/3D  & 2 & In-plane $W \approx 9$~eV~\cite{Reich2002} \\
   \quad Graphite &      &   & $\gg$ interlayer $\gamma_1 \approx 0.4$~eV \\
   Metals       & 3D     & 3 & Isotropic conduction \\
-  h-BN         & 2D     & 0 & $E_g = 5.95$~eV; no states \\
+  h-BN         & 2D     & 0 & $E_g = 5.95$~eV~\cite{Cassabois2016}; no states \\
                &        &   & in visible window \\
 \end{tabular}
 \end{ruledtabular}
@@ -357,11 +357,11 @@ databases; no first-principles calculations were performed.
 \begin{tabular}{lll}
   Material & $W_\pi$ (eV) & Source \\
   \hline
-  C$_{60}$ solid & 0.4--0.5 & Gunnarsson, RMP \textbf{69} (1997) \\
-  SWCNT & 8--9 & Reich \textit{et al.}, PRB \textbf{65} (2002) \\
-  Graphene & $\sim$9 & TB: $t_0 = 2.7$~eV \\
-  Graphite & $\sim$9 & Reich \textit{et al.}, PRB \textbf{65} (2002) \\
-  h-BN & $\sim$2.4 & DFT literature \\
+  C$_{60}$ solid & 0.4--0.5 & \cite{Gunnarsson1997} \\
+  SWCNT & 8--9 & \cite{Reich2002} \\
+  Graphene & $\sim$9 & TB: $t_0 = 2.7$~eV~\cite{Saito1998} \\
+  Graphite & $\sim$9 & \cite{Reich2002} \\
+  h-BN & $\sim$2.4 & \cite{Wirtz2005} \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
@@ -375,20 +375,21 @@ databases; no first-principles calculations were performed.
 \begin{tabular}{lll}
   Material & $m^*/m_e$ ($1/m^*$) & Source \\
   \hline
-  Diamond & 0.48 (2.08) & Ioffe Semiconductor DB \\
-  C$_{60}$ & 4.0 (0.25) & Gunnarsson, RMP \textbf{69} (1997) \\
-  SWCNT & 0.07 (14.3) & Ajiki \& Ando, JPSJ \textbf{62} (1993) \\
-  Graphene & 0.03 (33.3) & Novoselov \textit{et al.}, Nature (2005) \\
-  Graphite & 0.039 (25.6) & Dresselhaus, Adv.\ Phys.\ (2002) \\
-  h-BN & 0.26 (3.85) & Ioffe Semiconductor DB \\
+  Diamond & 0.48 (2.08) & \cite{Ioffe} \\
+  C$_{60}$ & 4.0 (0.25) & \cite{Gunnarsson1997} \\
+  SWCNT & 0.07 (14.3) & \cite{Ajiki1993} \\
+  Graphene & 0.03 (33.3) & \cite{Novoselov2005} \\
+  Graphite & 0.039 (25.6) & \cite{Dresselhaus2002} \\
+  h-BN & 0.26 (3.85) & \cite{Ioffe} \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
 
 \subsubsection{Band gap $E_g$}
 
-Diamond: 5.47~eV; C$_{60}$: 1.75~eV; SWCNT (semiconducting): $\sim$1.0~eV;
-graphene and graphite: 0~eV; h-BN: 5.95~eV.
+Diamond: 5.47~eV~\cite{Clark1964}; C$_{60}$: 1.75~eV~\cite{Lof1992};
+SWCNT (semiconducting): $\sim$1.0~eV~\cite{Saito1998};
+graphene and graphite: 0~eV; h-BN: 5.95~eV~\cite{Cassabois2016}.
 
 \subsection{Tight-binding simulation with optical conductivity}
 
@@ -410,9 +411,10 @@ Kramers--Kronig transform:
   \label{eq:KK}
 \end{equation}
 For diamond, a scissors correction ($\Delta = 2.87$~eV)
-shifts the interband onset to the experimental gap $E_g = 5.47$~eV,
+shifts the interband onset to the experimental gap
+$E_g = 5.47$~eV~\cite{Clark1964},
 and the high-frequency dielectric constant
-$\varepsilon_\infty = 5.7$ is imposed to account for
+$\varepsilon_\infty = 5.7$~\cite{Palik1998} is imposed to account for
 electronic transitions beyond the 8-band basis.
 The normal-incidence reflectivity follows from
 $R = |(\tilde{n}-1)/(\tilde{n}+1)|^2$ with
@@ -444,7 +446,7 @@ is averaged over the visible range (1.6--3.1~eV) to obtain
 $R_\mathrm{vis}(\theta)$.
 
 Gloss is predicted in industry-standard Gloss Units (GU) following
-ASTM~D523:
+ASTM~D523~\cite{ASTM_D523}:
 
 \begin{equation}
   \mathrm{GU}(\theta) = \frac{R_\mathrm{vis}(\theta)}
@@ -453,7 +455,7 @@ ASTM~D523:
 \end{equation}
 
 \noindent where $R_\mathrm{ref}$ is the reflectivity of the black
-glass reference ($n = 1.567$) at the same angle. Standard measurement
+glass reference ($n = 1.567$)~\cite{ASTM_D523} at the same angle. Standard measurement
 geometries are $\theta = 20^\circ$, $60^\circ$, and $85^\circ$.
 
 \subsection{Coherence preservation test: Anderson disorder}
@@ -593,7 +595,7 @@ h-BN shares the layered sp$^2$ network topology of graphite, so one
 might expect $D_\mathrm{eff} = 2$. However, the electronegativity
 difference between B and N breaks the sublattice (spatial-inversion)
 symmetry: the $\pi$ electrons localize on nitrogen sites, reducing
-$W_\pi$ from 9~eV (graphite) to 2.4~eV and opening a gap of 5.95~eV.
+$W_\pi$ from 9~eV (graphite) to 2.4~eV~\cite{Wirtz2005} and opening a gap of 5.95~eV~\cite{Cassabois2016}.
 In the language of the present framework, the symmetry-breaking
 potential localizes the $\pi$ electrons, \emph{lowering}~$\delta$. Since
 $E_g$ far exceeds the visible-energy window, $D_\mathrm{eff} = 0$
@@ -639,17 +641,18 @@ The Kubo formula applied to the same Hamiltonian yields the optical
 conductivity $\sigma(\omega)$, from which $\varepsilon_2(\omega)$ and
 the normal-incidence reflectivity $R(\omega)$ follow. For graphene,
 the low-energy conductivity correctly reproduces the universal value
-$\sigma_0 = \pi e^2 / 2h$ ($\sigma/\sigma_0 = 1.000$). The
+$\sigma_0 = \pi e^2 / 2h$~\cite{Nair2008,Kuzmenko2008} ($\sigma/\sigma_0 = 1.000$). The
 full-orbital model yields visible-range reflectivities of
 $R_\mathrm{vis} \approx 0.35$ for graphene/graphite and
 $R_\mathrm{vis} \approx 0.17$ for diamond, in quantitative agreement
-with experimental values ($\sim$0.25--0.30 and $\sim$0.17,
-respectively). For diamond, we apply a scissors correction
-($\Delta = 2.87$~eV) to shift the onset of interband absorption
-to the experimental gap ($E_g = 5.47$~eV) and include the
-experimental high-frequency dielectric constant
-$\varepsilon_\infty = 5.7$ to account for electronic transitions
-not captured by the 8-band model. The Kramers--Kronig transform
+with experimental values ($\sim$0.25--0.30~\cite{Taft1965} and
+$\sim$0.17~\cite{Philipp1964}, respectively). For diamond, we apply
+a scissors correction ($\Delta = 2.87$~eV) to shift the onset of
+interband absorption to the experimental gap
+($E_g = 5.47$~eV~\cite{Clark1964}) and include the experimental
+high-frequency dielectric constant
+$\varepsilon_\infty = 5.7$~\cite{Palik1998} to account for electronic
+transitions not captured by the 8-band model. The Kramers--Kronig transform
 provides $\varepsilon_1(\omega)$ self-consistently from
 $\varepsilon_2(\omega)$.
 
@@ -980,7 +983,7 @@ lacks a dimensionality variable.
     require full surface-scattering theory (e.g., Beckmann--Spizzichino).
   \item Diamond's visible-range reflectivity ($R_\mathrm{vis} = 0.17$)
     requires a scissors correction and the experimental
-    $\varepsilon_\infty = 5.7$ as input; a fully \emph{ab initio} prediction
+    $\varepsilon_\infty = 5.7$~\cite{Palik1998} as input; a fully \emph{ab initio} prediction
     would need a more complete basis set or GW corrections.
 \end{enumerate}
 

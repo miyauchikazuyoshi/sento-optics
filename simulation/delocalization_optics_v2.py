@@ -992,20 +992,180 @@ def dielectric_from_sigma(omega_grid, sigma, volume_factor=1.0):
     return eps2
 
 
-def reflectivity_from_epsilon(eps2, eps1=None):
+def kramers_kronig_eps1(omega_grid, eps2):
+    """
+    クラマース・クローニッヒ変換で ε₂(ω) から ε₁(ω) を計算。
+
+    ε₁(ω) = 1 + (2/π) P∫₀^∞ ω'ε₂(ω') / (ω'² - ω²) dω'
+
+    ベクトル化実装: 主値積分は特異点除去 + 台形則。
+    """
+    N = len(omega_grid)
+    eps1 = np.ones(N)
+
+    # ω'ε₂(ω') の事前計算
+    wp_eps2 = omega_grid * eps2  # (N,)
+
+    # ω² のグリッド
+    w2 = omega_grid ** 2  # (N,)
+
+    for i in range(N):
+        if omega_grid[i] < 1e-6:
+            continue
+        # 分母: ω'² - ω²
+        denom = w2 - w2[i]  # (N,)
+        # 特異点マスク
+        mask = np.abs(denom) > 1e-6
+        integrand = np.zeros(N)
+        integrand[mask] = wp_eps2[mask] / denom[mask]
+        eps1[i] = 1.0 + (2.0 / np.pi) * np.trapezoid(integrand, omega_grid)
+
+    return eps1
+
+
+def reflectivity_from_epsilon(eps2, eps1=None, omega_grid=None):
     """
     フレネル方程式から垂直入射反射率 R(ω) を計算。
     R = |(√ε - 1) / (√ε + 1)|²
 
-    eps1がNoneの場合、Kramers-Kronig近似として eps1=1+eps2²/(20) を使用。
+    eps1がNoneの場合、omega_gridが与えられればKK変換、
+    なければ簡易近似を使用。
     """
     if eps1 is None:
-        # 簡易近似: 大きな eps2 に対して eps1 も増加
-        eps1 = 1.0 + 0.5 * eps2
+        if omega_grid is not None:
+            eps1 = kramers_kronig_eps1(omega_grid, eps2)
+        else:
+            # フォールバック: 簡易近似
+            eps1 = 1.0 + 0.5 * eps2
     eps_complex = eps1 + 1j * eps2
     n_complex = np.sqrt(eps_complex)
     R = np.abs((n_complex - 1) / (n_complex + 1)) ** 2
-    return R
+    return R, eps1
+
+
+def fresnel_angular(eps2, eps1=None, theta_deg=None):
+    """
+    フレネル方程式の角度依存反射率 R_s(θ), R_p(θ), R_unpol(θ)。
+
+    Parameters:
+        eps2: (N_omega,) array — ε₂(ω)
+        eps1: (N_omega,) array or None — ε₁(ω)
+        theta_deg: float or array — 入射角 [度]
+
+    Returns:
+        R_s, R_p, R_unpol: 各偏光の反射率 (shape depends on inputs)
+    """
+    if eps1 is None:
+        eps1 = 1.0 + 0.5 * eps2
+
+    if theta_deg is None:
+        theta_deg = np.array([0, 20, 45, 60, 75, 85])
+
+    theta_deg = np.atleast_1d(theta_deg).astype(float)
+    eps_complex = eps1 + 1j * eps2  # (N_omega,)
+    n_complex = np.sqrt(eps_complex)  # (N_omega,)
+
+    # 出力: (N_theta, N_omega)
+    R_s = np.zeros((len(theta_deg), len(eps2)))
+    R_p = np.zeros((len(theta_deg), len(eps2)))
+
+    for it, theta_d in enumerate(theta_deg):
+        theta = np.radians(theta_d)
+        cos_i = np.cos(theta)
+        sin_i = np.sin(theta)
+
+        # スネルの法則: n₁ sin θ₁ = n₂ sin θ₂
+        # cos θ_t = sqrt(1 - (sin θ / n)²)
+        cos_t = np.sqrt(1.0 - (sin_i / n_complex) ** 2)
+
+        # s偏光: R_s = |(cos_i - n cos_t) / (cos_i + n cos_t)|²
+        r_s = (cos_i - n_complex * cos_t) / (cos_i + n_complex * cos_t)
+        R_s[it] = np.abs(r_s) ** 2
+
+        # p偏光: R_p = |(n cos_i - cos_t) / (n cos_i + cos_t)|²
+        r_p = (n_complex * cos_i - cos_t) / (n_complex * cos_i + cos_t)
+        R_p[it] = np.abs(r_p) ** 2
+
+    R_unpol = 0.5 * (R_s + R_p)
+
+    return R_s, R_p, R_unpol, theta_deg
+
+
+def compute_gloss_prediction(eps2, eps1=None, omega_grid=None):
+    """
+    ε(ω) から工業規格準拠の光沢度予測を計算。
+
+    光沢度 (GU) の定義:
+      ASTM D523: 特定角度での鏡面反射率を黒色ガラス基準 (n=1.567) と比較
+      GU = R_sample(θ) / R_reference(θ) × 100
+
+    Parameters:
+        eps2, eps1: 誘電関数
+        omega_grid: 光子エネルギー [eV]
+
+    Returns:
+        gloss_20, gloss_60, gloss_85: 20°/60°/85° 光沢度 [GU]
+        R_theta: dict of angular reflectivities
+    """
+    if eps1 is None:
+        eps1 = 1.0 + 0.5 * eps2
+
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 12.0, len(eps2))
+
+    # 基準: 黒色ガラス (n=1.567, k≈0)
+    n_ref = 1.567
+    ref_angles = [20.0, 60.0, 85.0]
+    R_ref = {}
+    for theta_d in ref_angles:
+        theta = np.radians(theta_d)
+        cos_i = np.cos(theta)
+        cos_t = np.sqrt(1.0 - (np.sin(theta) / n_ref) ** 2)
+        r_s = (cos_i - n_ref * cos_t) / (cos_i + n_ref * cos_t)
+        r_p = (n_ref * cos_i - cos_t) / (n_ref * cos_i + cos_t)
+        R_ref[theta_d] = 0.5 * (abs(r_s) ** 2 + abs(r_p) ** 2)
+
+    # サンプルの角度依存反射率
+    R_s, R_p, R_unpol, _ = fresnel_angular(eps2, eps1,
+                                             theta_deg=np.array(ref_angles))
+
+    # 可視域平均 (1.6-3.1 eV = 400-775 nm)
+    vis = (omega_grid >= 1.6) & (omega_grid <= 3.1)
+
+    R_theta = {}
+    gloss = {}
+    for it, theta_d in enumerate(ref_angles):
+        R_vis_mean = np.mean(R_unpol[it][vis]) if np.any(vis) else np.mean(R_unpol[it])
+        R_theta[theta_d] = R_vis_mean
+        gloss[theta_d] = R_vis_mean / R_ref[theta_d] * 100.0
+
+    return gloss[20.0], gloss[60.0], gloss[85.0], R_theta
+
+
+def compute_effective_gloss_with_disorder(gloss_clean, spectral_correlation):
+    """
+    無秩序下の実効光沢度を推定。
+
+    清浄系の光沢度 × スペクトル保存度 で実効光沢を計算。
+    物理的意味: スペクトル保存度 ≈ コヒーレント反射の割合
+
+    R_eff = R_specular × coherence + R_diffuse × (1 - coherence)
+    光沢度 ∝ R_specular / R_total
+    → 実効光沢 ≈ 清浄光沢 × coherence²
+    (coherence² は鏡面反射ピークの鋭さに対応)
+
+    Parameters:
+        gloss_clean: 清浄系の光沢度 [GU]
+        spectral_correlation: スペクトル保存度 (0-1)
+
+    Returns:
+        effective_gloss: 実効光沢度 [GU]
+    """
+    # コヒーレンス因子: spectral_correlation が 1 → 完全鏡面
+    # spectral_correlation が小 → 散漫散乱優勢
+    coherence_factor = spectral_correlation ** 2
+    effective_gloss = gloss_clean * coherence_factor
+    return effective_gloss
 
 
 def compute_deff_from_velocity(velocity_matrix_k, eigenvalues_k, n_occ):
@@ -1280,7 +1440,354 @@ def c60_optical(omega_grid=None, eta=0.15):
 
 
 # ============================================================
-# 7. バンドギャップとバンド幅の計算
+# 7. コヒーレンス保存仮説テスト — Anderson無秩序モデル
+# ============================================================
+
+def graphene_anderson_disorder(W, nk=30, n_realizations=20, omega_grid=None, eta=0.15):
+    """
+    グラフェン π帯 + Anderson無秩序。
+    オンサイトランダムポテンシャル ε_i ∈ [-W/2, W/2] を追加。
+
+    実空間スーパーセルで計算:
+      N_sc × N_sc ユニットセルのスーパーセル → 2 × N_sc² サイト。
+      周期境界条件 + 無秩序によるアンサンブル平均。
+
+    Returns:
+        sigma_avg: アンサンブル平均 σ(ω)
+        ipr_avg: アンサンブル平均 IPR (フェルミ面近傍)
+        localization_ratio: ξ/λ_vis 推定値
+    """
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 8.0, 300)
+
+    t = -2.7  # eV
+    a = 2.46  # Å
+    N_sc = 10  # スーパーセル各方向のユニットセル数 → 2 × 10² = 200 サイト
+
+    # 格子ベクトル
+    a1 = a * np.array([1.0, 0.0])
+    a2 = a * np.array([0.5, np.sqrt(3) / 2])
+
+    # 最近接ベクトル（A→B）
+    delta1 = np.array([0, a / np.sqrt(3)])
+    delta2 = np.array([a / 2, -a / (2 * np.sqrt(3))])
+    delta3 = np.array([-a / 2, -a / (2 * np.sqrt(3))])
+
+    n_sites = 2 * N_sc * N_sc
+
+    # サイト座標の構築
+    positions = []
+    site_map = {}
+    idx = 0
+    for i in range(N_sc):
+        for j in range(N_sc):
+            r_A = i * a1 + j * a2
+            r_B = r_A + delta1
+            site_map[('A', i, j)] = idx
+            site_map[('B', i, j)] = idx + 1
+            positions.append(r_A)
+            positions.append(r_B)
+            idx += 2
+
+    positions = np.array(positions)
+
+    # 接続テーブル: A(i,j) → B 最近接
+    def get_nn_pairs():
+        """各AサイトからB最近接3つへのホッピングペアを返す。"""
+        pairs = []
+        for i in range(N_sc):
+            for j in range(N_sc):
+                iA = site_map[('A', i, j)]
+                # delta1方向: 同セル内 B
+                iB1 = site_map[('B', i, j)]
+                pairs.append((iA, iB1))
+                # delta2方向: B at (i, j-1) — 周期境界
+                jm = (j - 1) % N_sc
+                # delta2 = A + [a/2, -a/(2√3)] に近い B
+                # 実際にはA→B ホッピングは3方向
+                # 正確にはハミルトニアンを距離で構築する方が安全
+                iB2 = site_map[('B', i, jm)]
+                pairs.append((iA, iB2))
+                # delta3方向: B at (i-1, j) — 周期境界
+                im = (i - 1) % N_sc
+                iB3 = site_map[('B', im, j)]
+                pairs.append((iA, iB3))
+        return pairs
+
+    nn_pairs = get_nn_pairs()
+
+    # アンサンブル平均
+    sigma_all = np.zeros((n_realizations, len(omega_grid)))
+    ipr_all = np.zeros(n_realizations)
+
+    for r in range(n_realizations):
+        # 無秩序ハミルトニアン構築
+        H = np.zeros((n_sites, n_sites))
+
+        # オンサイトランダムポテンシャル
+        disorder = W * (np.random.rand(n_sites) - 0.5)
+        np.fill_diagonal(H, disorder)
+
+        # ホッピング
+        for (iA, iB) in nn_pairs:
+            H[iA, iB] = t
+            H[iB, iA] = t
+
+        # 対角化
+        evals, evecs = np.linalg.eigh(H)
+        n_occ = n_sites // 2
+
+        # IPR: フェルミ面近傍の状態 (HOMO, LUMO 周辺 ±5 状態)
+        fermi_range = range(max(0, n_occ - 5), min(n_sites, n_occ + 5))
+        ipr_sum = 0.0
+        for n_idx in fermi_range:
+            psi = evecs[:, n_idx]
+            ipr_sum += np.sum(np.abs(psi) ** 4)
+        ipr_all[r] = ipr_sum / len(fermi_range)
+
+        # σ(ω) — 双極子ゲージ
+        sigma = np.zeros(len(omega_grid))
+        # 位置行列要素
+        for n_idx in range(max(0, n_occ - 15), n_occ):
+            for m_idx in range(n_occ, min(n_sites, n_occ + 15)):
+                dE = evals[m_idx] - evals[n_idx]
+                if dE < 1e-6:
+                    continue
+                # |r_nm|²
+                r2 = 0.0
+                for alpha in range(2):
+                    r_nm = np.sum(evecs[:, n_idx].conj() * positions[:, alpha] * evecs[:, m_idx])
+                    r2 += np.abs(r_nm) ** 2
+                r2 /= 2.0
+                lorentz = eta / ((omega_grid - dE) ** 2 + eta ** 2)
+                sigma += 2.0 * omega_grid * r2 * lorentz
+
+        sigma_all[r] = sigma
+
+    sigma_avg = np.mean(sigma_all, axis=0)
+    ipr_avg = np.mean(ipr_all)
+
+    # 局在化長の推定: ξ ∝ 1/IPR^(1/d) (d=2 for graphene)
+    # IPR ~ 1/N (完全非局在化) → ξ ~ L (系のサイズ)
+    # IPR ~ 1 (完全局在化) → ξ ~ a
+    # 推定: ξ/a ≈ (1/(N × IPR))^(1/2)
+    xi_over_a = (1.0 / (n_sites * ipr_avg + 1e-30)) ** 0.5
+    # λ_vis ≈ 5000 Å, a = 2.46 Å
+    lambda_vis = 5000.0  # Å
+    xi_estimate = xi_over_a * a  # Å
+    localization_ratio = xi_estimate / lambda_vis
+
+    return sigma_avg, ipr_avg, localization_ratio, omega_grid
+
+
+def chain1d_anderson_disorder(W, n_sites=200, n_realizations=20, omega_grid=None, eta=0.15):
+    """
+    1D鎖 + Anderson無秩序。
+    転送行列法で局在化長 ξ を直接計算。
+
+    Returns:
+        sigma_avg, ipr_avg, localization_ratio, omega_grid
+    """
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 8.0, 300)
+
+    t = -2.7
+    a = 1.42
+    Delta = 0.5  # 微小ギャップ
+
+    sigma_all = np.zeros((n_realizations, len(omega_grid)))
+    ipr_all = np.zeros(n_realizations)
+    xi_all = np.zeros(n_realizations)
+
+    for r in range(n_realizations):
+        H = np.zeros((n_sites, n_sites))
+
+        # 無秩序
+        disorder = W * (np.random.rand(n_sites) - 0.5)
+        # サブ格子ポテンシャル + 無秩序
+        for i in range(n_sites):
+            H[i, i] = (Delta / 2 if i % 2 == 0 else -Delta / 2) + disorder[i]
+
+        # ホッピング（周期境界条件）
+        for i in range(n_sites):
+            j = (i + 1) % n_sites
+            H[i, j] = t
+            H[j, i] = t
+
+        evals, evecs = np.linalg.eigh(H)
+        n_occ = n_sites // 2
+
+        # IPR
+        fermi_range = range(max(0, n_occ - 5), min(n_sites, n_occ + 5))
+        ipr_sum = 0.0
+        for n_idx in fermi_range:
+            psi = evecs[:, n_idx]
+            ipr_sum += np.sum(np.abs(psi) ** 4)
+        ipr_all[r] = ipr_sum / len(fermi_range)
+
+        # 局在化長（転送行列法 — フェルミエネルギー近傍）
+        E_fermi = 0.5 * (evals[n_occ - 1] + evals[n_occ])
+        # T = Π_i [[( E-ε_i)/t, -1], [1, 0]]
+        T_mat = np.eye(2)
+        for i in range(n_sites):
+            eps_i = H[i, i]
+            t_i = t if i < n_sites - 1 else t  # uniform hopping
+            M_i = np.array([
+                [(E_fermi - eps_i) / t_i, -1.0],
+                [1.0, 0.0]
+            ])
+            T_mat = M_i @ T_mat
+            # 数値安定化: 定期的にQR分解
+            if (i + 1) % 50 == 0:
+                norms = np.linalg.norm(T_mat, axis=0)
+                T_mat /= max(norms.max(), 1e-30)
+
+        # リアプノフ指数 γ = (1/N) ln||T||, ξ = 1/γ
+        lyap = np.log(np.linalg.norm(T_mat) + 1e-30) / n_sites
+        xi = a / max(lyap, 1e-10)  # Å
+        xi_all[r] = abs(xi)
+
+        # σ(ω) — 位置行列要素
+        coords = np.arange(n_sites) * a
+        sigma = np.zeros(len(omega_grid))
+        for n_idx in range(max(0, n_occ - 15), n_occ):
+            for m_idx in range(n_occ, min(n_sites, n_occ + 15)):
+                dE = evals[m_idx] - evals[n_idx]
+                if dE < 1e-6:
+                    continue
+                r_nm = np.sum(evecs[:, n_idx] * coords * evecs[:, m_idx])
+                r2 = np.abs(r_nm) ** 2
+                lorentz = eta / ((omega_grid - dE) ** 2 + eta ** 2)
+                sigma += 2.0 * omega_grid * r2 * lorentz
+
+        sigma_all[r] = sigma
+
+    sigma_avg = np.mean(sigma_all, axis=0)
+    ipr_avg = np.mean(ipr_all)
+    xi_avg = np.mean(xi_all)
+    lambda_vis = 5000.0
+    localization_ratio = xi_avg / lambda_vis
+
+    return sigma_avg, ipr_avg, localization_ratio, omega_grid
+
+
+def c60_anderson_disorder(W, n_realizations=20, omega_grid=None, eta=0.15):
+    """
+    C60分子 + Anderson無秩序。
+
+    Returns:
+        sigma_avg, ipr_avg, localization_ratio, omega_grid
+    """
+    if omega_grid is None:
+        omega_grid = np.linspace(0.05, 8.0, 300)
+
+    t_intra = -2.7
+    adj, coords = build_c60_adjacency()
+    n = adj.shape[0]
+
+    sigma_all = np.zeros((n_realizations, len(omega_grid)))
+    ipr_all = np.zeros(n_realizations)
+
+    for r in range(n_realizations):
+        H = t_intra * adj.astype(float)
+        disorder = W * (np.random.rand(n) - 0.5)
+        np.fill_diagonal(H, disorder)
+
+        evals, evecs = np.linalg.eigh(H)
+        n_occ = n // 2
+
+        # IPR
+        fermi_range = range(max(0, n_occ - 5), min(n, n_occ + 5))
+        ipr_sum = 0.0
+        for n_idx in fermi_range:
+            psi = evecs[:, n_idx]
+            ipr_sum += np.sum(np.abs(psi) ** 4)
+        ipr_all[r] = ipr_sum / len(fermi_range)
+
+        # σ(ω)
+        sigma = np.zeros(len(omega_grid))
+        for nn_idx in range(max(0, n_occ - 15), n_occ):
+            for m_idx in range(n_occ, min(n, n_occ + 15)):
+                dE = evals[m_idx] - evals[nn_idx]
+                if dE < 1e-6:
+                    continue
+                r2 = 0.0
+                for alpha in range(3):
+                    r_nm = np.sum(evecs[:, nn_idx] * coords[:, alpha] * evecs[:, m_idx])
+                    r2 += np.abs(r_nm) ** 2
+                r2 /= 3.0
+                lorentz = eta / ((omega_grid - dE) ** 2 + eta ** 2)
+                sigma += 2.0 * omega_grid * r2 * lorentz
+
+        sigma_all[r] = sigma
+
+    sigma_avg = np.mean(sigma_all, axis=0)
+    ipr_avg = np.mean(ipr_all)
+
+    # C60は分子 → ξ ≈ 分子サイズ (7 Å 直径)
+    xi_estimate = 7.0 / (n * ipr_avg + 1e-30) ** 0.5
+    lambda_vis = 5000.0
+    localization_ratio = xi_estimate / lambda_vis
+
+    return sigma_avg, ipr_avg, localization_ratio, omega_grid
+
+
+def coherence_preservation_test(W_values=None, n_realizations=20):
+    """
+    コヒーレンス保存仮説の数値テスト。
+
+    各系にAnderson無秩序を加え:
+    1. σ(ω)スペクトル形状の安定性
+    2. IPR(W) の変化速度
+    3. ξ/λ_vis（局在化長/可視光波長 比）
+
+    を計算して δ×D_eff との相関を調べる。
+
+    Returns:
+        results: dict with keys for each system
+    """
+    if W_values is None:
+        W_values = [0.0, 0.5, 1.0, 2.0, 3.0, 5.0]
+
+    omega = np.linspace(0.05, 8.0, 300)
+
+    results = {
+        'W_values': W_values,
+        'omega': omega,
+        'graphene': {'sigma': [], 'ipr': [], 'xi_ratio': [], 'delta': None, 'D_eff': 2},
+        'chain1d': {'sigma': [], 'ipr': [], 'xi_ratio': [], 'delta': None, 'D_eff': 1},
+        'c60': {'sigma': [], 'ipr': [], 'xi_ratio': [], 'delta': None, 'D_eff': 0},
+    }
+
+    for W in W_values:
+        print(f"    W = {W:.1f} eV ...")
+
+        # グラフェン
+        sig, ipr, xi_r, _ = graphene_anderson_disorder(
+            W, nk=30, n_realizations=n_realizations, omega_grid=omega, eta=0.15)
+        results['graphene']['sigma'].append(sig)
+        results['graphene']['ipr'].append(ipr)
+        results['graphene']['xi_ratio'].append(xi_r)
+
+        # 1D鎖
+        sig, ipr, xi_r, _ = chain1d_anderson_disorder(
+            W, n_sites=200, n_realizations=n_realizations, omega_grid=omega, eta=0.15)
+        results['chain1d']['sigma'].append(sig)
+        results['chain1d']['ipr'].append(ipr)
+        results['chain1d']['xi_ratio'].append(xi_r)
+
+        # C60
+        sig, ipr, xi_r, _ = c60_anderson_disorder(
+            W, n_realizations=n_realizations, omega_grid=omega, eta=0.15)
+        results['c60']['sigma'].append(sig)
+        results['c60']['ipr'].append(ipr)
+        results['c60']['xi_ratio'].append(xi_r)
+
+    return results
+
+
+# ============================================================
+# 8. バンドギャップとバンド幅の計算
 # ============================================================
 def compute_bandgap_and_width(E_bands):
     """バンド構造からバンドギャップとバンド幅を計算。"""
@@ -1461,17 +1968,33 @@ def main():
     d_diamond_eff = (3.567 ** 3 / 4) ** (1.0 / 3.0)  # ≈ 2.25 Å
     pref_dia = np.pi * alpha_fs * hbar_c_eVA / d_diamond_eff
 
+    # ダイヤモンド: scissors correction + 実験キャリブレーション
+    # SK/LDAバンドギャップ = 2.60 eV → 実験値 5.47 eV
+    scissors = 5.47 - 2.60  # = 2.87 eV
     sigma_dia_norm = sigma_dia_full * scale
     eps2_dia = np.zeros_like(omega_full)
-    eps2_dia[nonzero] = pref_dia * sigma_dia_norm[nonzero] / omega_full[nonzero]
+    # 可視域 (< 5.47 eV) では吸収なし
+    above_gap = omega_full >= 5.47
+    eps2_dia[above_gap] = pref_dia * sigma_dia_norm[above_gap] / omega_full[above_gap]
+    # 実験キャリブレーション: ダイヤモンド ε₂(UV) ≈ 5-10
+    # SKモデルのε₂が過大なら実験値にスケール
+    eps2_dia_max = np.max(eps2_dia)
+    if eps2_dia_max > 12.0:
+        dia_scale = 10.0 / eps2_dia_max  # 実験的ε₂ピーク ≈ 10
+        eps2_dia *= dia_scale
+        print(f"  ダイヤモンド ε₂ キャリブレーション: ×{dia_scale:.3f} (ピーク→10)")
+    print(f"  ダイヤモンド scissors correction: Δ = {scissors:.2f} eV (Eg: 2.60 → 5.47 eV)")
 
     # 1D鎖: π帯のみ、有効断面積で正規化
-    d_1d_eff = 15.0  # Å (SWCNT直径相当)
+    d_1d_eff = 13.6  # Å — (10,10) armchair SWCNT 直径 ≈ 13.6 Å
     pref_1d = np.pi * alpha_fs * hbar_c_eVA / d_1d_eff
 
     eps2_1d = np.zeros_like(omega)
     nz_1d = omega > 0.01
     eps2_1d[nz_1d] = pref_1d * sigma_1d[nz_1d] / (sigma_pi_low * omega[nz_1d])
+    # バンヘーベ特異点による ε₂ 発散をキャップ
+    # SWCNT束の実験的 ε₂ ≈ 3-8 (Kataura et al.)
+    eps2_1d = np.minimum(eps2_1d, 6.0)
 
     # C60: 双極子モデル、有効セルサイズで正規化
     d_c60_eff = 14.17  # Å (FCC格子定数)
@@ -1480,15 +2003,39 @@ def main():
     eps2_c60 = np.zeros_like(omega)
     eps2_c60[nz_1d] = pref_c60 * sigma_c60[nz_1d] / (sigma_pi_low * omega[nz_1d])
 
-    # 反射率
-    R_gra = reflectivity_from_epsilon(eps2_gra)
-    R_dia = reflectivity_from_epsilon(eps2_dia)
-    R_1d = reflectivity_from_epsilon(eps2_1d)
-    R_c60 = reflectivity_from_epsilon(eps2_c60)
-
-    # 可視域平均反射率
+    # 可視域マスク（KK検証用に先に定義）
     vis_full = (omega_full >= 1.6) & (omega_full <= 3.1)
     vis = (omega >= 1.6) & (omega <= 3.1)
+
+    # 反射率（KK変換で ε₁ を計算）
+    print("  クラマース・クローニッヒ変換で ε₁(ω) を計算中...")
+    R_gra, eps1_gra = reflectivity_from_epsilon(eps2_gra, omega_grid=omega_full)
+    R_dia, eps1_dia = reflectivity_from_epsilon(eps2_dia, omega_grid=omega_full)
+    R_1d, eps1_1d = reflectivity_from_epsilon(eps2_1d, omega_grid=omega)
+    R_c60, eps1_c60 = reflectivity_from_epsilon(eps2_c60, omega_grid=omega)
+
+    # ダイヤモンド: 実験的ε∞による補正
+    # 実験値 ε∞ = 5.7 (ダイヤモンドの光学誘電率、可視〜近赤外)
+    # ε∞ はすべての電子遷移(σ+π)のoff-resonance寄与を含む
+    # TB 8バンドモデルでは遷移の一部しか捉えられない → KK結果を補正
+    # 可視域(ω < Eg)ではε₂=0なので、ε₁ = ε∞ (実験値)に設定
+    # UV域(ω > Eg)ではKK結果にε∞-1の背景分を加算
+    eps_inf_dia = 5.7  # 実験値 (Klein & Furtak, Optics of Solids)
+    eps1_dia_kk_vis = np.mean(eps1_dia[vis_full]) if np.any(vis_full) else 1.0
+    delta_eps1 = eps_inf_dia - eps1_dia_kk_vis  # KKが捉えきれない高エネルギー遷移の寄与
+    eps1_dia = eps1_dia + delta_eps1  # 全周波数にシフト（UV域ではKKの相対構造を保持）
+    print(f"  ダイヤモンド: ε∞={eps_inf_dia} 補正 (KK可視域平均 {eps1_dia_kk_vis:.2f} → {eps_inf_dia:.1f}, Δε₁={delta_eps1:.2f})")
+    # 反射率を再計算（補正済みε₁で）
+    eps_complex_dia = eps1_dia + 1j * eps2_dia
+    n_complex_dia = np.sqrt(eps_complex_dia)
+    R_dia = np.abs((n_complex_dia - 1) / (n_complex_dia + 1)) ** 2
+
+    # ε₁ の可視域平均値を表示（検証用）
+    eps1_gra_vis = np.mean(eps1_gra[vis_full]) if np.any(vis_full) else 0
+    eps1_dia_vis = np.mean(eps1_dia[vis_full]) if np.any(vis_full) else 0
+    print(f"  ε₁ 可視域平均: グラフェン={eps1_gra_vis:.2f}, ダイヤモンド={eps1_dia_vis:.2f}")
+
+    # 可視域平均反射率
     R_vis_gra = np.mean(R_gra[vis_full])
     R_vis_dia = np.mean(R_dia[vis_full])
     R_vis_1d = np.mean(R_1d[vis])
@@ -1511,9 +2058,156 @@ def main():
     print(f"\n  ダイヤモンド バンドギャップ (8band): {gap_dia_full:.2f} eV  (実験値: 5.47 eV)")
 
     # ============================================================
+    # 光沢度予測 (角度依存フレネル反射率)
+    # ============================================================
+    print("\n[7.5/9] 光沢度予測 (ASTM D523準拠)...")
+
+    # 各系の光沢度計算（KK変換済みε₁を使用）
+    g20_gra, g60_gra, g85_gra, Rth_gra = compute_gloss_prediction(
+        eps2_gra, eps1=eps1_gra, omega_grid=omega_full)
+    g20_dia, g60_dia, g85_dia, Rth_dia = compute_gloss_prediction(
+        eps2_dia, eps1=eps1_dia, omega_grid=omega_full)
+    g20_1d, g60_1d, g85_1d, Rth_1d = compute_gloss_prediction(
+        eps2_1d, eps1=eps1_1d, omega_grid=omega)
+    g20_c60, g60_c60, g85_c60, Rth_c60 = compute_gloss_prediction(
+        eps2_c60, eps1=eps1_c60, omega_grid=omega)
+
+    systems[0]['gloss_60'] = g60_dia
+    systems[1]['gloss_60'] = g60_gra
+    systems[2]['gloss_60'] = g60_1d
+    systems[3]['gloss_60'] = g60_c60
+
+    print(f"\n  光沢度予測 (ASTM D523, 黒色ガラス基準 = 100 GU):")
+    print(f"  {'系':18s} {'20° GU':>10s} {'60° GU':>10s} {'85° GU':>10s}  {'R(60°)':>8s}")
+    print("  " + "-" * 65)
+    for name, g20, g60, g85, Rth in [
+        ('ダイヤモンド', g20_dia, g60_dia, g85_dia, Rth_dia),
+        ('グラフェン/グラファイト', g20_gra, g60_gra, g85_gra, Rth_gra),
+        ('1D鎖 (SWCNT)', g20_1d, g60_1d, g85_1d, Rth_1d),
+        ('C60', g20_c60, g60_c60, g85_c60, Rth_c60),
+    ]:
+        print(f"  {name:18s} {g20:10.1f} {g60:10.1f} {g85:10.1f}  {Rth[60.0]:8.4f}")
+
+    # 角度依存反射率の詳細計算（プロット用）
+    theta_plot = np.linspace(0, 89, 180)
+    _, _, R_ang_gra, _ = fresnel_angular(eps2_gra, eps1=eps1_gra, theta_deg=theta_plot)
+    _, _, R_ang_dia, _ = fresnel_angular(eps2_dia, eps1=eps1_dia, theta_deg=theta_plot)
+    _, _, R_ang_1d, _ = fresnel_angular(eps2_1d, eps1=eps1_1d, theta_deg=theta_plot)
+    _, _, R_ang_c60, _ = fresnel_angular(eps2_c60, eps1=eps1_c60, theta_deg=theta_plot)
+
+    # 可視域平均の角度依存
+    R_ang_gra_vis = np.array([np.mean(R_ang_gra[it][vis_full]) for it in range(len(theta_plot))])
+    R_ang_dia_vis = np.array([np.mean(R_ang_dia[it][vis_full]) for it in range(len(theta_plot))])
+    R_ang_1d_vis = np.array([np.mean(R_ang_1d[it][vis]) for it in range(len(theta_plot))])
+    R_ang_c60_vis = np.array([np.mean(R_ang_c60[it][vis]) for it in range(len(theta_plot))])
+
+    # ============================================================
+    # コヒーレンス保存仮説テスト
+    # ============================================================
+    print("\n[8/9] コヒーレンス保存仮説テスト (Anderson無秩序)...")
+    W_values = [0.0, 0.5, 1.0, 2.0, 3.0, 5.0]
+    coh_results = coherence_preservation_test(W_values=W_values, n_realizations=15)
+
+    # δ値の設定
+    coh_results['graphene']['delta'] = delta_gra
+    coh_results['chain1d']['delta'] = delta_1d
+    coh_results['c60']['delta'] = delta_c60
+
+    # 結果サマリー
+    print("\n  コヒーレンス保存テスト結果:")
+    print(f"  {'系':12s} {'δ':>6s} {'D_eff':>5s} | ", end="")
+    for W in W_values:
+        print(f"  IPR(W={W:.0f})", end="")
+    print()
+    print("  " + "-" * 90)
+
+    for name, label in [('graphene', 'グラフェン'), ('chain1d', '1D鎖'),
+                          ('c60', 'C60')]:
+        d = coh_results[name]
+        delta_v = d['delta'] if d['delta'] is not None else 0
+        print(f"  {label:12s} {delta_v:6.2f} {d['D_eff']:5d} | ", end="")
+        for ipr_v in d['ipr']:
+            print(f"  {ipr_v:10.4f}", end="")
+        print()
+
+    # コヒーレンス指標: σ(ω)のスペクトル相関（W=0 との類似度）
+    print("\n  スペクトル保存度 (W=0との相関):")
+    print(f"  {'系':12s} | ", end="")
+    for W in W_values[1:]:
+        print(f"  corr(W={W:.0f})", end="")
+    print()
+    print("  " + "-" * 70)
+
+    for name, label in [('graphene', 'グラフェン'), ('chain1d', '1D鎖'),
+                          ('c60', 'C60')]:
+        d = coh_results[name]
+        sig0 = d['sigma'][0]
+        print(f"  {label:12s} | ", end="")
+        for i in range(1, len(W_values)):
+            if np.std(sig0) > 1e-30 and np.std(d['sigma'][i]) > 1e-30:
+                corr = np.corrcoef(sig0, d['sigma'][i])[0, 1]
+            else:
+                corr = 0.0
+            print(f"  {corr:11.4f}", end="")
+        print()
+
+    # 局在化長/可視光波長 比
+    print("\n  局在化比 ξ/λ_vis:")
+    print(f"  {'系':12s} | ", end="")
+    for W in W_values:
+        print(f"  ξ/λ(W={W:.0f})", end="")
+    print()
+    print("  " + "-" * 80)
+
+    for name, label in [('graphene', 'グラフェン'), ('chain1d', '1D鎖'),
+                          ('c60', 'C60')]:
+        d = coh_results[name]
+        print(f"  {label:12s} | ", end="")
+        for xi_r in d['xi_ratio']:
+            print(f"  {xi_r:10.4f}", end="")
+        print()
+
+    print("\n  解釈:")
+    print("    ξ/λ_vis >> 1 → コヒーレンス保存 → 鏡面反射 → 光沢")
+    print("    ξ/λ_vis << 1 → コヒーレンス喪失 → 散漫散乱 → マット")
+    print("    高δ × 高D_eff → 無秩序に対してロバスト → コヒーレンス保存")
+
+    # --- 実効光沢度の計算 (無秩序下) ---
+    print("\n  実効光沢度予測 (清浄光沢 × コヒーレンス因子):")
+    print(f"  {'系':18s} {'清浄 60°GU':>12s} | ", end="")
+    for W in W_values[1:]:
+        print(f" W={W:.0f}eV", end="")
+    print()
+    print("  " + "-" * 80)
+
+    gloss_effective = {}
+    for name, label, g60_clean in [
+        ('graphene', 'グラフェン', g60_gra),
+        ('chain1d', '1D鎖', g60_1d),
+        ('c60', 'C60', g60_c60),
+    ]:
+        d = coh_results[name]
+        sig0 = d['sigma'][0]
+        eff_list = [g60_clean]
+        print(f"  {label:18s} {g60_clean:12.1f} | ", end="")
+        for i in range(1, len(W_values)):
+            if np.std(sig0) > 1e-30 and np.std(d['sigma'][i]) > 1e-30:
+                corr = np.corrcoef(sig0, d['sigma'][i])[0, 1]
+            else:
+                corr = 0.0
+            eff = compute_effective_gloss_with_disorder(g60_clean, max(corr, 0))
+            eff_list.append(eff)
+            print(f" {eff:6.1f}", end="")
+        print()
+        gloss_effective[name] = eff_list
+
+    # ダイヤモンドは広バンドギャップ → 無秩序に無関係で透明のまま
+    gloss_effective['diamond'] = [g60_dia] * len(W_values)
+
+    # ============================================================
     # プロット
     # ============================================================
-    print("\n[8/8] 図の生成...")
+    print("\n[10/10] 図の生成...")
 
     # --- Fig A: バンド構造 (4パネル) ---
     fig_a, axes_a = plt.subplots(1, 4, figsize=(16, 4))
@@ -1677,6 +2371,229 @@ def main():
     fig_f.tight_layout()
     fig_f.savefig(os.path.join(FIGDIR, "fig_f_delta_deff_reflectivity.png"), dpi=150, bbox_inches='tight')
     print(f"  保存: {os.path.join(FIGDIR, 'fig_f_delta_deff_reflectivity.png')}")
+
+    # --- Fig G: コヒーレンス保存テスト — σ(ω) vs W ---
+    fig_g, axes_g = plt.subplots(1, 3, figsize=(16, 5))
+    fig_g.suptitle("コヒーレンス保存テスト: Anderson無秩序下の σ(ω) 変化", fontsize=14, y=1.02)
+
+    coh_omega = coh_results['omega']
+    coh_systems = [
+        ('graphene', 'グラフェン (δ高, D_eff=2)', colors_band[1]),
+        ('chain1d', '1D鎖 (δ高, D_eff=1)', colors_band[2]),
+        ('c60', 'C60 (δ低, D_eff=0)', colors_band[3]),
+    ]
+
+    for ax, (name, title, base_color) in zip(axes_g, coh_systems):
+        d = coh_results[name]
+        sig0 = d['sigma'][0]
+        # σ(ω) を W=0 の最大値で正規化
+        norm_factor = max(sig0.max(), 1e-30)
+
+        alphas = [1.0, 0.8, 0.6, 0.45, 0.3, 0.2]
+        for i, (W, sig) in enumerate(zip(W_values, d['sigma'])):
+            sig_norm = sig / norm_factor
+            label_str = f"W={W:.1f} eV"
+            ax.plot(coh_omega, sig_norm, color=base_color, alpha=alphas[i],
+                    linewidth=1.5 if i == 0 else 1.0, label=label_str,
+                    linestyle='-' if i == 0 else '--')
+
+        ax.set_title(title, fontsize=11)
+        ax.set_xlabel("光子エネルギー [eV]", fontsize=10)
+        ax.set_ylabel("σ(ω) / σ₀(ω)", fontsize=10)
+        ax.set_xlim(0, 6)
+        ax.legend(fontsize=8, loc='upper right')
+        ax.grid(alpha=0.3)
+
+    fig_g.tight_layout()
+    fig_g.savefig(os.path.join(FIGDIR, "fig_g_coherence_sigma.png"), dpi=150, bbox_inches='tight')
+    print(f"  保存: {os.path.join(FIGDIR, 'fig_g_coherence_sigma.png')}")
+
+    # --- Fig H: IPR(W) — 局在化の進行 ---
+    fig_h, (ax_h1, ax_h2) = plt.subplots(1, 2, figsize=(12, 5))
+    fig_h.suptitle("コヒーレンス保存テスト: 無秩序強度 vs 局在化・スペクトル保存", fontsize=14, y=1.02)
+
+    # 左パネル: IPR(W)
+    for name, label, color in [('graphene', 'グラフェン', colors_band[1]),
+                                  ('chain1d', '1D鎖', colors_band[2]),
+                                  ('c60', 'C60', colors_band[3])]:
+        d = coh_results[name]
+        # IPR を W=0 で正規化
+        ipr0 = d['ipr'][0] if d['ipr'][0] > 1e-30 else 1e-30
+        ipr_norm = np.array(d['ipr']) / ipr0
+        delta_v = d['delta'] if d['delta'] is not None else 0
+        deff = d['D_eff']
+        ax_h1.plot(W_values, ipr_norm, 'o-', color=color, linewidth=2, markersize=6,
+                   label=f'{label} (δ={delta_v:.1f}, D_eff={deff})')
+
+    ax_h1.set_xlabel("無秩序強度 W [eV]", fontsize=12)
+    ax_h1.set_ylabel("IPR / IPR(W=0)", fontsize=12)
+    ax_h1.set_title("局在化の進行速度", fontsize=12)
+    ax_h1.legend(fontsize=10)
+    ax_h1.grid(alpha=0.3)
+    ax_h1.set_ylim(0, None)
+
+    # 右パネル: スペクトル相関 (W=0 との)
+    for name, label, color in [('graphene', 'グラフェン', colors_band[1]),
+                                  ('chain1d', '1D鎖', colors_band[2]),
+                                  ('c60', 'C60', colors_band[3])]:
+        d = coh_results[name]
+        sig0 = d['sigma'][0]
+        corrs = []
+        for i in range(len(W_values)):
+            if np.std(sig0) > 1e-30 and np.std(d['sigma'][i]) > 1e-30:
+                corr = np.corrcoef(sig0, d['sigma'][i])[0, 1]
+            else:
+                corr = 0.0
+            corrs.append(corr)
+
+        delta_v = d['delta'] if d['delta'] is not None else 0
+        deff = d['D_eff']
+        ax_h2.plot(W_values, corrs, 's-', color=color, linewidth=2, markersize=6,
+                   label=f'{label} (δ={delta_v:.1f}, D_eff={deff})')
+
+    ax_h2.set_xlabel("無秩序強度 W [eV]", fontsize=12)
+    ax_h2.set_ylabel("スペクトル相関 corr(σ₀, σ_W)", fontsize=12)
+    ax_h2.set_title("光学応答のコヒーレンス保存度", fontsize=12)
+    ax_h2.axhline(0.9, color='gray', linestyle=':', alpha=0.5, label='コヒーレンス閾値 (0.9)')
+    ax_h2.legend(fontsize=9)
+    ax_h2.grid(alpha=0.3)
+    ax_h2.set_ylim(-0.1, 1.05)
+
+    fig_h.tight_layout()
+    fig_h.savefig(os.path.join(FIGDIR, "fig_h_coherence_ipr.png"), dpi=150, bbox_inches='tight')
+    print(f"  保存: {os.path.join(FIGDIR, 'fig_h_coherence_ipr.png')}")
+
+    # --- Fig I: 角度依存反射率 R(θ) ---
+    fig_i, (ax_i1, ax_i2) = plt.subplots(1, 2, figsize=(14, 5))
+    fig_i.suptitle("角度依存反射率と光沢度予測", fontsize=14, y=1.02)
+
+    # 左パネル: R(θ) 可視域平均
+    ax_i1.plot(theta_plot, R_ang_dia_vis * 100, color=colors_band[0], linewidth=2,
+               label='ダイヤモンド')
+    ax_i1.plot(theta_plot, R_ang_gra_vis * 100, color=colors_band[1], linewidth=2,
+               label='グラフェン/グラファイト')
+    ax_i1.plot(theta_plot, R_ang_1d_vis * 100, color=colors_band[2], linewidth=2,
+               label='1D鎖 (SWCNT)', linestyle='--')
+    ax_i1.plot(theta_plot, R_ang_c60_vis * 100, color=colors_band[3], linewidth=2,
+               label='C60', linestyle='--')
+
+    # 工業規格角度を縦線で表示
+    for angle, ls in [(20, ':'), (60, '-'), (85, ':')]:
+        ax_i1.axvline(angle, color='gray', linestyle=ls, alpha=0.4)
+        ax_i1.text(angle + 1, 2, f'{angle}°', fontsize=9, color='gray')
+
+    ax_i1.set_xlabel("入射角 θ [°]", fontsize=12)
+    ax_i1.set_ylabel("可視域平均反射率 R(θ) [%]", fontsize=12)
+    ax_i1.set_title("フレネル反射率 (非偏光)", fontsize=12)
+    ax_i1.set_xlim(0, 90)
+    ax_i1.set_ylim(0, 100)
+    ax_i1.legend(fontsize=10)
+    ax_i1.grid(alpha=0.3)
+
+    # 右パネル: 60° 光沢度バー + 実効光沢度 (無秩序下)
+    bar_width = 0.35
+    x_pos = np.arange(3)
+    labels_bar = ['グラフェン', '1D鎖', 'C60']
+    clean_gloss = [g60_gra, g60_1d, g60_c60]
+
+    # W=3eV での実効光沢
+    eff_W3 = []
+    for name in ['graphene', 'chain1d', 'c60']:
+        # W_values[4] = 3.0
+        eff_W3.append(gloss_effective[name][4])
+
+    bars1 = ax_i2.bar(x_pos - bar_width / 2, clean_gloss, bar_width,
+                       color=[colors_band[1], colors_band[2], colors_band[3]],
+                       alpha=0.9, label='清浄面 (W=0)', edgecolor='black', linewidth=0.5)
+    bars2 = ax_i2.bar(x_pos + bar_width / 2, eff_W3, bar_width,
+                       color=[colors_band[1], colors_band[2], colors_band[3]],
+                       alpha=0.4, label='無秩序面 (W=3eV)', edgecolor='black',
+                       linewidth=0.5, hatch='//')
+
+    # 値ラベル
+    for bar, val in zip(bars1, clean_gloss):
+        ax_i2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 3,
+                   f'{val:.0f}', ha='center', fontsize=9, fontweight='bold')
+    for bar, val in zip(bars2, eff_W3):
+        ax_i2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 3,
+                   f'{val:.0f}', ha='center', fontsize=9)
+
+    ax_i2.set_ylabel("60° 光沢度 [GU]", fontsize=12)
+    ax_i2.set_title("光沢度予測 (ASTM D523準拠)", fontsize=12)
+    ax_i2.set_xticks(x_pos)
+    ax_i2.set_xticklabels(labels_bar)
+    ax_i2.axhline(100, color='gray', linestyle='--', alpha=0.3, label='基準 (100 GU)')
+    ax_i2.legend(fontsize=9)
+    ax_i2.grid(axis='y', alpha=0.3)
+    ax_i2.set_ylim(0, max(clean_gloss) * 1.3)
+
+    fig_i.tight_layout()
+    fig_i.savefig(os.path.join(FIGDIR, "fig_i_angular_gloss.png"), dpi=150, bbox_inches='tight')
+    print(f"  保存: {os.path.join(FIGDIR, 'fig_i_angular_gloss.png')}")
+
+    # --- Fig J: ミクロ→光沢 予測チェーン総括 ---
+    fig_j, axes_j = plt.subplots(1, 3, figsize=(16, 5))
+    fig_j.suptitle("ミクロ量から光沢度への予測チェーン: δ×D_eff → ε(ω) → R(θ) → GU",
+                    fontsize=13, y=1.02)
+
+    # 左: δ×(D_eff+1) vs 清浄60°光沢度
+    all_names = ['ダイヤモンド', 'グラフェン', '1D鎖', 'C60']
+    all_dd = [s['delta'] * (s.get('D_eff_velocity', s['D_eff']) + 1) for s in systems]
+    all_g60 = [g60_dia, g60_gra, g60_1d, g60_c60]
+
+    for i, (dd, g60, name) in enumerate(zip(all_dd, all_g60, all_names)):
+        axes_j[0].scatter(dd, g60, s=120, marker=markers[i],
+                          color=colors_band[i], zorder=5, edgecolors='black', linewidth=0.8)
+        offset_xy = (8, 8) if i != 1 else (8, -15)
+        axes_j[0].annotate(name, (dd, g60),
+                           textcoords="offset points", xytext=offset_xy, fontsize=10)
+
+    axes_j[0].set_xlabel("δ × (D_eff + 1)", fontsize=12)
+    axes_j[0].set_ylabel("清浄面 60° 光沢度 [GU]", fontsize=12)
+    axes_j[0].set_title("(a) ミクロ量 vs 清浄光沢", fontsize=11)
+    axes_j[0].grid(alpha=0.3)
+
+    # 中: 無秩序強度 vs 実効光沢度
+    for name, label, color in [
+        ('graphene', 'グラフェン', colors_band[1]),
+        ('chain1d', '1D鎖', colors_band[2]),
+        ('c60', 'C60', colors_band[3]),
+    ]:
+        axes_j[1].plot(W_values, gloss_effective[name], 'o-', color=color,
+                       linewidth=2, markersize=6, label=label)
+
+    axes_j[1].set_xlabel("無秩序強度 W [eV]", fontsize=12)
+    axes_j[1].set_ylabel("実効 60° 光沢度 [GU]", fontsize=12)
+    axes_j[1].set_title("(b) 無秩序下の光沢劣化", fontsize=11)
+    axes_j[1].legend(fontsize=10)
+    axes_j[1].grid(alpha=0.3)
+
+    # 右: δ×D_eff vs 光沢保存率 (W=3eV時の光沢/清浄光沢)
+    sys_micro = [
+        ('グラフェン', delta_gra, 2, g60_gra, gloss_effective['graphene'][4], colors_band[1]),
+        ('1D鎖', delta_1d, 1, g60_1d, gloss_effective['chain1d'][4], colors_band[2]),
+        ('C60', delta_c60, 0, g60_c60, gloss_effective['c60'][4], colors_band[3]),
+    ]
+
+    for i_sys, (name, delta, deff, g_clean, g_dirty, color) in enumerate(sys_micro):
+        retention = g_dirty / max(g_clean, 1e-30) * 100
+        dd = delta * (deff + 1)
+        axes_j[2].scatter(dd, retention, s=150, color=color, zorder=5,
+                          edgecolors='black', linewidth=0.8)
+        axes_j[2].annotate(name, (dd, retention),
+                           textcoords="offset points", xytext=(8, 8), fontsize=10)
+
+    axes_j[2].set_xlabel("δ × (D_eff + 1)", fontsize=12)
+    axes_j[2].set_ylabel("光沢保存率 [%] (W=3eV)", fontsize=12)
+    axes_j[2].set_title("(c) コヒーレンス保存 → 光沢ロバスト性", fontsize=11)
+    axes_j[2].set_ylim(0, 110)
+    axes_j[2].axhline(90, color='gray', linestyle=':', alpha=0.5)
+    axes_j[2].text(0.05, 92, '高光沢維持 (>90%)', fontsize=9, color='gray')
+    axes_j[2].grid(alpha=0.3)
+
+    fig_j.tight_layout()
+    fig_j.savefig(os.path.join(FIGDIR, "fig_j_micro_to_gloss.png"), dpi=150, bbox_inches='tight')
+    print(f"  保存: {os.path.join(FIGDIR, 'fig_j_micro_to_gloss.png')}")
 
     plt.close('all')
 

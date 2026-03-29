@@ -1843,13 +1843,13 @@ def main():
     # --- 結果まとめ ---
     systems = [
         {"name": "Diamond (ダイヤモンド)", "Eg": Eg_dia, "W": W_dia, "delta": delta_dia,
-         "D_eff": 0, "label": "ダイヤモンド", "optical": "透明"},
+         "D_eff": 0, "label": "Diamond", "optical": "Transparent"},
         {"name": "Graphene (グラフェン)", "Eg": Eg_gra, "W": W_gra, "delta": delta_gra,
-         "D_eff": 2, "label": "グラフェン", "optical": "透明(単層)/黒(多層)"},
+         "D_eff": 2, "label": "Graphene", "optical": "Transparent(mono)/Black(bulk)"},
         {"name": "1D chain (SWCNT近似)", "Eg": Eg_1d, "W": W_1d, "delta": delta_1d,
-         "D_eff": 1, "label": "1D鎖(SWCNT)", "optical": "色"},
+         "D_eff": 1, "label": "1D Chain (SWCNT)", "optical": "Colored"},
         {"name": "C60 solid (C60固体)", "Eg": Eg_c60, "W": W_c60, "delta": delta_c60,
-         "D_eff": 0, "label": "C60固体", "optical": "色"},
+         "D_eff": 0, "label": "C60 Solid", "optical": "Colored"},
     ]
 
     print("\n" + "=" * 80)
@@ -1864,9 +1864,9 @@ def main():
     Egs = np.array([s['Eg'] for s in systems])
     labels = [s['label'] for s in systems]
 
-    # ピアソン相関係数
+    # Pearson相関係数
     r, p_val = pearsonr(deltas, Egs)
-    print(f"\n[検証] δ-Eg ピアソン相関係数: r = {r:.4f} (p = {p_val:.4e})")
+    print(f"\n[検証] δ-Eg Pearson相関係数: r = {r:.4f} (p = {p_val:.4e})")
 
     if r < 0:
         print("  → δとEgの逆相関を確認: 非局在化度が大きいほどバンドギャップが小さい")
@@ -1879,13 +1879,13 @@ def main():
         delta_Deff = s['delta'] * (s['D_eff'] + 1)  # D_eff=0でもゼロにならないよう+1
         print(f"  {s['label']:12s}: δ×(D_eff+1) = {delta_Deff:8.2f}, Eg = {s['Eg']:.2f} eV")
         if s['Eg'] > 3.1:
-            category = "透明（広バンドギャップ）"
+            category = "Transparent (wide gap)"
         elif s['Eg'] > 0 and s['D_eff'] <= 1:
-            category = "色（選択吸収）"
+            category = "Colored (selective abs.)"
         elif s['Eg'] == 0 and s['D_eff'] >= 2:
-            category = "透明的（単層）/黒+光沢（多層）"
+            category = "Transparent(mono)/Black+gloss(bulk)"
         else:
-            category = "金属的光沢"
+            category = "Metallic luster"
         print(f"    → 分類: {category}")
 
     # ============================================================
@@ -2110,7 +2110,7 @@ def main():
     print(f"  {'系':18s} {'20° GU':>10s} {'60° GU':>10s} {'85° GU':>10s}  {'R(60°)':>8s}")
     print("  " + "-" * 65)
     for name, g20, g60, g85, Rth in [
-        ('ダイヤモンド', g20_dia, g60_dia, g85_dia, Rth_dia),
+        ('Diamond', g20_dia, g60_dia, g85_dia, Rth_dia),
         ('グラフェン/グラファイト', g20_gra, g60_gra, g85_gra, Rth_gra),
         ('1D鎖 (SWCNT)', g20_1d, g60_1d, g85_1d, Rth_1d),
         ('C60', g20_c60, g60_c60, g85_c60, Rth_c60),
@@ -2150,7 +2150,7 @@ def main():
     print()
     print("  " + "-" * 90)
 
-    for name, label in [('graphene', 'グラフェン'), ('chain1d', '1D鎖'),
+    for name, label in [('graphene', 'Graphene'), ('chain1d', '1D Chain'),
                           ('c60', 'C60')]:
         d = coh_results[name]
         delta_v = d['delta'] if d['delta'] is not None else 0
@@ -2167,7 +2167,7 @@ def main():
     print()
     print("  " + "-" * 70)
 
-    for name, label in [('graphene', 'グラフェン'), ('chain1d', '1D鎖'),
+    for name, label in [('graphene', 'Graphene'), ('chain1d', '1D Chain'),
                           ('c60', 'C60')]:
         d = coh_results[name]
         sig0 = d['sigma'][0]
@@ -2188,7 +2188,7 @@ def main():
     print()
     print("  " + "-" * 80)
 
-    for name, label in [('graphene', 'グラフェン'), ('chain1d', '1D鎖'),
+    for name, label in [('graphene', 'Graphene'), ('chain1d', '1D Chain'),
                           ('c60', 'C60')]:
         d = coh_results[name]
         print(f"  {label:12s} | ", end="")
@@ -2211,8 +2211,8 @@ def main():
 
     gloss_effective = {}
     for name, label, g60_clean in [
-        ('graphene', 'グラフェン', g60_gra),
-        ('chain1d', '1D鎖', g60_1d),
+        ('graphene', 'Graphene', g60_gra),
+        ('chain1d', '1D Chain', g60_1d),
         ('c60', 'C60', g60_c60),
     ]:
         d = coh_results[name]
@@ -2240,13 +2240,13 @@ def main():
 
     # --- Fig A: バンド構造 (4パネル) ---
     fig_a, axes_a = plt.subplots(1, 4, figsize=(16, 4))
-    fig_a.suptitle("バンド構造 (タイトバインディング)", fontsize=14, y=1.02)
+    fig_a.suptitle("Band Structure (Tight Binding)", fontsize=14, y=1.02)
 
     band_data = [
-        (kd_dia, Eb_dia, tp_dia, tl_dia, "ダイヤモンド (sp3 TB)"),
-        (kd_gra, Eb_gra, tp_gra, tl_gra, "グラフェン (π帯 TB)"),
-        (kd_1d, Eb_1d, tp_1d, tl_1d, "1D鎖 (SWCNT近似)"),
-        (kd_c60, Eb_c60, tp_c60, tl_c60, "C60固体 (HOMO/LUMO帯)"),
+        (kd_dia, Eb_dia, tp_dia, tl_dia, "Diamond (sp3 TB)"),
+        (kd_gra, Eb_gra, tp_gra, tl_gra, "Graphene (π-band TB)"),
+        (kd_1d, Eb_1d, tp_1d, tl_1d, "1D Chain (SWCNT proxy)"),
+        (kd_c60, Eb_c60, tp_c60, tl_c60, "C60 Solid (HOMO/LUMO bands)"),
     ]
     colors_band = ["#2196F3", "#4CAF50", "#FF9800", "#9C27B0"]
 
@@ -2271,13 +2271,13 @@ def main():
 
     # --- Fig B: DOS (4パネル) ---
     fig_b, axes_b = plt.subplots(1, 4, figsize=(16, 4))
-    fig_b.suptitle("状態密度 (DOS)", fontsize=14, y=1.02)
+    fig_b.suptitle("Density of States (DOS)", fontsize=14, y=1.02)
 
     dos_data = [
-        (eg_dia, dos_dia, "ダイヤモンド"),
-        (eg_gra, dos_gra, "グラフェン"),
-        (eg_1d, dos_1d, "1D鎖 (SWCNT近似)"),
-        (eg_c60, dos_c60, "C60固体"),
+        (eg_dia, dos_dia, "Diamond"),
+        (eg_gra, dos_gra, "Graphene"),
+        (eg_1d, dos_1d, "1D Chain (SWCNT proxy)"),
+        (eg_c60, dos_c60, "C60 Solid"),
     ]
 
     for ax, (egrid, dos, title), color in zip(axes_b, dos_data, colors_band):
@@ -2296,7 +2296,7 @@ def main():
 
     # --- Fig C: δ vs Eg 散布図 + 相関直線 ---
     fig_c, ax_c = plt.subplots(figsize=(7, 5))
-    ax_c.set_title("δ-Eg 逆相関の検証", fontsize=14)
+    ax_c.set_title("δ-Eg Inverse Correlation", fontsize=14)
 
     # 散布図
     markers = ['D', 'o', 's', '^']
@@ -2308,20 +2308,20 @@ def main():
         ax_c.annotate(s['label'], (s['delta'], s['Eg']),
                       textcoords="offset points", xytext=offset, fontsize=10)
 
-    # 線形フィット
+    # Linear fit
     z = np.polyfit(deltas, Egs, 1)
     p = np.poly1d(z)
     delta_range = np.linspace(deltas.min() * 0.8, deltas.max() * 1.2, 100)
     ax_c.plot(delta_range, p(delta_range), 'k--', linewidth=1, alpha=0.5,
-              label=f"線形フィット (r={r:.3f})")
+              label=f"Linear fit (r={r:.3f})")
 
-    ax_c.set_xlabel("δ (非局在化プロキシ, IPR⁻¹)", fontsize=12)
+    ax_c.set_xlabel("δ (Delocalization proxy, IPR⁻¹)", fontsize=12)
     ax_c.set_ylabel("Eg [eV]", fontsize=12)
     ax_c.legend(fontsize=10)
     ax_c.grid(alpha=0.3)
 
     # δ×D_eff による光学分類領域をアノテーション
-    ax_c.text(0.02, 0.98, f"ピアソン r = {r:.3f}\np = {p_val:.2e}",
+    ax_c.text(0.02, 0.98, f"Pearson r = {r:.3f}\np = {p_val:.2e}",
               transform=ax_c.transAxes, fontsize=10,
               verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
@@ -2331,15 +2331,15 @@ def main():
 
     # --- Fig D: 吸収スペクトル ε₂(ω) (全軌道モデル) ---
     fig_d, ax_d = plt.subplots(figsize=(8, 5))
-    ax_d.set_title("吸収スペクトル ε₂(ω) — 全軌道 Slater-Koster TB", fontsize=14)
+    ax_d.set_title("Absorption Spectrum ε₂(ω) — Full-orbital Slater-Koster TB", fontsize=14)
 
-    ax_d.axvspan(1.6, 3.1, alpha=0.15, color='gold', label='可視域')
-    ax_d.plot(omega_full, eps2_dia, color=colors_band[0], linewidth=1.5, label='ダイヤモンド (8band)')
-    ax_d.plot(omega_full, eps2_gra, color=colors_band[1], linewidth=1.5, label='グラフェン (8band)')
-    ax_d.plot(omega, eps2_1d, color=colors_band[2], linewidth=1.5, label='1D鎖 (π帯)', linestyle='--')
-    ax_d.plot(omega, eps2_c60, color=colors_band[3], linewidth=1.5, label='C60 (双極子)', linestyle='--')
+    ax_d.axvspan(1.6, 3.1, alpha=0.15, color='gold', label='Visible range')
+    ax_d.plot(omega_full, eps2_dia, color=colors_band[0], linewidth=1.5, label='Diamond (8band)')
+    ax_d.plot(omega_full, eps2_gra, color=colors_band[1], linewidth=1.5, label='Graphene (8band)')
+    ax_d.plot(omega, eps2_1d, color=colors_band[2], linewidth=1.5, label='1D Chain (π-band)', linestyle='--')
+    ax_d.plot(omega, eps2_c60, color=colors_band[3], linewidth=1.5, label='C60 (Dipole)', linestyle='--')
 
-    ax_d.set_xlabel("光子エネルギー [eV]", fontsize=12)
+    ax_d.set_xlabel("Photon Energy [eV]", fontsize=12)
     ax_d.set_ylabel("ε₂", fontsize=12)
     ax_d.set_xlim(0, 10)
     ax_d.legend(fontsize=10)
@@ -2351,15 +2351,15 @@ def main():
 
     # --- Fig E: 反射率 R(ω) (全軌道モデル) ---
     fig_e, ax_e = plt.subplots(figsize=(8, 5))
-    ax_e.set_title("反射率 R(ω) — 全軌道 Slater-Koster TB", fontsize=14)
+    ax_e.set_title("Reflectance R(ω) — Full-orbital Slater-Koster TB", fontsize=14)
 
-    ax_e.axvspan(1.6, 3.1, alpha=0.15, color='gold', label='可視域')
-    ax_e.plot(omega_full, R_dia, color=colors_band[0], linewidth=1.5, label='ダイヤモンド (8band)')
-    ax_e.plot(omega_full, R_gra, color=colors_band[1], linewidth=1.5, label='グラフェン (8band)')
-    ax_e.plot(omega, R_1d, color=colors_band[2], linewidth=1.5, label='1D鎖 (π帯)', linestyle='--')
-    ax_e.plot(omega, R_c60, color=colors_band[3], linewidth=1.5, label='C60 (双極子)', linestyle='--')
+    ax_e.axvspan(1.6, 3.1, alpha=0.15, color='gold', label='Visible range')
+    ax_e.plot(omega_full, R_dia, color=colors_band[0], linewidth=1.5, label='Diamond (8band)')
+    ax_e.plot(omega_full, R_gra, color=colors_band[1], linewidth=1.5, label='Graphene (8band)')
+    ax_e.plot(omega, R_1d, color=colors_band[2], linewidth=1.5, label='1D Chain (π-band)', linestyle='--')
+    ax_e.plot(omega, R_c60, color=colors_band[3], linewidth=1.5, label='C60 (Dipole)', linestyle='--')
 
-    ax_e.set_xlabel("光子エネルギー [eV]", fontsize=12)
+    ax_e.set_xlabel("Photon Energy [eV]", fontsize=12)
     ax_e.set_ylabel("R(ω)", fontsize=12)
     ax_e.set_xlim(0, 10)
     ax_e.set_ylim(0, 0.6)
@@ -2372,7 +2372,7 @@ def main():
 
     # --- Fig F: δ×D_eff vs 可視域平均反射率 ---
     fig_f, ax_f = plt.subplots(figsize=(7, 5))
-    ax_f.set_title("δ × D_eff vs 可視域平均反射率", fontsize=14)
+    ax_f.set_title("δ × D_eff vs Visible-range Reflectance", fontsize=14)
 
     for i, s in enumerate(systems):
         deff_v = s.get('D_eff_velocity', s['D_eff'])
@@ -2384,7 +2384,7 @@ def main():
                       textcoords="offset points", xytext=offset_xy, fontsize=10)
 
     ax_f.set_xlabel("δ × (D_eff + 1)", fontsize=12)
-    ax_f.set_ylabel("可視域平均反射率 R_vis", fontsize=12)
+    ax_f.set_ylabel("Visible-range Reflectance R_vis", fontsize=12)
     ax_f.grid(alpha=0.3)
 
     # δ×D_eff と R_vis の相関
@@ -2392,7 +2392,7 @@ def main():
     rv_vals = np.array([s['R_vis'] for s in systems])
     if len(dd_vals) > 2:
         r_dr, p_dr = pearsonr(dd_vals, rv_vals)
-        ax_f.text(0.02, 0.98, f"ピアソン r = {r_dr:.3f}\np = {p_dr:.2e}",
+        ax_f.text(0.02, 0.98, f"Pearson r = {r_dr:.3f}\np = {p_dr:.2e}",
                   transform=ax_f.transAxes, fontsize=10,
                   verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
         print(f"\n  δ×D_eff vs R_vis 相関: r = {r_dr:.3f} (p = {p_dr:.2e})")
@@ -2403,13 +2403,13 @@ def main():
 
     # --- Fig G: コヒーレンス保存テスト — σ(ω) vs W ---
     fig_g, axes_g = plt.subplots(1, 3, figsize=(16, 5))
-    fig_g.suptitle("コヒーレンス保存テスト: Anderson無秩序下の σ(ω) 変化", fontsize=14, y=1.02)
+    fig_g.suptitle("Coherence Preservation Test: σ(ω) under Anderson Disorder", fontsize=14, y=1.02)
 
     coh_omega = coh_results['omega']
     coh_systems = [
-        ('graphene', 'グラフェン (δ高, D_eff=2)', colors_band[1]),
-        ('chain1d', '1D鎖 (δ高, D_eff=1)', colors_band[2]),
-        ('c60', 'C60 (δ低, D_eff=0)', colors_band[3]),
+        ('graphene', 'Graphene (high δ, D_eff=2)', colors_band[1]),
+        ('chain1d', '1D Chain (high δ, D_eff=1)', colors_band[2]),
+        ('c60', 'C60 (low δ, D_eff=0)', colors_band[3]),
     ]
 
     for ax, (name, title, base_color) in zip(axes_g, coh_systems):
@@ -2427,7 +2427,7 @@ def main():
                     linestyle='-' if i == 0 else '--')
 
         ax.set_title(title, fontsize=11)
-        ax.set_xlabel("光子エネルギー [eV]", fontsize=10)
+        ax.set_xlabel("Photon Energy [eV]", fontsize=10)
         ax.set_ylabel("σ(ω) / σ₀(ω)", fontsize=10)
         ax.set_xlim(0, 6)
         ax.legend(fontsize=8, loc='upper right')
@@ -2439,11 +2439,11 @@ def main():
 
     # --- Fig H: IPR(W) — 局在化の進行 ---
     fig_h, (ax_h1, ax_h2) = plt.subplots(1, 2, figsize=(12, 5))
-    fig_h.suptitle("コヒーレンス保存テスト: 無秩序強度 vs 局在化・スペクトル保存", fontsize=14, y=1.02)
+    fig_h.suptitle("Coherence Test: Disorder vs Localization / Spectral Preservation", fontsize=14, y=1.02)
 
     # 左パネル: IPR(W)
-    for name, label, color in [('graphene', 'グラフェン', colors_band[1]),
-                                  ('chain1d', '1D鎖', colors_band[2]),
+    for name, label, color in [('graphene', 'Graphene', colors_band[1]),
+                                  ('chain1d', '1D Chain', colors_band[2]),
                                   ('c60', 'C60', colors_band[3])]:
         d = coh_results[name]
         # IPR を W=0 で正規化
@@ -2454,16 +2454,16 @@ def main():
         ax_h1.plot(W_values, ipr_norm, 'o-', color=color, linewidth=2, markersize=6,
                    label=f'{label} (δ={delta_v:.1f}, D_eff={deff})')
 
-    ax_h1.set_xlabel("無秩序強度 W [eV]", fontsize=12)
+    ax_h1.set_xlabel("Disorder Strength W [eV]", fontsize=12)
     ax_h1.set_ylabel("IPR / IPR(W=0)", fontsize=12)
-    ax_h1.set_title("局在化の進行速度", fontsize=12)
+    ax_h1.set_title("IPR Growth Rate", fontsize=12)
     ax_h1.legend(fontsize=10)
     ax_h1.grid(alpha=0.3)
     ax_h1.set_ylim(0, None)
 
     # 右パネル: スペクトル相関 (W=0 との)
-    for name, label, color in [('graphene', 'グラフェン', colors_band[1]),
-                                  ('chain1d', '1D鎖', colors_band[2]),
+    for name, label, color in [('graphene', 'Graphene', colors_band[1]),
+                                  ('chain1d', '1D Chain', colors_band[2]),
                                   ('c60', 'C60', colors_band[3])]:
         d = coh_results[name]
         sig0 = d['sigma'][0]
@@ -2480,10 +2480,10 @@ def main():
         ax_h2.plot(W_values, corrs, 's-', color=color, linewidth=2, markersize=6,
                    label=f'{label} (δ={delta_v:.1f}, D_eff={deff})')
 
-    ax_h2.set_xlabel("無秩序強度 W [eV]", fontsize=12)
-    ax_h2.set_ylabel("スペクトル相関 corr(σ₀, σ_W)", fontsize=12)
-    ax_h2.set_title("光学応答のコヒーレンス保存度", fontsize=12)
-    ax_h2.axhline(0.9, color='gray', linestyle=':', alpha=0.5, label='コヒーレンス閾値 (0.9)')
+    ax_h2.set_xlabel("Disorder Strength W [eV]", fontsize=12)
+    ax_h2.set_ylabel("Spectral Correlation corr(σ₀, σ_W)", fontsize=12)
+    ax_h2.set_title("Optical Coherence Preservation", fontsize=12)
+    ax_h2.axhline(0.9, color='gray', linestyle=':', alpha=0.5, label='Coherence threshold (0.9)')
     ax_h2.legend(fontsize=9)
     ax_h2.grid(alpha=0.3)
     ax_h2.set_ylim(-0.1, 1.05)
@@ -2494,15 +2494,15 @@ def main():
 
     # --- Fig I: 角度依存反射率 R(θ) ---
     fig_i, (ax_i1, ax_i2) = plt.subplots(1, 2, figsize=(14, 5))
-    fig_i.suptitle("角度依存反射率と光沢度予測", fontsize=14, y=1.02)
+    fig_i.suptitle("Angular Reflectance and Gloss Prediction", fontsize=14, y=1.02)
 
     # 左パネル: R(θ) 可視域平均
     ax_i1.plot(theta_plot, R_ang_dia_vis * 100, color=colors_band[0], linewidth=2,
-               label='ダイヤモンド')
+               label='Diamond')
     ax_i1.plot(theta_plot, R_ang_gra_vis * 100, color=colors_band[1], linewidth=2,
-               label='グラフェン/グラファイト')
+               label='Graphene/Graphite')
     ax_i1.plot(theta_plot, R_ang_1d_vis * 100, color=colors_band[2], linewidth=2,
-               label='1D鎖 (SWCNT)', linestyle='--')
+               label='1D Chain (SWCNT)', linestyle='--')
     ax_i1.plot(theta_plot, R_ang_c60_vis * 100, color=colors_band[3], linewidth=2,
                label='C60', linestyle='--')
 
@@ -2511,9 +2511,9 @@ def main():
         ax_i1.axvline(angle, color='gray', linestyle=ls, alpha=0.4)
         ax_i1.text(angle + 1, 2, f'{angle}°', fontsize=9, color='gray')
 
-    ax_i1.set_xlabel("入射角 θ [°]", fontsize=12)
-    ax_i1.set_ylabel("可視域平均反射率 R(θ) [%]", fontsize=12)
-    ax_i1.set_title("フレネル反射率 (非偏光)", fontsize=12)
+    ax_i1.set_xlabel("Incident Angle θ [°]", fontsize=12)
+    ax_i1.set_ylabel("Visible-range Reflectance R(θ) [%]", fontsize=12)
+    ax_i1.set_title("Fresnel Reflectance (Unpolarized)", fontsize=12)
     ax_i1.set_xlim(0, 90)
     ax_i1.set_ylim(0, 100)
     ax_i1.legend(fontsize=10)
@@ -2522,7 +2522,7 @@ def main():
     # 右パネル: 60° 光沢度バー + 実効光沢度 (無秩序下)
     bar_width = 0.35
     x_pos = np.arange(3)
-    labels_bar = ['グラフェン', '1D鎖', 'C60']
+    labels_bar = ['Graphene', '1D Chain', 'C60']
     clean_gloss = [g60_gra, g60_1d, g60_c60]
 
     # W=3eV での実効光沢
@@ -2533,10 +2533,10 @@ def main():
 
     bars1 = ax_i2.bar(x_pos - bar_width / 2, clean_gloss, bar_width,
                        color=[colors_band[1], colors_band[2], colors_band[3]],
-                       alpha=0.9, label='清浄面 (W=0)', edgecolor='black', linewidth=0.5)
+                       alpha=0.9, label='Clean (W=0)', edgecolor='black', linewidth=0.5)
     bars2 = ax_i2.bar(x_pos + bar_width / 2, eff_W3, bar_width,
                        color=[colors_band[1], colors_band[2], colors_band[3]],
-                       alpha=0.4, label='無秩序面 (W=3eV)', edgecolor='black',
+                       alpha=0.4, label='Disordered (W=3eV)', edgecolor='black',
                        linewidth=0.5, hatch='//')
 
     # 値ラベル
@@ -2547,11 +2547,11 @@ def main():
         ax_i2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 3,
                    f'{val:.0f}', ha='center', fontsize=9)
 
-    ax_i2.set_ylabel("60° 光沢度 [GU]", fontsize=12)
-    ax_i2.set_title("光沢度予測 (ASTM D523準拠)", fontsize=12)
+    ax_i2.set_ylabel("60° Gloss [GU]", fontsize=12)
+    ax_i2.set_title("Gloss Prediction (ASTM D523)", fontsize=12)
     ax_i2.set_xticks(x_pos)
     ax_i2.set_xticklabels(labels_bar)
-    ax_i2.axhline(100, color='gray', linestyle='--', alpha=0.3, label='基準 (100 GU)')
+    ax_i2.axhline(100, color='gray', linestyle='--', alpha=0.3, label='Reference (100 GU)')
     ax_i2.legend(fontsize=9)
     ax_i2.grid(axis='y', alpha=0.3)
     ax_i2.set_ylim(0, max(clean_gloss) * 1.3)
@@ -2562,11 +2562,11 @@ def main():
 
     # --- Fig J: ミクロ→光沢 予測チェーン総括 ---
     fig_j, axes_j = plt.subplots(1, 3, figsize=(16, 5))
-    fig_j.suptitle("ミクロ量から光沢度への予測チェーン: δ×D_eff → ε(ω) → R(θ) → GU",
+    fig_j.suptitle("Micro-to-Gloss Prediction Chain: δ×D_eff → ε(ω) → R(θ) → GU",
                     fontsize=13, y=1.02)
 
     # 左: δ×(D_eff+1) vs 清浄60°光沢度
-    all_names = ['ダイヤモンド', 'グラフェン', '1D鎖', 'C60']
+    all_names = ['Diamond', 'Graphene', '1D Chain', 'C60']
     all_dd = [s['delta'] * (s.get('D_eff_velocity', s['D_eff']) + 1) for s in systems]
     all_g60 = [g60_dia, g60_gra, g60_1d, g60_c60]
 
@@ -2578,29 +2578,29 @@ def main():
                            textcoords="offset points", xytext=offset_xy, fontsize=10)
 
     axes_j[0].set_xlabel("δ × (D_eff + 1)", fontsize=12)
-    axes_j[0].set_ylabel("清浄面 60° 光沢度 [GU]", fontsize=12)
-    axes_j[0].set_title("(a) ミクロ量 vs 清浄光沢", fontsize=11)
+    axes_j[0].set_ylabel("Clean Surface 60° Gloss [GU]", fontsize=12)
+    axes_j[0].set_title("(a) Microscopic Quantity vs Clean Gloss", fontsize=11)
     axes_j[0].grid(alpha=0.3)
 
     # 中: 無秩序強度 vs 実効光沢度
     for name, label, color in [
-        ('graphene', 'グラフェン', colors_band[1]),
-        ('chain1d', '1D鎖', colors_band[2]),
+        ('graphene', 'Graphene', colors_band[1]),
+        ('chain1d', '1D Chain', colors_band[2]),
         ('c60', 'C60', colors_band[3]),
     ]:
         axes_j[1].plot(W_values, gloss_effective[name], 'o-', color=color,
                        linewidth=2, markersize=6, label=label)
 
-    axes_j[1].set_xlabel("無秩序強度 W [eV]", fontsize=12)
-    axes_j[1].set_ylabel("実効 60° 光沢度 [GU]", fontsize=12)
-    axes_j[1].set_title("(b) 無秩序下の光沢劣化", fontsize=11)
+    axes_j[1].set_xlabel("Disorder Strength W [eV]", fontsize=12)
+    axes_j[1].set_ylabel("Effective 60° Gloss [GU]", fontsize=12)
+    axes_j[1].set_title("(b) Gloss Degradation under Disorder", fontsize=11)
     axes_j[1].legend(fontsize=10)
     axes_j[1].grid(alpha=0.3)
 
     # 右: δ×D_eff vs 光沢保存率 (W=3eV時の光沢/清浄光沢)
     sys_micro = [
-        ('グラフェン', delta_gra, 2, g60_gra, gloss_effective['graphene'][4], colors_band[1]),
-        ('1D鎖', delta_1d, 1, g60_1d, gloss_effective['chain1d'][4], colors_band[2]),
+        ('Graphene', delta_gra, 2, g60_gra, gloss_effective['graphene'][4], colors_band[1]),
+        ('1D Chain', delta_1d, 1, g60_1d, gloss_effective['chain1d'][4], colors_band[2]),
         ('C60', delta_c60, 0, g60_c60, gloss_effective['c60'][4], colors_band[3]),
     ]
 
@@ -2613,11 +2613,11 @@ def main():
                            textcoords="offset points", xytext=(8, 8), fontsize=10)
 
     axes_j[2].set_xlabel("δ × (D_eff + 1)", fontsize=12)
-    axes_j[2].set_ylabel("光沢保存率 [%] (W=3eV)", fontsize=12)
-    axes_j[2].set_title("(c) コヒーレンス保存 → 光沢ロバスト性", fontsize=11)
+    axes_j[2].set_ylabel("Gloss Retention [%] (W=3eV)", fontsize=12)
+    axes_j[2].set_title("(c) Coherence Preservation → Gloss Robustness", fontsize=11)
     axes_j[2].set_ylim(0, 110)
     axes_j[2].axhline(90, color='gray', linestyle=':', alpha=0.5)
-    axes_j[2].text(0.05, 92, '高光沢維持 (>90%)', fontsize=9, color='gray')
+    axes_j[2].text(0.05, 92, 'High gloss retention (>90%)', fontsize=9, color='gray')
     axes_j[2].grid(alpha=0.3)
 
     fig_j.tight_layout()
@@ -2627,7 +2627,7 @@ def main():
     plt.close('all')
 
     print("\n" + "=" * 60)
-    print("シミュレーション完了。")
+    print("Simulation complete.")
     print(f"図は {FIGDIR} に保存されました。")
     print("=" * 60)
 

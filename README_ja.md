@@ -131,6 +131,10 @@ sento-optics/
 
 > Miyauchi, K. (2026). *Phenomenological unification of optical response in carbon allotropes via electron delocalization index δ and effective conduction dimensionality D_eff.* Preprint. GitHub: [sento-optics](https://github.com/miyauchikazuyoshi/sento-optics)
 
+## フィードバック歓迎
+
+独立研究者による進行中の研究です。専門家によるレビュー、批判、鋭い指摘は歓迎するだけでなく、積極的に求めています。論理の欠陥、見落とされた先行研究、より良い検証方法を見つけた方は、issueを立てるかご連絡ください。このリポジトリに自己批判テストが存在するのは、提案に値する仮説は破壊を試みる価値のある仮説だと著者が信じているからです。
+
 ## ライセンス
 
 本研究は学術的議論のために共有されています。本枠組みを参照する場合は適切に引用してください。

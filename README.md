@@ -162,6 +162,10 @@ The translation of these intuitions into a quantitative framework — tight-bind
 
 > Miyauchi, K. (2026). *Phenomenological unification of optical response in carbon allotropes via electron delocalization index δ and effective conduction dimensionality D_eff.* Preprint. GitHub: [sento-optics](https://github.com/miyauchikazuyoshi/sento-optics)
 
+## Feedback Welcome
+
+This is work in progress by an independent researcher. Expert review, criticism, and pointed questions are not just welcome — they are actively sought. If you find a flaw in the logic, a missing reference, or a better way to test the hypothesis, please open an issue or reach out. The self-criticism tests in this repo exist because the author believes a hypothesis worth proposing is a hypothesis worth trying to break.
+
 ## License
 
 This work is shared for academic discussion. Please cite appropriately if referencing this framework.

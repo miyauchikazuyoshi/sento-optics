@@ -1,0 +1,8 @@
+&PROJWFC
+  prefix  = 'cu111'
+  outdir  = './tmp_cu/'
+  filpdos = 'cu_pdos'
+  Emin    = -20.0
+  Emax    = 15.0
+  DeltaE  = 0.1
+/

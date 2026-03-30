@@ -1,0 +1,51 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'k110'
+  outdir       = './tmp_k/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 30.0
+  ecutrho      = 240.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  K  39.0983  K.pbe-spn-kjpaw_psl.1.0.0.UPF
+
+! K BCC: a = 5.225 Ang
+! (110) surface
+! Interlayer spacing d(110) = a/sqrt(2) = 3.694 Ang
+! 7 layers + 15 Ang vacuum
+
+CELL_PARAMETERS angstrom
+  5.2250  0.0000  0.0000
+  0.0000  3.6940  0.0000
+  0.0000  0.0000  40.8580
+
+ATOMIC_POSITIONS angstrom
+  K  0.0000  0.0000   0.0000
+  K  2.6125  1.8470   3.6940
+  K  0.0000  0.0000   7.3880
+  K  2.6125  1.8470  11.0820
+  K  0.0000  0.0000  14.7760
+  K  2.6125  1.8470  18.4700
+  K  0.0000  0.0000  22.1640
+
+K_POINTS automatic
+  6 8 1  0 0 0

@@ -1,0 +1,52 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'na110'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 30.0
+  ecutrho      = 240.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Na  22.9898  Na.pbe-spn-kjpaw_psl.1.0.0.UPF
+
+! Na BCC: a = 4.225 Ang
+! (110) surface: most close-packed for BCC
+! In-plane vectors: a1 = (a, 0, 0), a2 = (a/2, a/2, 0)
+! Interlayer spacing d(110) = a/sqrt(2) = 2.988 Ang
+! 7 layers + 15 Ang vacuum
+
+CELL_PARAMETERS angstrom
+  4.2250  0.0000  0.0000
+  0.0000  2.9880  0.0000
+  0.0000  0.0000  35.9160
+
+ATOMIC_POSITIONS angstrom
+  Na  0.0000  0.0000   0.0000
+  Na  2.1125  1.4940   2.9880
+  Na  0.0000  0.0000   5.9760
+  Na  2.1125  1.4940   8.9640
+  Na  0.0000  0.0000  11.9520
+  Na  2.1125  1.4940  14.9400
+  Na  0.0000  0.0000  17.9280
+
+K_POINTS automatic
+  6 8 1  0 0 0

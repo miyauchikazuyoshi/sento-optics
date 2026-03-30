@@ -21,10 +21,12 @@ drafts/*.synctex.gz
 .claude/
 
 # QE slab calculation outputs (large files)
-simulation/surface_tension/qe_slab/tmp/
+simulation/surface_tension/qe_slab/tmp*/
 simulation/surface_tension/qe_slab/pseudo/
 simulation/surface_tension/qe_slab/*.dat
 simulation/surface_tension/qe_slab/*.out
+simulation/surface_tension/qe_slab/*_pdos*
+simulation/surface_tension/qe_slab/*_charge.dat
 *.aux
 *.bbl
 *.blg

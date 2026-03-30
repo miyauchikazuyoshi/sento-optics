@@ -1,0 +1,8 @@
+&PROJWFC
+  prefix  = 'na110'
+  outdir  = './tmp/'
+  filpdos = 'na_pdos'
+  Emin    = -30.0
+  Emax    = 10.0
+  DeltaE  = 0.1
+/

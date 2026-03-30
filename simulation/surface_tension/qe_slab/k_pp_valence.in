@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'k110'
+  outdir  = './tmp_k/'
+  filplot = 'k_valence_charge.dat'
+  plot_num = 10
+  emin = -5.0
+  emax = 100.0
+/

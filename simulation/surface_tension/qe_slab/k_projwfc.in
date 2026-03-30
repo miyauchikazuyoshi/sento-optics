@@ -1,0 +1,8 @@
+&PROJWFC
+  prefix  = 'k110'
+  outdir  = './tmp_k/'
+  filpdos = 'k_pdos'
+  Emin    = -30.0
+  Emax    = 10.0
+  DeltaE  = 0.1
+/

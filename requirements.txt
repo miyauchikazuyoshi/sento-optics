@@ -1,3 +1,12 @@
+# Core dependencies (required for all optics scripts)
 numpy>=1.20
 matplotlib>=3.5
 scipy>=1.7
+
+# Paper 2: Surface tension dimer calculations (optional)
+# pip install pyscf
+# PySCF is needed only for simulation/surface_tension/test3_dimer_ipr.py
+
+# Paper 2: DFT slab calculations (optional, external)
+# Quantum ESPRESSO v7.5+ — see simulation/surface_tension/qe_slab/README.md
+# Wannier90 v3.1+ — see simulation/surface_tension/qe_slab/wannier/README.md

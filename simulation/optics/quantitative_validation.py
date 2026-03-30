@@ -7,11 +7,16 @@
 出力: simulation/figures/ 以下にPNG + コンソールに検証結果
 """
 
+import os
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from itertools import combinations
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+FIG_DIR = os.path.join(SCRIPT_DIR, "figures")
+os.makedirs(FIG_DIR, exist_ok=True)
 
 matplotlib.rcParams['font.family'] = ['Hiragino Sans', 'Arial Unicode MS', 'sans-serif']
 
@@ -341,8 +346,8 @@ for ax, (xname, yname, xkey, ykey) in zip(axes, pairs):
 
 fig4.suptitle("δ指標間の一貫性検証（3指標のペアワイズ相関）", fontsize=13, fontweight="bold")
 fig4.tight_layout()
-fig4.savefig("simulation/figures/fig4_indicator_consistency.png", dpi=200, bbox_inches="tight")
-print("\nSaved: simulation/figures/fig4_indicator_consistency.png")
+fig4.savefig(os.path.join(FIG_DIR, "fig4_indicator_consistency.png"), dpi=200, bbox_inches="tight")
+print(f"\nSaved: {os.path.join(FIG_DIR, 'fig4_indicator_consistency.png')}")
 
 
 # Fig 5: 分類結果の視覚化
@@ -387,8 +392,8 @@ legend_elements = [
 ax5.legend(handles=legend_elements, loc="lower right", fontsize=8)
 
 fig5.tight_layout()
-fig5.savefig("simulation/figures/fig5_classification_result.png", dpi=200, bbox_inches="tight")
-print("Saved: simulation/figures/fig5_classification_result.png")
+fig5.savefig(os.path.join(FIG_DIR, "fig5_classification_result.png"), dpi=200, bbox_inches="tight")
+print(f"Saved: {os.path.join(FIG_DIR, 'fig5_classification_result.png')}")
 
 plt.close("all")
 print("\nDone.")

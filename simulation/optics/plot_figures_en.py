@@ -19,7 +19,7 @@ from matplotlib.patches import Patch
 # ============================================================
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+REPO_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))  # simulation/optics/ → repo root
 CSV_PATH = os.path.join(REPO_ROOT, "data", "dataset_v1.csv")
 FIG_DIR = os.path.join(SCRIPT_DIR, "figures")
 os.makedirs(FIG_DIR, exist_ok=True)

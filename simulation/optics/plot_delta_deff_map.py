@@ -7,12 +7,17 @@
 出力: simulation/figures/ 以下にPNG画像を保存
 """
 
+import os
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
 matplotlib.rcParams['font.family'] = ['Hiragino Sans', 'Arial Unicode MS', 'sans-serif']
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+FIG_DIR = os.path.join(SCRIPT_DIR, "figures")
+os.makedirs(FIG_DIR, exist_ok=True)
 
 # ============================================================
 # データ定義（公開文献から取得）
@@ -160,8 +165,8 @@ ax1.text(5.25, -0.22, "δ 増大 → 電子非局在化", ha="center", fontsize=
 
 ax1.grid(True, alpha=0.3)
 fig1.tight_layout()
-fig1.savefig("simulation/figures/fig1_delta_deff_map.png", dpi=200, bbox_inches="tight")
-print("Saved: simulation/figures/fig1_delta_deff_map.png")
+fig1.savefig(os.path.join(FIG_DIR, "fig1_delta_deff_map.png"), dpi=200, bbox_inches="tight")
+print(f"Saved: {os.path.join(FIG_DIR, 'fig1_delta_deff_map.png')}")
 
 
 # ============================================================
@@ -219,8 +224,8 @@ ax2.set_xlim(-0.5, 11)
 ax2.set_ylim(-0.5, 7)
 ax2.grid(True, alpha=0.3)
 fig2.tight_layout()
-fig2.savefig("simulation/figures/fig2_delta_bandgap_correlation.png", dpi=200, bbox_inches="tight")
-print(f"Saved: simulation/figures/fig2_delta_bandgap_correlation.png")
+fig2.savefig(os.path.join(FIG_DIR, "fig2_delta_bandgap_correlation.png"), dpi=200, bbox_inches="tight")
+print(f"Saved: {os.path.join(FIG_DIR, 'fig2_delta_bandgap_correlation.png')}")
 print(f"Correlation coefficient r = {r:.3f}")
 
 
@@ -278,8 +283,8 @@ ax3.annotate("金属 (Au, Ag等)\n(金属光沢)", (40, 3),
 
 ax3.grid(True, alpha=0.3, which="both")
 fig3.tight_layout()
-fig3.savefig("simulation/figures/fig3_invmass_deff_map.png", dpi=200, bbox_inches="tight")
-print("Saved: simulation/figures/fig3_invmass_deff_map.png")
+fig3.savefig(os.path.join(FIG_DIR, "fig3_invmass_deff_map.png"), dpi=200, bbox_inches="tight")
+print(f"Saved: {os.path.join(FIG_DIR, 'fig3_invmass_deff_map.png')}")
 
 plt.close("all")
 print("\nDone.")

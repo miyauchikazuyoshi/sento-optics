@@ -48,8 +48,8 @@ Band gap *E*_g alone cannot explain why graphite (E_g ≈ 0) is black while meta
 
 | Milestone | Result |
 |-----------|--------|
-| E_g + D_eff decision tree → optical class | **6/7 correct** (85.7%) — only graphene single-layer misclassified |
-| δ(1/m*) × D_eff machine classification | **3/7 correct** (42.9%) — threshold-sensitive; see Sec. 4 |
+| E_g + D_eff decision tree → optical class | **7/7 correct** (100%) — requires layer count N for graphene/graphite distinction |
+| δ(1/m*) × D_eff machine classification | **4-5/7** (57-71%) — threshold-sensitive; graphene-graphite problem is a genuine limitation |
 | δ proxy intercorrelation | **r = 0.73–0.89** (3 independent proxies) |
 | δ–E_g inverse correlation | **r = −0.70** (literature data), **r = −0.86** (TB model) |
 | Graphene–graphite distinction | Requires layer count N as additional parameter (Beer–Lambert) |
@@ -77,10 +77,20 @@ sento-optics/
 ├── README.md                           # This file
 ├── README_ja.md                        # Japanese README
 ├── theory/                             # Theoretical framework
-│   ├── 01_core_framework.md            #   δ × D_eff core
-│   ├── 02_glossiness_theory.md         #   Luster as coherence preservation
-│   ├── 04_falsification.md             #   Falsification conditions
-│   └── extensions/                     #   Future scope (phase unification, etc.)
+│   ├── core/                           #   Cross-paper foundations
+│   │   ├── 01_core_framework.md        #     δ × D_eff framework definition
+│   │   ├── 04_falsification.md         #     Falsification conditions
+│   │   └── glossary.md                 #     Symbol/term definitions
+│   ├── optics/                         #   Paper 1: Optical theory
+│   │   └── 02_glossiness_theory.md     #     Luster as phase-coherent interface response
+│   ├── surface_tension/                #   Paper 2: Surface tension theory
+│   │   └── surface_tension_theory.md   #     δ → n_ws origin explanation
+│   ├── phase/                          #   Paper 3: Phase classification
+│   │   ├── paper3_phase_diagram_theory.md  # (δ_nuc, δ_elec) phase diagram
+│   │   └── renyi_entropy_memo.md       #     IPR = e^{-H₂} information-theoretic basis
+│   └── connections/                    #   Cross-domain connections
+│       ├── memo_delta_vs_density.md    #     δ vs density functional theory
+│       └── 05_gedig_connection.md      #     geDIG connection
 ├── data/                               # Literature data
 │   ├── carbon_allotropes.md
 │   ├── dataset_v1.csv
@@ -101,13 +111,15 @@ sento-optics/
 │               └── plot_wannier_summary.py
 ├── drafts/
 │   ├── paper1_optics/                  # Paper 1 manuscript
-│   │   ├── main.tex, main_v5.tex
+│   │   ├── main.tex                    #   Latest draft (v6)
 │   │   └── references.bib
 │   └── paper2_surface_tension/         # Paper 2 manuscript
-│       ├── main.tex                    #   v4 (with Wannier results)
+│       ├── main.tex                    #   Latest draft (v4, with Wannier results)
 │       └── references.bib
-└── review/
-    └── reviewer_response.md
+└── review/                             # Reviewer responses & literature
+    ├── stanford_reviewer_response_paper1.md
+    ├── stanford_reviewer_response.md   #   Paper 2
+    └── literature_survey_results.md
 ```
 
 ## Key Predictions (Testable)

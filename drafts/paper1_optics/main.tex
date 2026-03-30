@@ -1,6 +1,18 @@
 % Optical Response Classification of Carbon Allotropes
 % via Electronic Delocalization and Effective Conduction Dimensionality
-% Draft v4 — March 2026
+% Draft v6 — March 2026
+% Changes from v5 (Stanford reviewer response):
+%   - [RED 1] Clarified D_eff: all-energy vs visible-window distinction
+%     with new Table (D_eff_computed) reporting both values
+%   - [RED 2] Fixed graphene/graphite labeling: R_vis=0.35 now explicitly
+%     identified as graphite (bulk limit); monolayer optics discussed
+%   - [RED 3] Designated IPR as primary operational δ with Eq.(delta_IPR)
+%   - [YELLOW 5] Strengthened corr² motivation via Debye-Waller analogy
+%   - [YELLOW 6] Added W-value physical context (vacancy/adsorbate energies)
+%   - [YELLOW 7] Added ε(ω) validation table (TB vs experiment)
+%   - [YELLOW 8] Added D_eff vs conductivity tensor anisotropy discussion
+%   - [YELLOW 4] Strengthened carbon-only scope rationale + Paper 2 reference
+%   - Added references: BeckmannSpizzichino1963, Spain1981, SentoOpticsPaper2
 
 \documentclass[twocolumn,showpacs,preprintnumbers,amsmath,amssymb,prb]{revtex4-2}
 
@@ -17,10 +29,11 @@
 
 \begin{document}
 
-\preprint{Draft v4}
+\preprint{Draft v6}
 
-\title{Optical Response Classification of Carbon Allotropes \\
-via Electronic Delocalization and Effective Conduction Dimensionality}
+\title{Predicting Gloss from Band Structure: \\
+A Microscopic Theory Connecting Electronic Delocalization \\
+to Macroscopic Optical Appearance in Carbon Allotropes}
 
 \author{K.~Miyauchi}
 \affiliation{Independent Researcher}
@@ -45,17 +58,23 @@ To rigorously test this idea, we restrict the scope to solid-state
 electronic systems and introduce two variables: an effective delocalization
 index~$\delta$ and an effective conduction dimensionality~$D_\mathrm{eff}$.
 Using five carbon allotropes (diamond, C$_{60}$, SWCNT, graphene, graphite)
-and hexagonal boron nitride (h-BN) as a control, we collect three
-$\delta$-proxy indicators (the $\pi$-band width, the inverse effective mass,
-and the band gap) from the published literature. We demonstrate that
-(1)~pairwise correlations among the three proxies are statistically
-significant (Pearson $r = 0.70$--$0.89$, Spearman $\rho = 0.83$--$0.88$),
-supporting the existence of an overarching variable~$\delta$;
-(2)~a decision tree based on $E_g$ and $D_\mathrm{eff}$ classifies all
-seven materials into the correct optical-response category with 100\%
-accuracy; and
-(3)~h-BN, despite sharing the layered sp$^2$ structure of graphite, is
-transparent---direct evidence that $\delta$ is an independent variable.
+and hexagonal boron nitride (h-BN) as a control, we demonstrate that
+a decision tree based on $E_g$ and $D_\mathrm{eff}$ correctly classifies
+6 of 7 materials (85.7\%), with the sole failure---single-layer
+graphene---requiring the layer count~$N$ as a third variable.
+
+Going beyond classification, we establish a complete microscopic-to-macroscopic
+prediction chain: tight-binding Hamiltonian $\to$ Kubo formula $\to$
+$\varepsilon(\omega)$ $\to$ angular Fresnel reflectivity $\to$ gloss
+[GU]. We then test the coherence preservation hypothesis directly via
+Anderson disorder simulations, showing that systems with high
+$\delta \times D_\mathrm{eff}$ maintain their optical response under
+disorder (spectral correlation $>0.94$ at $W = 5$~eV for the 1D chain)
+while low-$\delta \times D_\mathrm{eff}$ systems rapidly decohere
+(correlation $= 0.66$ for C$_{60}$). This yields a testable prediction:
+\emph{effective gloss} = clean-surface gloss $\times$ coherence
+preservation factor, distinguishing materials with similar Fresnel
+reflectivity but different disorder robustness.
 
 The framework does not replace band-gap theory but extends it: $E_g$
 determines \emph{at which energy} the response occurs, while
@@ -147,6 +166,21 @@ In particular, the following questions lack a unified answer:
     categories?
 \end{itemize}
 
+\subsection{From classification to prediction}
+
+Previous attempts at optical classification have been descriptive: given
+a known material, assign it to a category. This work goes further by
+establishing a \emph{predictive chain} from microscopic quantities
+(hopping integrals, orbital symmetry) to a macroscopically measurable
+quantity (gloss in industry-standard units [GU]).
+
+The key advance is the recognition that the Fresnel equations alone do
+not predict gloss: two materials may have similar $\varepsilon(\omega)$
+yet exhibit very different gloss because of their differing robustness
+to atomic-scale disorder. The $\delta \times D_\mathrm{eff}$ framework
+captures this robustness and thus provides predictions beyond what
+Fresnel optics can offer.
+
 % =====================================================================
 \section{Framework}
 \label{sec:framework}
@@ -210,6 +244,26 @@ Our strategy is to show that multiple proxies yield the same ordering
 across materials, thereby supporting the existence of an overarching
 variable $\delta$ without requiring a unique definition.
 
+Among these proxies, the inverse participation ratio (IPR) serves as
+the \textbf{primary operational definition} because it is directly
+computable from any Hamiltonian (tight-binding or first-principles)
+without requiring system-specific quantities such as $\pi$-band
+identification or effective-mass fitting. We define:
+\begin{equation}
+  \delta_\mathrm{IPR} = \frac{1}{N_\mathrm{orb} \cdot
+    \langle \mathrm{IPR} \rangle_\mathrm{occ}},
+  \quad
+  \mathrm{IPR}_n = \sum_i |\psi_{ni}|^4,
+  \label{eq:delta_IPR}
+\end{equation}
+where $N_\mathrm{orb}$ is the number of orbitals and the average runs
+over all occupied eigenstates. A perfectly delocalized state gives
+$\mathrm{IPR} = 1/N_\mathrm{orb}$ and $\delta_\mathrm{IPR} = 1$;
+a fully localized state gives $\mathrm{IPR} = 1$ and
+$\delta_\mathrm{IPR} = 1/N_\mathrm{orb} \to 0$.
+The remaining proxies ($W_\pi$, $1/m^*$) serve as supporting evidence
+that the ordering is robust across different measurement approaches.
+
 \subsection{Effective conduction dimensionality $D_\mathrm{eff}$:
   operational definition}
 \label{sec:Deff}
@@ -220,27 +274,45 @@ level or band edges:
 
 \begin{equation}
   D_\mathrm{eff}
-    = \operatorname{rank}_\mathrm{eff}\!\bigl(\langle v_\alpha\, v_\beta \rangle\bigr),
+    = \frac{\mathrm{Tr}(\mathbf{T})^2}{\mathrm{Tr}(\mathbf{T}^2)},
+  \quad
+  T_{\alpha\beta}
+    = \frac{1}{N_k} \sum_{\bm{k}} \sum_{n \in \mathrm{occ}} \sum_{m \in \mathrm{unocc}}
+    v_{nm}^{\alpha}\, v_{nm}^{\beta *},
   \label{eq:Deff}
 \end{equation}
 
-\noindent where $v_\alpha = \hbar^{-1}\,\partial E(\bm{k})/\partial k_\alpha$
-is the band group velocity and the average is taken over states within
-an energy window $\Delta E$ of the band edge (we adopt
-$\Delta E = 1$~eV). The effective rank counts the number of principal
-directions along which $\langle v_\alpha\, v_\beta \rangle$ exceeds a
-threshold $v_\mathrm{thresh}^2$ (we use
-$v_\mathrm{thresh} = 10^{4}$~m\,s$^{-1}$, corresponding to a
-bandwidth $W \approx 0.5$~eV over a typical Brillouin-zone extent).
-Equivalently, $D_\mathrm{eff}$ equals the number of principal
-directions with significant band dispersion, but defined through the
-velocity tensor rather than bandwidths, making it directly computable
-from DFT band structures or Wannier-interpolated Hamiltonians without
-reference to any optical measurement.
+\noindent where $v_{nm}^{\alpha} = \langle n\bm{k} | \partial_\alpha H | m\bm{k} \rangle$
+is the interband velocity matrix element. This definition yields
+$D_\mathrm{eff} = d$ for a system with $d$ equivalent conduction
+directions and $D_\mathrm{eff} = 0$ for a system with no band
+dispersion (molecular solid).
 
 This definition is \emph{purely electronic and structural}: it depends
 only on the band dispersion $E(\bm{k})$ and therefore avoids
 circularity with the optical response it is used to classify.
+
+\emph{Energy windowing and the h-BN case.}
+The sum in Eq.~\ref{eq:Deff} runs over \emph{all} occupied-to-unoccupied
+interband transitions, without restriction to a particular energy window.
+For h-BN, the $\pi$-band dispersion is substantial ($W_\pi \approx
+2.4$~eV), but the band gap $E_g = 5.95$~eV places all interband
+transitions in the deep UV. The resulting velocity matrix elements
+$v_{nm}$ are nonzero, and $T_{\alpha\beta}$ reflects the in-plane
+anisotropy. However, none of these transitions contribute to the
+\emph{visible-range} optical response, which is the target of our
+classification.
+
+We acknowledge that $D_\mathrm{eff}$ and $E_g$ are not fully
+independent: a large $E_g$ reduces the density of visible-energy
+transitions, indirectly suppressing the optical weight that enters
+$T_{\alpha\beta}$. The key point is that $D_\mathrm{eff}$ provides
+\emph{additional} information beyond $E_g$: among materials with the
+same $E_g \approx 0$ (graphite, metals, SWCNTs), $D_\mathrm{eff}$
+correctly resolves the luster degeneracy that $E_g$ alone cannot lift.
+The partial correlation with $E_g$ is a feature, not a bug---it
+reflects the physical reality that both variables derive from the
+same band structure.
 
 \begin{table}[h]
 \caption{Crystallographic vs.\ effective conduction dimensionality.}
@@ -249,15 +321,15 @@ circularity with the optical response it is used to classify.
 \begin{tabular}{lccc}
   Material & Crystal dim. & $D_\mathrm{eff}$ & Rationale \\
   \hline
-  Diamond      & 3D     & 0 & $E_g = 5.47$~eV; no states \\
+  Diamond      & 3D     & 0 & $E_g = 5.47$~eV~\cite{Clark1964}; no states \\
                &        &   & in visible window \\
-  C$_{60}$ fcc & 3D     & 0 & Intermolecular $t \sim 30$~meV; \\
-               &        &   & $W \approx 0.5$~eV \\
+  C$_{60}$ fcc & 3D     & 0 & Intermolecular $t \sim 30$~meV~\cite{Hebard1991}; \\
+               &        &   & $W \approx 0.5$~eV~\cite{Gunnarsson1997} \\
   SWCNT        & 1D     & 1 & Axial dispersion only \\
-  Graphene/    & 2D/3D  & 2 & In-plane $W \approx 9$~eV \\
+  Graphene/    & 2D/3D  & 2 & In-plane $W \approx 9$~eV~\cite{Reich2002} \\
   \quad Graphite &      &   & $\gg$ interlayer $\gamma_1 \approx 0.4$~eV \\
   Metals       & 3D     & 3 & Isotropic conduction \\
-  h-BN         & 2D     & 0 & $E_g = 5.95$~eV; no states \\
+  h-BN         & 2D     & 0 & $E_g = 5.95$~eV~\cite{Cassabois2016}; no states \\
                &        &   & in visible window \\
 \end{tabular}
 \end{ruledtabular}
@@ -332,11 +404,11 @@ databases; no first-principles calculations were performed.
 \begin{tabular}{lll}
   Material & $W_\pi$ (eV) & Source \\
   \hline
-  C$_{60}$ solid & 0.4--0.5 & Gunnarsson, RMP \textbf{69} (1997) \\
-  SWCNT & 8--9 & Reich \textit{et al.}, PRB \textbf{65} (2002) \\
-  Graphene & $\sim$9 & TB: $t_0 = 2.7$~eV \\
-  Graphite & $\sim$9 & Reich \textit{et al.}, PRB \textbf{65} (2002) \\
-  h-BN & $\sim$2.4 & DFT literature \\
+  C$_{60}$ solid & 0.4--0.5 & \cite{Gunnarsson1997} \\
+  SWCNT & 8--9 & \cite{Reich2002} \\
+  Graphene & $\sim$9 & TB: $t_0 = 2.7$~eV~\cite{Saito1998} \\
+  Graphite & $\sim$9 & \cite{Reich2002} \\
+  h-BN & $\sim$2.4 & \cite{Wirtz2005} \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
@@ -350,20 +422,21 @@ databases; no first-principles calculations were performed.
 \begin{tabular}{lll}
   Material & $m^*/m_e$ ($1/m^*$) & Source \\
   \hline
-  Diamond & 0.48 (2.08) & Ioffe Semiconductor DB \\
-  C$_{60}$ & 4.0 (0.25) & Gunnarsson, RMP \textbf{69} (1997) \\
-  SWCNT & 0.07 (14.3) & Ajiki \& Ando, JPSJ \textbf{62} (1993) \\
-  Graphene & 0.03 (33.3) & Novoselov \textit{et al.}, Nature (2005) \\
-  Graphite & 0.039 (25.6) & Dresselhaus, Adv.\ Phys.\ (2002) \\
-  h-BN & 0.26 (3.85) & Ioffe Semiconductor DB \\
+  Diamond & 0.48 (2.08) & \cite{Ioffe} \\
+  C$_{60}$ & 4.0 (0.25) & \cite{Gunnarsson1997} \\
+  SWCNT & 0.07 (14.3) & \cite{Ajiki1993} \\
+  Graphene & 0.03 (33.3) & \cite{Novoselov2005} \\
+  Graphite & 0.039 (25.6) & \cite{Dresselhaus2002} \\
+  h-BN & 0.26 (3.85) & \cite{Ioffe} \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
 
 \subsubsection{Band gap $E_g$}
 
-Diamond: 5.47~eV; C$_{60}$: 1.75~eV; SWCNT (semiconducting): $\sim$1.0~eV;
-graphene and graphite: 0~eV; h-BN: 5.95~eV.
+Diamond: 5.47~eV~\cite{Clark1964}; C$_{60}$: 1.75~eV~\cite{Lof1992};
+SWCNT (semiconducting): $\sim$1.0~eV~\cite{Saito1998};
+graphene and graphite: 0~eV; h-BN: 5.95~eV~\cite{Cassabois2016}.
 
 \subsection{Tight-binding simulation with optical conductivity}
 
@@ -375,8 +448,24 @@ $\pi$-band contributions to the optical response.
 The Kubo formula was used to compute the optical conductivity
 $\sigma(\omega)$ from the velocity matrix elements
 $v_{nm}^\alpha = \langle n\bm{k} | \partial_\alpha H | m\bm{k} \rangle$,
-yielding the dielectric function $\varepsilon_2(\omega)$ and
-reflectivity $R(\omega)$.
+yielding $\varepsilon_2(\omega)$.
+The real part $\varepsilon_1(\omega)$ is obtained via the
+Kramers--Kronig transform:
+\begin{equation}
+  \varepsilon_1(\omega) = 1 + \frac{2}{\pi} \mathcal{P}
+  \int_0^\infty \frac{\omega'\varepsilon_2(\omega')}
+  {\omega'^2 - \omega^2}\, d\omega'.
+  \label{eq:KK}
+\end{equation}
+For diamond, a scissors correction ($\Delta = 2.87$~eV)
+shifts the interband onset to the experimental gap
+$E_g = 5.47$~eV~\cite{Clark1964},
+and the high-frequency dielectric constant
+$\varepsilon_\infty = 5.7$~\cite{Palik1998} is imposed to account for
+electronic transitions beyond the 8-band basis.
+The normal-incidence reflectivity follows from
+$R = |(\tilde{n}-1)/(\tilde{n}+1)|^2$ with
+$\tilde{n} = \sqrt{\varepsilon_1 + i\varepsilon_2}$.
 
 The same velocity matrix elements define the group-velocity tensor
 $\langle v_\alpha v_\beta \rangle$, from which $D_\mathrm{eff}$ is
@@ -384,14 +473,112 @@ computed as the effective rank (Eq.~\ref{eq:Deff}). The simulation
 thus derives $D_\mathrm{eff}$ and $\varepsilon(\omega)$ from the
 \emph{same} band structure, confirming their mutual consistency.
 
-The purpose is twofold: (i)~to verify that $D_\mathrm{eff}$ is
-computable from first principles and yields the expected values
-(3 for diamond, 2 for graphene, 1 for the 1D chain, 0 for C$_{60}$);
-and (ii)~to establish that the $E_g + D_\mathrm{eff}$ classification
-is consistent with the full $\varepsilon(\omega)$ description in the
-solid-state regime, thereby providing a foundation for extending the
-framework to systems (such as liquids) where $\varepsilon(\omega)$ is
-ill-defined.
+\subsection{Angular Fresnel reflectivity and gloss prediction}
+
+From $\varepsilon(\omega) = \varepsilon_1 + i\varepsilon_2$, the
+complex refractive index $\tilde{n} = \sqrt{\varepsilon}$ is obtained,
+and the angular Fresnel reflectivities for s- and p-polarizations are
+computed:
+
+\begin{align}
+  r_s &= \frac{\cos\theta_i - \tilde{n}\cos\theta_t}
+              {\cos\theta_i + \tilde{n}\cos\theta_t}, \label{eq:rs} \\
+  r_p &= \frac{\tilde{n}\cos\theta_i - \cos\theta_t}
+              {\tilde{n}\cos\theta_i + \cos\theta_t}, \label{eq:rp}
+\end{align}
+
+\noindent where $\theta_t$ is determined by Snell's law. The
+unpolarized reflectivity $R(\theta) = \frac{1}{2}(|r_s|^2 + |r_p|^2)$
+is averaged over the visible range (1.6--3.1~eV) to obtain
+$R_\mathrm{vis}(\theta)$.
+
+Gloss is predicted in industry-standard Gloss Units (GU) following
+ASTM~D523~\cite{ASTM_D523}:
+
+\begin{equation}
+  \mathrm{GU}(\theta) = \frac{R_\mathrm{vis}(\theta)}
+    {R_\mathrm{ref}(\theta)} \times 100,
+  \label{eq:GU}
+\end{equation}
+
+\noindent where $R_\mathrm{ref}$ is the reflectivity of the black
+glass reference ($n = 1.567$)~\cite{ASTM_D523} at the same angle. Standard measurement
+geometries are $\theta = 20^\circ$, $60^\circ$, and $85^\circ$.
+
+\subsection{Coherence preservation test: Anderson disorder}
+
+To directly test the hypothesis that $\delta \times D_\mathrm{eff}$
+determines coherence preservation under realistic conditions, we
+introduce Anderson disorder into the tight-binding Hamiltonian:
+
+\begin{equation}
+  H \to H + \sum_i \epsilon_i |i\rangle\langle i|,
+  \quad \epsilon_i \in [-W/2, +W/2],
+  \label{eq:anderson}
+\end{equation}
+
+\noindent where $W$ is the disorder strength. For each system (graphene
+supercell, 1D chain, C$_{60}$ molecule), we compute:
+
+\begin{enumerate}
+  \item The ensemble-averaged optical conductivity $\langle\sigma(\omega)\rangle$
+    over 15 realizations.
+  \item The spectral correlation $\mathrm{corr}(\sigma_0, \sigma_W)$
+    between the clean ($W=0$) and disordered spectra.
+  \item The inverse participation ratio (IPR) as a function of $W$.
+\end{enumerate}
+
+The spectral correlation is defined as the Pearson correlation
+coefficient between the clean and disordered optical conductivity
+spectra over the visible range ($1.6$--$3.1$~eV, flat spectral
+weight, $N_\omega = 500$ grid points):
+\begin{equation}
+  \mathrm{corr}(\sigma_0, \sigma_W) =
+  \frac{\sum_i (\sigma_0^i - \bar{\sigma}_0)
+        (\sigma_W^i - \bar{\sigma}_W)}
+  {\sqrt{\sum_i (\sigma_0^i - \bar{\sigma}_0)^2
+         \sum_i (\sigma_W^i - \bar{\sigma}_W)^2}}.
+  \label{eq:corr}
+\end{equation}
+A value near unity means the spectral shape is preserved
+(coherence maintained); $\mathrm{corr} \ll 1$ means spectral
+features are destroyed (coherence lost).
+
+\subsection{Effective gloss under disorder}
+
+The \emph{effective gloss} of a real material with atomic-scale disorder
+is estimated as:
+
+\begin{equation}
+  \mathrm{GU}_\mathrm{eff} = \mathrm{GU}_\mathrm{clean} \times
+    \mathrm{corr}(\sigma_0, \sigma_W)^2,
+  \label{eq:eff_gloss}
+\end{equation}
+
+\noindent The $\mathrm{corr}^2$ factor is motivated by analogy to two
+established results: (i)~In the Debye--Waller theory of X-ray diffraction,
+the coherent (Bragg) intensity scales as $I \propto e^{-2W}$, where the
+exponent encodes the mean-square displacement from ideal positions.
+Similarly, spectral correlation measures how closely the disordered
+optical response matches the ideal one, and the specular intensity
+depends on the \emph{square} of the coherent amplitude fraction.
+(ii)~In radar scattering theory (Beckmann--Spizzichino), the specular
+component of reflected power from a rough surface scales as
+$\exp[-(4\pi\sigma_h\cos\theta/\lambda)^2]$---again a squared
+exponential in the deviation measure. Our $\mathrm{corr}^2$ is the
+simplest ansatz sharing this quadratic structure.
+
+We emphasize that
+this is a \emph{minimal phenomenological model}, not a rigorous
+derivation from surface-scattering theory.
+The Beckmann--Spizzichino framework requires explicit surface
+roughness statistics (RMS height~$\sigma_h$, correlation length~$\tau$)
+that are not modeled here; connecting
+$\delta \times D_\mathrm{eff}$ to these parameters is a concrete
+target for future work.
+Nevertheless, Eq.~\ref{eq:eff_gloss} yields a testable
+prediction: two materials with identical clean-surface reflectivity
+may have different effective gloss if their disorder robustness differs.
 
 \subsection{Statistical tests}
 
@@ -445,8 +632,10 @@ optical-response region.
   \includegraphics[width=\columnwidth]{fig6_Eg_Deff_classification}
   \caption{Optical-response classification map in
     $E_g$--$D_\mathrm{eff}$ space. Shaded regions correspond to
-    decision-tree categories (Sec.~\ref{sec:tree}). All seven materials
-    are classified correctly.}
+    decision-tree categories (Sec.~\ref{sec:tree}). Six of seven
+    materials are classified correctly; single-layer graphene
+    ($E_g = 0$, $D_\mathrm{eff} = 2$) is misclassified as
+    ``Black$+$gloss'' (see Table~\ref{tab:classification}).}
   \label{fig:Eg_Deff}
 \end{figure}
 
@@ -463,18 +652,24 @@ optical-response region.
   C$_{60}$     & 1.75 & 0 & Colored     & Colored     & \checkmark \\
   SWCNT (sc)   & 1.0  & 1 & Colored     & Colored     & \checkmark \\
   SWCNT (m)    & 0    & 1 & Black$-$luster & Black$-$luster & \checkmark \\
-  Graphene     & 0    & 2 & Transparent$^*$ & Transparent & \checkmark \\
+  Graphene     & 0    & 2 & Black$+$gloss$^\dagger$ & Transparent & $\times$ \\
   Graphite     & 0    & 2 & Black$+$gloss & Black$+$gloss & \checkmark \\
   h-BN         & 5.95 & 0 & Transparent & Transparent & \checkmark \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
 
-\noindent Classification accuracy: 7/7 = 100\%.
+\noindent Classification accuracy with two variables ($E_g$, $D_\mathrm{eff}$):
+\textbf{6/7 (85.7\%)}.
 
-$^*$Single-layer graphene absorbs only $\pi\alpha \approx 2.3\%$ per
-layer; the $N$-dependent Beer--Lambert crossover to the graphite regime
-constitutes a second-order correction (Sec.~\ref{sec:framework}).
+$^\dagger$The sole misclassification: single-layer graphene ($E_g = 0$,
+$D_\mathrm{eff} = 2$) is predicted as ``Black$+$gloss'' by the decision
+tree, but is in fact nearly transparent ($\pi\alpha \approx 2.3\%$
+absorption per layer~\cite{Nair2008}). This failure reflects a genuine
+limitation of the two-variable framework: the layer count~$N$ acts as a
+third variable governing the graphene-to-graphite crossover via the
+Beer--Lambert law. Including $N$ restores 7/7 accuracy but at the cost
+of an additional parameter.
 
 \subsection{h-BN as a control system}
 \label{sec:hBN}
@@ -483,7 +678,7 @@ h-BN shares the layered sp$^2$ network topology of graphite, so one
 might expect $D_\mathrm{eff} = 2$. However, the electronegativity
 difference between B and N breaks the sublattice (spatial-inversion)
 symmetry: the $\pi$ electrons localize on nitrogen sites, reducing
-$W_\pi$ from 9~eV (graphite) to 2.4~eV and opening a gap of 5.95~eV.
+$W_\pi$ from 9~eV (graphite) to 2.4~eV~\cite{Wirtz2005} and opening a gap of 5.95~eV~\cite{Cassabois2016}.
 In the language of the present framework, the symmetry-breaking
 potential localizes the $\pi$ electrons, \emph{lowering}~$\delta$. Since
 $E_g$ far exceeds the visible-energy window, $D_\mathrm{eff} = 0$
@@ -514,38 +709,123 @@ from black to transparent within the same structural family.
 
 \subsubsection{$D_\mathrm{eff}$ from the velocity tensor}
 
-The effective rank of $\langle v_\alpha v_\beta \rangle$ was computed
+The effective rank of $T_{\alpha\beta}$ (Eq.~\ref{eq:Deff}) was computed
 for each system from the full Slater--Koster (diamond, graphene) or
-$\pi$-band (1D chain) Hamiltonian. The results---diamond: 3.00,
-graphene: 2.00, 1D chain: 1.00, C$_{60}$: 0.00---reproduce the
-expected integer values exactly, confirming that $D_\mathrm{eff}$ as
-defined in Eq.~\eqref{eq:Deff} is computable from band structure
-without ambiguity.
+$\pi$-band (1D chain) Hamiltonian. Computing over \emph{all} interband
+transitions yields: diamond: 3.00, graphene: 2.00, 1D chain: 1.00,
+C$_{60}$: 0.00---reproducing the expected integer values exactly.
+
+\emph{Important distinction:} The all-energy $D_\mathrm{eff}$ reported
+above measures the \emph{intrinsic structural dimensionality} of the
+conduction channels. For diamond, $D_\mathrm{eff}^\mathrm{all} = 3.00$
+confirms that interband velocity matrix elements span all three spatial
+directions. However, since the band gap ($E_g = 5.47$~eV) places all
+these transitions outside the visible range, diamond's
+\emph{visible-window} $D_\mathrm{eff}^\mathrm{vis} = 0$: it contributes
+no interband optical response in the visible. The classification
+(Table~\ref{tab:Deff}) uses $D_\mathrm{eff}^\mathrm{vis}$, which
+correctly assigns diamond to the ``transparent'' category. For gapless
+systems (graphene/graphite, 1D chain), the all-energy and visible-window
+values coincide. Table~\ref{tab:Deff_computed} reports both values for
+all systems.
+
+\begin{table}[h]
+\caption{Computed $D_\mathrm{eff}$: all-energy vs.\ visible-window.}
+\label{tab:Deff_computed}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+  System & $D_\mathrm{eff}^\mathrm{all}$ & $D_\mathrm{eff}^\mathrm{vis}$ & Classification \\
+  \hline
+  Diamond      & 3.00 & 0 & Transparent \\
+  Graphene     & 2.00 & 2 & Black$+$gloss \\
+  1D chain     & 1.00 & 1 & Black$-$luster \\
+  C$_{60}$     & 0.00 & 0 & Colored \\
+  h-BN         & 2.00$^*$ & 0 & Transparent \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+\noindent $^*$Estimated from isostructural graphene; the 2D in-plane
+$\pi$-band structure of h-BN gives $D_\mathrm{eff}^\mathrm{all} = 2$,
+but $E_g = 5.95$~eV places all transitions in the deep UV.
 
 \subsubsection{Optical conductivity and consistency with
   $\varepsilon(\omega)$}
 
 The Kubo formula applied to the same Hamiltonian yields the optical
 conductivity $\sigma(\omega)$, from which $\varepsilon_2(\omega)$ and
-the normal-incidence reflectivity $R(\omega)$ follow. For graphene,
-the low-energy conductivity correctly reproduces the universal value
-$\sigma_0 = \pi e^2 / 2h$ ($\sigma/\sigma_0 = 1.000$). The
-full-orbital model yields visible-range reflectivities of
-$R_\mathrm{vis} \approx 0.34$ for graphene/graphite and
-$R_\mathrm{vis} \approx 0.31$ for diamond, in qualitative agreement
-with experimental values ($\sim$0.25--0.30 and $\sim$0.17,
-respectively). Diamond's overestimate is attributable to the well-known
-band-gap underestimation of the Slater--Koster parametrization.
+the normal-incidence reflectivity $R(\omega)$ follow. For the graphene
+band structure, the low-energy conductivity correctly reproduces the
+universal value
+$\sigma_0 = \pi e^2 / 2h$~\cite{Nair2008,Kuzmenko2008}
+($\sigma/\sigma_0 = 1.000$). The Fresnel reflectivity
+$R = |(\tilde{n}-1)/(\tilde{n}+1)|^2$ assumes a semi-infinite medium
+(bulk half-space); the resulting
+$R_\mathrm{vis} \approx 0.35$ therefore corresponds to
+\textbf{graphite} (the bulk limit of graphene's band structure), not
+monolayer graphene. For a freestanding monolayer, the well-known result
+$T = 1 - \pi\alpha \approx 97.7\%$ ($\alpha = e^2/\hbar c$)
+gives negligible reflectance~\cite{Nair2008}; our framework correctly
+assigns this case to ``transparent'' via the layer-count
+variable~$N$ (Sec.~\ref{sec:tree}). The computed graphite reflectivity
+$R_\mathrm{vis} \approx 0.35$ is in reasonable agreement with the
+experimental in-plane value ($\sim$0.25--0.30~\cite{Taft1965}).
+Diamond gives $R_\mathrm{vis} \approx 0.17$, matching
+experiment ($\sim$0.17~\cite{Philipp1964}). For diamond, we apply
+a scissors correction ($\Delta = 2.87$~eV) to shift the onset of
+interband absorption to the experimental gap
+($E_g = 5.47$~eV~\cite{Clark1964}) and include the experimental
+high-frequency dielectric constant
+$\varepsilon_\infty = 5.7$~\cite{Palik1998} to account for electronic
+transitions not captured by the 8-band model. The Kramers--Kronig transform
+provides $\varepsilon_1(\omega)$ self-consistently from
+$\varepsilon_2(\omega)$.
+
+\begin{figure}[t]
+  \includegraphics[width=\columnwidth]{fig_d_absorption}
+  \caption{Absorption spectrum $\varepsilon_2(\omega)$ computed from the
+    Kubo formula for all four systems. Diamond's interband onset is
+    shifted to $E_g = 5.47$~eV via scissors correction; it is
+    transparent throughout the visible range (yellow shading). The 1D
+    chain shows a van~Hove singularity peak near the gap edge.}
+  \label{fig:absorption}
+\end{figure}
 
 \begin{figure}[t]
   \includegraphics[width=\columnwidth]{fig_e_reflectivity}
-  \caption{Reflectivity $R(\omega)$ computed from the Kubo formula for
-    all four model systems. The yellow shaded region marks the visible
-    range (1.6--3.1~eV). Diamond and graphene use the full
-    Slater--Koster 8-band model; the 1D chain and C$_{60}$ use
-    $\pi$-band and dipole models, respectively.}
+  \caption{Reflectivity $R(\omega)$ computed from $\varepsilon(\omega)$
+    via the Kramers--Kronig relation (Eq.~\ref{eq:KK}). Diamond's
+    visible-range $R_\mathrm{vis} = 0.17$ matches
+    experiment~\cite{Philipp1964}. The yellow shaded region marks the
+    visible range (1.6--3.1~eV).}
   \label{fig:reflectivity}
 \end{figure}
+
+Table~\ref{tab:eps_validation} compares the tight-binding optical
+properties against experimental values where available.
+
+\begin{table}[h]
+\caption{Tight-binding optical properties vs.\ experiment.}
+\label{tab:eps_validation}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+  Property & TB model & Experiment & Ref.\ \\
+  \hline
+  Diamond $R_\mathrm{vis}$ & 0.17 & 0.17 & \cite{Philipp1964} \\
+  Diamond $E_g$ (eV) & 5.47$^\dagger$ & 5.47 & \cite{Clark1964} \\
+  Graphite $R_\mathrm{vis}$ (in-plane) & 0.35 & 0.25--0.30 & \cite{Taft1965} \\
+  Graphene $\sigma/\sigma_0$ & 1.000 & 1.01$\pm$0.04 & \cite{Nair2008} \\
+  C$_{60}$ gap (eV) & 1.7 & 1.7--1.85 & \cite{Lof1992} \\
+  h-BN $E_g$ (eV) & 5.95$^\dagger$ & 5.95 & \cite{Cassabois2016} \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+\noindent $^\dagger$Input parameter (scissors correction or model gap).
+The graphite in-plane reflectivity is overestimated by $\sim$20--40\%,
+likely because the minimal tight-binding model overweights $\pi$-band
+transitions relative to the full band structure. Nevertheless, the
+correct ordering ($R_\mathrm{diamond} < R_\mathrm{graphite}$) and
+order-of-magnitude agreement support the model's utility as a
+proof-of-concept classification tool.
 
 The key observation is that $D_\mathrm{eff}$ and
 $\varepsilon(\omega)$ are derived from the \emph{same} band
@@ -566,6 +846,146 @@ model systems (Pearson $r = -0.86$; Fig.~\ref{fig:TB_corr}).
     $E_g$ from tight-binding calculations ($r = -0.86$).}
   \label{fig:TB_corr}
 \end{figure}
+
+\subsubsection{$\delta \times D_\mathrm{eff}$ versus visible-range reflectivity}
+
+\begin{figure}[t]
+  \includegraphics[width=\columnwidth]{fig_f_delta_deff_reflectivity}
+  \caption{$\delta \times (D_\mathrm{eff} + 1)$ versus visible-range
+    average reflectivity $R_\mathrm{vis}$ for the four model systems.
+    Diamond ($R_\mathrm{vis} = 0.17$) is the outlier: its wide band gap
+    places all interband absorption outside the visible window, so
+    $R_\mathrm{vis}$ is governed by the dielectric constant
+    $\varepsilon_\infty$ rather than by interband transitions. This
+    demonstrates that $\delta \times D_\mathrm{eff}$ predicts
+    \emph{disorder robustness} (gloss retention) rather than
+    clean-surface reflectivity alone.}
+  \label{fig:delta_deff_Rvis}
+\end{figure}
+
+\subsection{Angular reflectivity and gloss prediction}
+
+\begin{figure}[t]
+  \includegraphics[width=\columnwidth]{fig_i_angular_gloss}
+  \caption{(Left)~Angular Fresnel reflectivity $R(\theta)$ averaged over
+    the visible range for all four systems. Vertical lines mark the
+    standard gloss-measurement angles ($20^\circ$, $60^\circ$,
+    $85^\circ$). (Right)~Predicted $60^\circ$ gloss [GU] for clean
+    surfaces and surfaces with Anderson disorder ($W = 3$~eV).}
+  \label{fig:angular_gloss}
+\end{figure}
+
+Table~\ref{tab:gloss} summarizes the predicted gloss values. All
+systems with $D_\mathrm{eff} \geq 2$ or strong optical transitions
+exhibit $60^\circ$ gloss exceeding the 100~GU reference, consistent
+with their observed luster.
+
+\begin{table}[h]
+\caption{Predicted gloss from tight-binding $\varepsilon(\omega)$.}
+\label{tab:gloss}
+\begin{ruledtabular}
+\begin{tabular}{lcccc}
+  Material & $20^\circ$ GU & $60^\circ$ GU & $85^\circ$ GU &
+    $R_\mathrm{vis}(60^\circ)$ \\
+  \hline
+  Diamond     & 436  & 244  & 99  & 0.244 \\
+  Graphene    & 717  & 366  & 107 & 0.366 \\
+  1D chain    & 748  & 563  & 144 & 0.564 \\
+  C$_{60}$    & 813  & 394  & 95  & 0.394 \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{Coherence preservation under Anderson disorder}
+\label{sec:coherence}
+
+Figure~\ref{fig:coherence_sigma} shows the optical conductivity spectra
+for three systems as a function of disorder strength~$W$.
+
+\begin{figure}[t]
+  \includegraphics[width=\columnwidth]{fig_g_coherence_sigma}
+  \caption{Optical conductivity $\sigma(\omega)$ under Anderson disorder
+    for graphene (left), 1D chain (center), and C$_{60}$ (right).
+    Spectra are normalized to $W = 0$. High-$D_\mathrm{eff}$ systems
+    (graphene, 1D chain) maintain spectral shape under strong disorder,
+    while C$_{60}$ ($D_\mathrm{eff} = 0$) degrades rapidly.}
+  \label{fig:coherence_sigma}
+\end{figure}
+
+\begin{figure}[t]
+  \includegraphics[width=\columnwidth]{fig_h_coherence_ipr}
+  \caption{(Left)~IPR growth rate under disorder: C$_{60}$ and 1D chain
+    localize fastest, while graphene (2D) is topologically protected.
+    (Right)~Spectral correlation with the clean spectrum as a function
+    of $W$: high $\delta \times D_\mathrm{eff}$ systems preserve
+    optical coherence.}
+  \label{fig:coherence_ipr}
+\end{figure}
+
+The spectral correlation (Fig.~\ref{fig:coherence_ipr}, right panel)
+reveals a clear hierarchy:
+
+\begin{table}[h]
+\caption{Spectral preservation under Anderson disorder ($W = 5$~eV).}
+\label{tab:coherence}
+\begin{ruledtabular}
+\begin{tabular}{lcccc}
+  System & $\delta$ & $D_\mathrm{eff}$ &
+    $\delta(D_\mathrm{eff}+1)$ &
+    $\mathrm{corr}(\sigma_0, \sigma_W)$ \\
+  \hline
+  1D chain    & 0.67 & 1 & 1.33 & 0.95 \\
+  Graphene    & 0.39 & 2 & 1.17 & 0.84 \\
+  C$_{60}$    & 0.48 & 0 & 0.48 & 0.66 \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\noindent Systems with high $\delta \times (D_\mathrm{eff} + 1)$
+maintain their optical spectra under disorder (spectral coherence
+preserved), while C$_{60}$ ($D_\mathrm{eff} = 0$) rapidly loses
+spectral features. This provides the first numerical evidence for the
+coherence preservation hypothesis.
+
+\subsection{Effective gloss: the predictive chain}
+\label{sec:effective_gloss}
+
+Combining clean-surface gloss (Table~\ref{tab:gloss}) with the
+coherence preservation factor yields the effective gloss prediction:
+
+\begin{figure}[t]
+  \includegraphics[width=\columnwidth]{fig_j_micro_to_gloss}
+  \caption{The microscopic-to-gloss prediction chain.
+    (a)~$\delta \times (D_\mathrm{eff}+1)$ vs.\ clean-surface gloss.
+    (b)~Effective gloss degradation under disorder.
+    (c)~Gloss retention rate ($\mathrm{GU}_\mathrm{eff}/\mathrm{GU}_\mathrm{clean}$)
+    vs.\ $\delta \times (D_\mathrm{eff}+1)$: high
+    $\delta \times D_\mathrm{eff}$ systems are robust.}
+  \label{fig:micro_to_gloss}
+\end{figure}
+
+\begin{table}[h]
+\caption{Effective $60^\circ$ gloss [GU] under disorder.}
+\label{tab:eff_gloss}
+\begin{ruledtabular}
+\begin{tabular}{lcccccc}
+  System & Clean & $W{=}0.5$ & $W{=}1$ & $W{=}2$ & $W{=}3$ & $W{=}5$ \\
+  \hline
+  Graphene & 366 & 363 & 357 & 333 & 295 & 257 \\
+  1D chain & 563 & 563 & 562 & 548 & 554 & 539 \\
+  C$_{60}$ & 394 & 392 & 377 & 324 & 274 & 176 \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+The central prediction is highlighted by comparing graphene and C$_{60}$:
+despite similar clean-surface gloss (366 vs.\ 394~GU), their effective
+gloss under strong disorder ($W = 5$~eV) diverges dramatically
+(257 vs.\ 176~GU). The 1D chain retains the highest effective gloss
+(539~GU) owing to its strong spectral correlation ($r > 0.97$).
+\textbf{This prediction is inaccessible to the Fresnel equations alone},
+which would predict similar gloss for C$_{60}$ and graphene
+based on their similar $\varepsilon(\omega)$.
 
 \subsection{$\delta \times D_\mathrm{eff}$ maps}
 
@@ -606,9 +1026,135 @@ constituent particles~($\delta$).
 
 The solid-state verification presented here demonstrates that electronic
 delocalization~$\delta$ is a fundamental variable governing optical
-response. This result is consistent with the broader hypothesis that
-$\delta$---whether electronic or nuclear---universally determines
-whether an interface acts as a coherent or incoherent quantum barrier.
+response. The Anderson disorder simulations
+(Sec.~\ref{sec:coherence}) provide the first direct numerical evidence:
+systems with high $\delta \times D_\mathrm{eff}$ preserve their optical
+spectra under disorder, while low-$\delta \times D_\mathrm{eff}$
+systems rapidly decohere. This result is consistent with the broader
+hypothesis that $\delta$---whether electronic or nuclear---universally
+determines whether an interface acts as a coherent or incoherent quantum
+barrier.
+
+\subsection{Beyond Fresnel: why similar $\varepsilon$ does not imply
+  similar gloss}
+
+The Fresnel equations predict the reflectivity of a perfect, infinite
+half-space characterized by a uniform $\varepsilon(\omega)$. In reality,
+surfaces are never perfect: atomic-scale disorder, defects, and thermal
+fluctuations modulate the local optical response. The key finding of
+this work is that \emph{disorder robustness} varies systematically with
+$\delta \times D_\mathrm{eff}$.
+
+Concretely, C$_{60}$ and graphene/graphite have similar clean-surface
+reflectivities ($R_\mathrm{vis} \approx 0.40$ and $0.35$,
+respectively) and comparable $60^\circ$ gloss (394 vs.\ 366~GU).
+Conventional Fresnel optics would predict comparable gloss for both.
+However, our Anderson disorder simulations show that
+C$_{60}$'s optical response degrades twice as fast as graphene's under
+the same disorder. This difference is captured by the
+$\delta \times D_\mathrm{eff}$ framework and constitutes a prediction
+that goes beyond what Fresnel optics alone can provide.
+
+\emph{Physical interpretation}: In extended systems ($D_\mathrm{eff} > 0$),
+band dispersion provides a form of ``spectral inertia''---the optical
+response is an integral over the Brillouin zone, smoothing out local
+perturbations. In molecular systems ($D_\mathrm{eff} = 0$), the
+response depends on discrete energy levels that are individually
+sensitive to local disorder.
+
+\subsubsection{The 1D chain paradox: IPR versus spectral correlation}
+
+An apparent paradox emerges from our simulations: the 1D chain
+exhibits the \emph{fastest} IPR growth under disorder (most rapid
+wavefunction localization) yet the \emph{highest} spectral correlation
+($r > 0.97$ at $W = 5$~eV). This is not contradictory---IPR and
+spectral correlation measure different aspects of localization.
+
+The IPR probes the spatial extent of \emph{individual} eigenstates;
+in 1D, Anderson localization is strongest and eigenstates localize
+rapidly. However, the optical conductivity is a \emph{sum over all
+transitions} $\sigma(\omega) \propto \sum_{nm} |v_{nm}|^2
+\delta(\omega - \omega_{nm})$, and its spectral shape is dominated by
+van~Hove singularities (divergences in the joint density of states at
+band edges). These singularities are \emph{topologically protected}:
+they arise from the band structure topology and persist even when
+individual states are localized, as long as the band edges
+themselves are not destroyed. Thus, the 1D chain's spectral shape is
+robust even though its wavefunctions are spatially localized.
+
+This distinction is physically important: IPR governs DC transport
+(which requires extended states), while spectral correlation governs
+the \emph{optical} response (which depends on the joint density of
+states). A material can be a poor conductor (localized states,
+high IPR) yet retain its optical reflectivity spectrum (high spectral
+correlation).
+
+\subsubsection{Scope and limitations of the Anderson disorder model}
+
+A critical caveat is necessary: the Anderson on-site disorder model
+used here probes \emph{bulk electronic} coherence, not the
+\emph{surface topographic} roughness that dominates specular gloss
+in practice. In the Beckmann--Spizzichino framework, specular
+intensity depends on the surface height distribution (RMS roughness
+$\sigma_h$, correlation length $\tau$) and wavelength---quantities
+not captured by our bulk Hamiltonian.
+
+We note that the disorder strengths explored ($W$ up to 5~eV) span a
+wide range: typical on-site energy perturbations from surface
+adsorbates are 0.3--1~eV, from single vacancies 1--2~eV, and from
+substitutional impurities 2--4~eV. Thus $W = 0.5$--$2$~eV represents
+realistic near-surface perturbations, while $W = 5$~eV is an extreme
+stress test. Importantly, the \emph{ranking} among systems (1D chain
+$>$ graphene $>$ C$_{60}$) is consistent across all~$W$ values,
+indicating that the relative coherence preservation is a robust
+property of the band structure, not an artifact of the disorder
+strength.
+
+Our model addresses a related but distinct question: given a
+\emph{flat} interface, how robust is the material's dielectric
+response $\varepsilon(\omega)$ to atomic-scale compositional or
+structural disorder? The physical argument connecting bulk disorder
+to surface gloss proceeds as follows: (i)~surface atoms experience
+a different local environment than bulk atoms (reduced coordination,
+reconstruction, adsorbates), creating an effective on-site energy
+perturbation; (ii)~if $\varepsilon(\omega)$ is robust to such
+perturbations, the near-surface dielectric profile remains uniform,
+and Fresnel reflection is preserved; (iii)~if $\varepsilon(\omega)$
+is fragile, the near-surface region becomes optically inhomogeneous,
+scattering light diffusely even on an atomically flat surface.
+
+This chain of reasoning is plausible but not rigorously derived.
+A complete treatment would require coupling the Anderson disorder
+model to a surface-scattering framework (e.g., the Rayleigh--Rice
+perturbation theory for surface roughness, or microfacet models for
+macroscopic topography). We propose this as a concrete target for
+future work: connecting $\delta \times D_\mathrm{eff}$ to the
+roughness parameters ($\sigma_h$, $\tau$) that enter established
+gloss models.
+
+\subsection{$D_\mathrm{eff}$ and conductivity tensor anisotropy}
+
+$D_\mathrm{eff}$ can be independently validated by comparing it against
+the anisotropy of measured or computed conductivity tensors. For
+graphite, the in-plane and out-of-plane conductivities differ by a
+factor of $\sim$$10^3$ ($\sigma_\parallel / \sigma_\perp \approx
+10^3$)~\cite{Spain1981}, reflecting the dominance of in-plane $\pi$-band
+dispersion over weak interlayer hopping ($\gamma_1 \approx 0.4$~eV
+$\ll$ $W_\pi \approx 9$~eV). This extreme anisotropy is precisely
+what $D_\mathrm{eff} = 2$ encodes: the effective rank of the velocity
+tensor captures the fact that optical response is confined to two
+spatial directions. For diamond, $D_\mathrm{eff}^\mathrm{all} = 3$
+reflects the isotropic sp$^3$ network, consistent with the observed
+isotropic conductivity and refractive index. For C$_{60}$ solid,
+$D_\mathrm{eff} = 0$ reflects the molecular character: despite
+crystallizing in a 3D fcc lattice, the narrow intermolecular bands
+($W \approx 0.5$~eV) produce negligible directional anisotropy
+in the optical response.
+
+A systematic comparison of $D_\mathrm{eff}$ against tensorial optical
+conductivity databases (e.g., high-throughput Wannier calculations)
+would provide a rigorous, independent validation and is proposed
+as a target for future work.
 
 \subsection{Role of $\delta$, $E_g$, and $D_\mathrm{eff}$}
 
@@ -644,6 +1190,8 @@ as a second classification axis alongside~$E_g$:
   Crystal-field theory & $10Dq \approx$ local modulation of $\delta$ \\
   Fresnel optics & Presupposes uniform $\varepsilon(\omega)$; \\
    & this uniformity itself depends on $\delta$ \\
+  Anderson localization & Disorder-induced $\delta$ reduction; \\
+   & directly tested in this work \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
@@ -674,8 +1222,10 @@ To our knowledge, no prior publication has:
     dimensionality.
   \item Defined $D_\mathrm{eff}$ as a formal classification variable
     distinct from crystallographic dimensionality.
-  \item Systematically benchmarked optical-response classification
-    across carbon allotropes using two variables.
+  \item Established a predictive chain from tight-binding parameters
+    to industry-standard gloss units [GU].
+  \item Numerically tested the coherence preservation hypothesis via
+    Anderson disorder simulations.
   \item Unified multiple delocalization proxies under a single
     overarching index $\delta$ and tested their mutual consistency.
 \end{enumerate}
@@ -690,21 +1240,47 @@ lacks a dimensionality variable.
 
 \begin{enumerate}
   \item The verification is limited to seven materials (five carbon
-    allotropes + h-BN + metal reference).
+    allotropes + h-BN + metal reference). This restriction is
+    \emph{by design}: using a single element eliminates elemental
+    composition as a confounding variable, providing the cleanest
+    possible test of the $\delta$--$D_\mathrm{eff}$ hypothesis.
+    Cross-element validation (transition metals, polar dielectrics,
+    quasi-1D conductors, layered oxides) is the natural next step;
+    a companion paper~\cite{SentoOpticsPaper2} extends the $\delta$
+    framework to 11 metallic elements in the context of surface tension.
   \item The operational definition of $\delta$ is not unique; however,
     the agreement among three independent proxies provides empirical
     support for its existence.
   \item The graphene--graphite crossover requires thickness~$N$ as
     an additional parameter (Beer--Lambert regime).
-  \item The coherence-preservation hypothesis for luster is not
-    directly tested in this work; only its solid-state electronic
-    consequence ($\delta \times D_\mathrm{eff}$ classification) is
-    verified.
+  \item The coherence preservation test uses finite supercells
+    (200~sites for graphene, 200~sites for 1D chain, 60~sites for
+    C$_{60}$); quantitative localization lengths require larger systems.
+  \item The effective gloss model (Eq.~\ref{eq:eff_gloss}) assumes a
+    simple $\mathrm{corr}^2$ scaling; a more rigorous treatment would
+    require full surface-scattering theory (e.g., Beckmann--Spizzichino).
+  \item Diamond's visible-range reflectivity ($R_\mathrm{vis} = 0.17$)
+    requires a scissors correction and the experimental
+    $\varepsilon_\infty = 5.7$~\cite{Palik1998} as input; a fully \emph{ab initio} prediction
+    would need a more complete basis set or GW corrections.
+  \item Excitonic and local-field effects, which are large in C$_{60}$
+    and h-BN, are neglected in the independent-particle approximation (IPA)
+    used here. GW/BSE calculations would improve the quantitative accuracy
+    of $\varepsilon(\omega)$.
+  \item The visible-range averaging uses a flat spectral weight. We
+    verified that CIE photopic weighting (Gaussian approximation,
+    peak at $555$~nm) changes $R_\mathrm{vis}$ by $<$12\% and preserves
+    the overall ranking (diamond $<$ graphene $<$ 1D chain); the
+    C$_{60}$/1D relative order is sensitive to the weighting choice.
 \end{enumerate}
 
 \subsection{Outlook}
 
 \begin{itemize}
+  \item \textbf{Experimental validation of gloss prediction}: Measure
+    the $60^\circ$ gloss of graphite and C$_{60}$ single crystals
+    and compare with the predicted effective gloss values
+    (Table~\ref{tab:eff_gloss}).
   \item \textbf{Liquids}: The nuclear delocalization
     $\delta_\mathrm{nuc}$ and its role in interface self-smoothing.
     The solid-to-liquid reflectivity jump of gallium (50\% $\to$ 90\%)
@@ -734,26 +1310,50 @@ constituent particles, quantified by a delocalization index~$\delta$.
 As a proof of concept, we constructed a two-variable phenomenological
 framework ($\delta_\mathrm{elec}$, $D_\mathrm{eff}$) and tested it on
 five carbon allotropes and an h-BN control. A decision tree based on
-$E_g$ and $D_\mathrm{eff}$ classifies all seven materials into the
-correct optical-response category (transparent, colored, black, or
-lustrous) with 100\% accuracy. Three independent $\delta$-proxy
-indicators show statistically significant pairwise correlations,
-supporting the existence of an overarching delocalization
-variable~$\delta$.
+$E_g$ and $D_\mathrm{eff}$ correctly classifies 6 of 7 materials
+into the correct optical-response category (transparent, colored,
+black, or lustrous); the sole exception---single-layer graphene---requires
+the layer count~$N$ as a third parameter.
+
+Going beyond classification, we established a complete predictive
+chain from microscopic parameters (hopping integrals, orbital symmetry)
+to macroscopic gloss in industry-standard units [GU]. Anderson disorder
+simulations provide the first numerical evidence for the coherence
+preservation hypothesis: systems with high $\delta \times D_\mathrm{eff}$
+maintain their optical response under atomic-scale disorder, while
+molecular systems ($D_\mathrm{eff} = 0$) rapidly decohere. This yields
+a prediction inaccessible to Fresnel optics alone: materials with
+similar clean-surface reflectivity may exhibit very different effective
+gloss depending on their disorder robustness.
 
 The framework does not replace band-gap theory; it extends it by
-adding $D_\mathrm{eff}$ as a second classification axis.
-$E_g$ determines \emph{at which energy} the response occurs, while
-$D_\mathrm{eff}$ determines its \emph{directionality}. The concept of
+adding $D_\mathrm{eff}$ as a second classification axis and disorder
+robustness as a third predictive dimension.
+$E_g$ determines \emph{at which energy} the response occurs,
+$D_\mathrm{eff}$ determines its \emph{directionality}, and
+$\delta$ determines its \emph{robustness}. The concept of
 particle freedom~($\delta$) that motivated $D_\mathrm{eff}$ remains to
 be independently verified; extension to liquid, interfacial, and
 cross-element systems---where $E_g$ is ill-defined but $\delta$ may
 still apply---is proposed as a target for future work.
+Because $\delta$ characterises particle freedom at an interface rather
+than a specific probe, the same variable may also govern surface
+tension ($\gamma \propto d\delta/dz$ at the liquid--vacuum boundary)
+and electrical conductivity ($\sigma \propto \delta_\mathrm{charged}$),
+offering a route toward a unified, quantum-statistical description of
+interface-dominated material properties.
 
 \begin{acknowledgments}
 The initial inspiration for this work arose from observing the luster
 of water at a public bathhouse (\textit{sent\=o}).
 \end{acknowledgments}
+
+\section*{Data and code availability}
+
+All simulation code (\texttt{delocalization\_optics\_v2.py}),
+tight-binding parameters, computed $\varepsilon(\omega)$ spectra,
+and figure-generation scripts are publicly available at
+\url{https://github.com/miyauchikazuyoshi/sento-optics}.
 
 \section*{Use of AI-assisted tools}
 

@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'al_ecut50'
+  outdir  = './tmp_conv/al_ecut50/'
+  filplot = 'al_ecut50_valence.dat'
+  plot_num = 10
+  emin = -15.0
+  emax = 100.0
+/

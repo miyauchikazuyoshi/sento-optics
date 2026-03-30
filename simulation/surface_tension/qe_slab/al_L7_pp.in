@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'al_L7'
+  outdir  = './tmp_conv/al_L7/'
+  filplot = 'al_L7_valence.dat'
+  plot_num = 10
+  emin = -15.0
+  emax = 100.0
+/

@@ -1,0 +1,45 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'al_ecut50'
+  outdir       = './tmp_conv/al_ecut50/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 50.0
+  ecutrho      = 400.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Al  26.9815  Al.pbe-n-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  2.8638  0.0000  0.0000
+  1.4319  2.4801  0.0000
+  0.0000  0.0000  29.0296
+
+ATOMIC_POSITIONS angstrom
+  Al  0.0000  0.0000  0.0000
+  Al  1.4319  0.8267  2.3383
+  Al  0.0000  1.6534  4.6765
+  Al  0.0000  0.0000  7.0148
+  Al  1.4319  0.8267  9.3531
+  Al  0.0000  1.6534  11.6913
+  Al  0.0000  0.0000  14.0296
+
+K_POINTS automatic
+  8 8 1  0 0 0

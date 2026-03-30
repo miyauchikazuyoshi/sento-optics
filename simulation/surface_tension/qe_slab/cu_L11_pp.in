@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'cu_L11'
+  outdir  = './tmp_conv/cu_L11/'
+  filplot = 'cu_L11_valence.dat'
+  plot_num = 10
+  emin = -10.0
+  emax = 100.0
+/

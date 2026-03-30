@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'na110'
+  outdir  = './tmp/'
+  filplot = 'na_emin-5_valence.dat'
+  plot_num = 10
+  emin = -5.0
+  emax = 100.0
+/

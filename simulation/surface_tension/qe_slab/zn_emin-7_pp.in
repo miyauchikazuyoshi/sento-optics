@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'zn0001'
+  outdir  = './tmp/'
+  filplot = 'zn_emin-7_valence.dat'
+  plot_num = 10
+  emin = -7.0
+  emax = 100.0
+/

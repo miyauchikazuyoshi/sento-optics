@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'cu_ecut80'
+  outdir  = './tmp_conv/cu_ecut80/'
+  filplot = 'cu_ecut80_valence.dat'
+  plot_num = 10
+  emin = -10.0
+  emax = 100.0
+/

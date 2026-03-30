@@ -1,0 +1,49 @@
+Slab Convergence Tests (Stanford Reviewer Issues 6 & 7)
+============================================================
+
+Issue 6a: Ecutwfc convergence
+  Al(111):
+    ecutwfc=30 Ry: n_mid/n_bulk = 0.9823
+    ecutwfc=50 Ry: n_mid/n_bulk = 0.9791
+    ecutwfc=70 Ry: n_mid/n_bulk = 0.9805
+  Cu(111):
+    ecutwfc=40 Ry: n_mid/n_bulk = 0.3264
+    ecutwfc=60 Ry: n_mid/n_bulk = 0.3267
+    ecutwfc=80 Ry: n_mid/n_bulk = 0.3267
+
+Issue 6b: Slab thickness convergence
+  Al(111):
+    7 layers: n_mid/n_bulk = 0.9823
+    9 layers: n_mid/n_bulk = 0.9706
+    11 layers: n_mid/n_bulk = 0.9693
+  Cu(111):
+    7 layers: n_mid/n_bulk = 0.3264
+    9 layers: n_mid/n_bulk = 0.3271
+    11 layers: n_mid/n_bulk = 0.3273
+
+Issue 7: ILDOS window sensitivity
+  Al:
+    emin=-18 eV (shift=-3): n_mid/n_bulk = 0.9812
+    emin=-17 eV (shift=-2): n_mid/n_bulk = 0.9812
+    emin=-15 eV (shift=+0): n_mid/n_bulk = 0.9812
+    emin=-13 eV (shift=+2): n_mid/n_bulk = 0.9812
+    emin=-12 eV (shift=+3): n_mid/n_bulk = 0.9812
+  Cu:
+    emin=-13 eV (shift=-3): n_mid/n_bulk = 0.3261
+    emin=-12 eV (shift=-2): n_mid/n_bulk = 0.3261
+    emin=-10 eV (shift=+0): n_mid/n_bulk = 0.3261
+    emin=-8 eV (shift=+2): n_mid/n_bulk = 0.3261
+    emin=-7 eV (shift=+3): n_mid/n_bulk = 0.3261
+  Na:
+    emin=-8 eV (shift=-3): n_mid/n_bulk = 1.0661
+    emin=-7 eV (shift=-2): n_mid/n_bulk = 1.0661
+    emin=-5 eV (shift=+0): n_mid/n_bulk = 1.0661
+    emin=-3 eV (shift=+2): n_mid/n_bulk = 1.0653
+    emin=-2 eV (shift=+3): n_mid/n_bulk = 1.0613
+  Zn:
+    emin=-13 eV (shift=-3): n_mid/n_bulk = 0.5292
+    emin=-12 eV (shift=-2): n_mid/n_bulk = 0.5292
+    emin=-10 eV (shift=+0): n_mid/n_bulk = 0.5292
+    emin=-8 eV (shift=+2): n_mid/n_bulk = 0.5292
+    emin=-7 eV (shift=+3): n_mid/n_bulk = 0.5292
+

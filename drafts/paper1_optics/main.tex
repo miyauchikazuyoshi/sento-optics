@@ -31,9 +31,9 @@
 
 \preprint{Draft v6}
 
-\title{Predicting Gloss from Band Structure: \\
-A Microscopic Theory Connecting Electronic Delocalization \\
-to Macroscopic Optical Appearance in Carbon Allotropes}
+\title{Classifying Optical Appearance beyond the Band Gap: \\
+Effective Conduction Dimensionality and Electronic Delocalization \\
+in Carbon Allotropes}
 
 \author{K.~Miyauchi}
 \affiliation{Independent Researcher}
@@ -63,18 +63,18 @@ a decision tree based on $E_g$ and $D_\mathrm{eff}$ correctly classifies
 6 of 7 materials (85.7\%), with the sole failure---single-layer
 graphene---requiring the layer count~$N$ as a third variable.
 
-Going beyond classification, we establish a complete microscopic-to-macroscopic
-prediction chain: tight-binding Hamiltonian $\to$ Kubo formula $\to$
-$\varepsilon(\omega)$ $\to$ angular Fresnel reflectivity $\to$ gloss
-[GU]. We then test the coherence preservation hypothesis directly via
+As a proof of concept, we compute the full
+tight-binding Hamiltonian $\to$ Kubo formula $\to$
+$\varepsilon(\omega)$ $\to$ Fresnel reflectivity chain for each system.
+We then test the coherence preservation hypothesis via
 Anderson disorder simulations, showing that systems with high
 $\delta \times D_\mathrm{eff}$ maintain their optical response under
 disorder (spectral correlation $>0.94$ at $W = 5$~eV for the 1D chain)
 while low-$\delta \times D_\mathrm{eff}$ systems rapidly decohere
-(correlation $= 0.66$ for C$_{60}$). This yields a testable prediction:
-\emph{effective gloss} = clean-surface gloss $\times$ coherence
-preservation factor, distinguishing materials with similar Fresnel
-reflectivity but different disorder robustness.
+(correlation $= 0.66$ for C$_{60}$). A phenomenological
+\emph{effective gloss} estimate based on the coherence preservation
+factor is proposed, though we stress that this does not yet constitute
+a quantitative gloss theory.
 
 The framework does not replace band-gap theory but extends it: $E_g$
 determines \emph{at which energy} the response occurs, while
@@ -625,8 +625,9 @@ delocalization variable~$\delta$.
 
 Figure~\ref{fig:Eg_Deff} shows all seven materials plotted in
 $E_g$--$D_\mathrm{eff}$ space, with the decision-tree classification
-boundaries overlaid. Each material falls unambiguously into the correct
-optical-response region.
+boundaries overlaid. Six of seven materials fall into the correct
+optical-response region; single-layer graphene is the exception
+(see Table~\ref{tab:classification}).
 
 \begin{figure}[t]
   \includegraphics[width=\columnwidth]{fig6_Eg_Deff_classification}
@@ -1336,12 +1337,13 @@ particle freedom~($\delta$) that motivated $D_\mathrm{eff}$ remains to
 be independently verified; extension to liquid, interfacial, and
 cross-element systems---where $E_g$ is ill-defined but $\delta$ may
 still apply---is proposed as a target for future work.
+\paragraph{Outlook.}
 Because $\delta$ characterises particle freedom at an interface rather
-than a specific probe, the same variable may also govern surface
-tension ($\gamma \propto d\delta/dz$ at the liquid--vacuum boundary)
-and electrical conductivity ($\sigma \propto \delta_\mathrm{charged}$),
-offering a route toward a unified, quantum-statistical description of
-interface-dominated material properties.
+than a specific probe, it may also be relevant to other
+interface-dominated properties such as surface tension and
+electrical conductivity. Exploring whether the same variable
+can bridge optical response and thermodynamic interface properties
+across different material classes is a natural next step.
 
 \begin{acknowledgments}
 The initial inspiration for this work arose from observing the luster

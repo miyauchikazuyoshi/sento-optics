@@ -49,12 +49,12 @@ Band gap *E*_g alone cannot explain why graphite (E_g ≈ 0) is black while meta
 | Milestone | Result |
 |-----------|--------|
 | E_g + D_eff decision tree → optical class | **7/7 correct** (100%) — requires layer count N for graphene/graphite distinction |
-| δ(1/m*) × D_eff machine classification | **4-5/7** (57-71%) — threshold-sensitive; graphene-graphite problem is a genuine limitation |
+| δ(1/m*) × D_eff machine classification | **3/7** (42.9%) — threshold-sensitive; graphene-graphite problem is a genuine limitation |
 | δ proxy intercorrelation | **r = 0.73–0.89** (3 independent proxies) |
 | δ–E_g inverse correlation | **r = −0.70** (literature data), **r = −0.86** (TB model) |
 | Graphene–graphite distinction | Requires layer count N as additional parameter (Beer–Lambert) |
 | Prior art search | **No existing unified framework found** (as of March 2026) |
-| All data from published literature | **No first-principles calculations required** |
+| Paper 1 data from published literature | Paper 2 includes DFT slab and Wannier calculations |
 
 ## Validation System
 
@@ -111,10 +111,10 @@ sento-optics/
 │               └── plot_wannier_summary.py
 ├── drafts/
 │   ├── paper1_optics/                  # Paper 1 manuscript
-│   │   ├── main.tex                    #   Latest draft (v6)
+│   │   ├── main.tex                    #   Latest draft (v7)
 │   │   └── references.bib
 │   └── paper2_surface_tension/         # Paper 2 manuscript
-│       ├── main.tex                    #   Latest draft (v4, with Wannier results)
+│       ├── main.tex                    #   Latest draft (v6)
 │       └── references.bib
 └── review/                             # Reviewer responses & literature
     ├── stanford_reviewer_response_paper1.md

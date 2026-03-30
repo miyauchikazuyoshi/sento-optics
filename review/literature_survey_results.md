@@ -1,0 +1,150 @@
+# Literature Survey Results (Phase 1)
+
+**Date:** 2026-03-30
+**Method:** Web search (Google Scholar + general web) across 5 axes, ~25 keyword combinations
+
+---
+
+## Executive Summary
+
+**Paper 2 の新規性は確認された。Paper 1 も同様。**
+
+| 調査軸 | 先行研究の有無 | 脅威レベル |
+|--------|-------------|-----------|
+| A. "非局在化電子 → 表面エネルギー" (ScienceDirect 2002) | あり（Halas et al.）| 🟡 中：引用必要だが別物 |
+| B. ELF → 表面エネルギー相関 | **なし** | 🟢 ギャップ確認 |
+| C. IPR / Wannier spread → 物性予測 | **なし** | 🟢 ギャップ確認 |
+| D. 統一的光学分類（δ×D_eff相当） | **なし** | 🟢 ギャップ確認 |
+| E. Miedema n_ws の微視的起源 | 部分的（Williams 1980の批判）| 🟡 中：追い風になる |
+
+---
+
+## 詳細結果
+
+### A. Halas et al. (2002) — 最重要チェック ✅
+
+**S. Halas, T. Durakiewicz, J.J. Joyce, "Surface energy calculation — metals with 1 and 2 delocalized electrons per atom," *Chem. Phys.* 278, 111–117 (2002).**
+
+- **やっていること**: Sommerfeld自由電子モデルで表面エネルギーをr_sの関数として解析的に導出
+- **「非局在化電子」の意味**: 原子あたりの自由電子数（Na=1, Mg=2）の整数分類。**IPR, ELF, Wannier spreadなど局在化指標は一切使用していない**
+- **適用範囲**: s-block金属のみ。遷移金属には原理的に適用不可
+- **我々との差異**:
+  - 彼ら: 整数カウント → Sommerfeld模型 → 解析公式
+  - 我々: 連続的δ（DFTから計算）→ 全金属に適用可能
+- **推奨**: **引用して差別化を明記すべき**。「Halas et al.は自由電子描像の範囲で直感を実現したが、遷移金属では破綻する。δは連続的指標として全金属をカバー」
+
+### B. ELF → 表面エネルギー ✅
+
+**結論: 定量的相関をとった論文はゼロ。**
+
+| 論文 | やったこと | 表面エネルギーとの相関？ |
+|-----|---------|------------------|
+| De Santis & Resta (2000) | Al表面でELFを可視化 | ❌ エネルギー計算なし |
+| Savin et al. (1992) | ELFをバルク固体に拡張 | ❌ 表面の議論なし |
+| Becke & Edgecombe (1990) | ELF定義（分子系） | ❌ |
+| Armiento & Mattsson (2014) | ELFを汎関数のスイッチに利用 | ❌ 間接的のみ |
+| Ylivainio et al. (2025) | ELF_min ↔ 分子間結合エネルギー | ❌ 金属表面ではない |
+
+**注目**: Ylivainio et al. (2025) はELFがエネルギーと定量的に相関することを分子系で示した。我々の方向性の「もっともらしさ」を支持する傍証として引用可能。
+
+### C. IPR / Wannier spread → 物性予測 ✅
+
+**結論: 表面張力・表面エネルギーへの接続はゼロ。**
+
+- IPRの用途: Anderson局在の診断ツール（ほぼ100%）
+- Wannier spreadの用途: バンド補間、輸送計算、電子-フォノン結合の計算ツール
+- **Wannier spread ↔ 吸光度**: arXiv:2405.06146 (2024) — 2D半導体でWannier spreadが光学和則に現れることを示した。光学側の先行研究として注目だが、表面エネルギーとは無関係
+- Baranov & Kohout (2011): 固体の非局在化指標を実装（NaCl, ダイヤモンド, Na, Cu）。表面エネルギーへの接続なし
+
+### D. 統一的光学分類 ✅
+
+**結論: 金属・半導体・絶縁体をまたぐ2変数分類は存在しない。**
+
+| 先行研究 | 変数 | 適用範囲 | δ×D_effとの距離 |
+|---------|------|---------|---------------|
+| Penn (1962) | E_g のみ（1変数） | 半導体 | 我々が包摂 |
+| Levine-Louie (1982) | gap → 0でLindhard連続 | 半導体→金属 | 最近接だが1変数 |
+| Moss rule (1985) | n⁴×E_g = const | 半導体のみ | 1制約式 |
+| Wemple-DiDomenico | E_so, E_d（2変数） | 半導体のみ | サブギャップ分散のみ |
+| Raza-Thygesen-Naik (2026) | (n, E_g) 2Dマップ | 半導体/誘電体 | **金属なし** |
+| Ravindra et al. (2007) | n-E_g関係のレビュー | 半導体のみ | レビュー |
+
+**特筆**:
+- **Raza et al. (2026)** は super-Mossian材料の(n, E_g)マップを作成。最新かつ最近接だが金属を含まない
+- **光沢の微視的理論**: Drudeモデル以降の現代的第一原理理論は**存在しない**
+- **Levine-Louie (1982)** は概念的に最も近い祖先。gap→0でLindhard関数に接続するが、分類フレームワークではなく交換相関ポテンシャルの構築が目的
+
+### E. Miedema n_ws の物理的起源 ✅
+
+**結論: 「n_wsが電子非局在化を反映する」という主張は未踏。**
+
+**最重要発見 — Williams, Gelatt & Moruzzi (1980) PRL 44, 429:**
+> Miedemaの物理描像は "inappropriate" である。n_wsの経験的成功はd-band hybridizationのトレンドを暗黙に取り込んでいるから。
+
+- Miedema自身: n_wsは「WS境界の電荷密度」と定義。なぜ元素ごとに異なるかは説明せず
+- Williams et al. (1980): 自己無撞着バンド計算でn_wsの描像が不適切と示した。**しかし「正しい微視的変数」は提案していない**
+- Rousseau & Ashcroft (2008): WS格子内の電子局在化/非局在化を研究。Miedemaやγへの接続なし
+
+**Paper 2への推奨フレーミング:**
+> 「Williams et al. (1980)が提起した45年来の未解決問題 — Miedemaのn_wsの物理的起源は何か — に対して、電子非局在化指標δが回答を与える」
+
+これは既存の批判に応える形なので、非常に強いポジショニングになる。
+
+---
+
+## 新たに引用すべき論文リスト
+
+### Paper 1 (光学)
+| 論文 | 理由 |
+|-----|------|
+| Levine & Louie (1982) PRB 25, 6310 | gap→金属の連続的誘電関数。1変数モデルとの差別化 |
+| Raza, Thygesen & Naik (2026) arXiv:2602.16247 | 最新のsuper-Mossian分類。半導体限定との差別化 |
+| arXiv:2405.06146 (2024) | Wannier spread ↔ 光学和則。光学側のWannier接続 |
+
+### Paper 2 (表面張力)
+| 論文 | 理由 |
+|-----|------|
+| Halas et al. (2002) Chem. Phys. 278, 111 | 自由電子カウント→表面エネルギー。引用して差別化 |
+| Williams et al. (1980) PRL 44, 429 | n_wsの物理描像批判。我々の動機付け |
+| De Santis & Resta (2000) Surf. Sci. 450, 126 | ELF@表面の唯一の先行研究。エネルギー接続なしと明記 |
+| Rousseau & Ashcroft (2008) arXiv:0804.1590 | WS格子内の局在化。物理メカニズムの裏付け |
+| Ylivainio et al. (2025) J. Phys.: CM 37, 205001 | ELF ↔ エネルギーの定量的相関（分子系）。もっともらしさの傍証 |
+| Baranov & Kohout (2011) JCC 32 | 固体の非局在化指標実装。表面エネルギー接続なしと明記 |
+
+---
+
+## Red Flag チェック
+
+| Red Flag | 結果 |
+|----------|------|
+| IPR/ELF/Wannier spread → 表面張力の先行研究 | ❌ 発見されず |
+| 2変数光学分類フレームワーク | ❌ 発見されず |
+| 光沢の微視的理論（Fresnel以降） | ❌ 発見されず |
+| n_ws ↔ 非局在化の主張 | ❌ 発見されず |
+
+## Green Flag チェック
+
+| Green Flag | 結果 |
+|-----------|------|
+| DFTで表面エネルギー計算するが物理メカニズム不明と明記 | ✅ 多数 |
+| ELFが結合解析に使われるが表面張力には未使用 | ✅ 確認 |
+| n_wsの物理描像に疑問が呈されている（Williams 1980） | ✅ 確認 |
+| 光学分類が金属を含まない | ✅ Raza et al. (2026)で確認 |
+
+---
+
+## 次のステップ
+
+### Phase 2: Citation chain（推奨）
+1. Williams et al. (1980) の被引用リスト確認 — δに近い解決を試みた後続論文がないか
+2. De Santis & Resta (2000) の被引用リスト確認 — ELF@表面の後続研究
+3. Levine-Louie (1982) の被引用リスト確認 — 2変数への拡張を試みた論文がないか
+
+### 論文への反映
+1. Paper 2: Williams (1980) を "45年来の未解決問題" として導入に追加
+2. Paper 2: Halas (2002) を "自由電子限定の先行研究" として位置づけ
+3. Paper 1: Levine-Louie (1982), Raza et al. (2026) を "最近接先行研究" として差別化
+
+---
+
+*Generated by literature survey agents, 2026-03-30. All conclusions based on web search results; full-text reading of key papers still required for Phase 2.*

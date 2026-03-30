@@ -103,12 +103,14 @@ Miedema 自身の説明:
 
 ### 最も近い関連論文（要注意）
 
-- **ScienceDirect (2002)**: "Surface energy calculation – metals with 1 and 2 delocalized electrons per atom"
-  - 表面エネルギーを**非局在化電子の Wigner-Seitz 密度パラメータ**のみで表現できることを示す
-  - **これは我々の主張に非常に近い！** 精読が必要
-  - ただし IPR / Wannier spread は使っておらず、「非局在化電子の数」という粗い分類
+- **Halas, Durakiewicz & Joyce (2002)**: "Surface energy calculation – metals with 1 and 2 delocalized electrons per atom"
+  - Sommerfeld自由電子モデルでSEをr_sの関数として導出。s-block金属で良い一致
+  - 「非局在化電子」= 原子あたりの自由電子の**整数カウント**（Na=1, Mg=2）
+  - **IPR, ELF, Wannier spreadなど局在化指標は一切使用していない**
+  - 遷移金属には原理的に適用不可（d電子の部分的局在化を扱えない）
+  - → **引用は必要だが、我々の連続的δとは本質的に異なる**
 
-**判定: Strong green flag（完全な空白地帯。ただし2002年の論文は精読必須）**
+**判定: Strong green flag（空白地帯を確認。Halas 2002は整数カウントで我々の連続的δとは別物）**
 
 ---
 

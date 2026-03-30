@@ -1,0 +1,33 @@
+&CONTROL
+  calculation = 'scf'
+  prefix      = 'al_bulk'
+  outdir      = './tmp_al/'
+  pseudo_dir  = '../pseudo/'
+/
+&SYSTEM
+  ibrav       = 0
+  nat         = 1
+  ntyp        = 1
+  ecutwfc     = 30.0
+  ecutrho     = 240.0
+  occupations = 'smearing'
+  smearing    = 'mp'
+  degauss     = 0.02
+  nosym       = .true.
+/
+&ELECTRONS
+  conv_thr = 1.0d-8
+/
+ATOMIC_SPECIES
+  Al  26.9815  Al.pbe-n-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  -2.0250280848  0.0000000000  2.0250280848
+  0.0000000000  2.0250280848  2.0250280848
+  -2.0250280848  2.0250280848  0.0000000000
+
+ATOMIC_POSITIONS crystal
+  Al  0.0  0.0  0.0
+
+K_POINTS automatic
+  8 8 8 0 0 0

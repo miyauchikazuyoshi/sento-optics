@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix = 'k110'
+  outdir = './tmp_k/'
+  filplot = 'k110_charge.dat'
+  plot_num = 0
+/

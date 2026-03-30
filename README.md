@@ -1,20 +1,40 @@
-# sento-optics: Phenomenological Unification of Optical Response via Electron Delocalization
+# sento-optics: Electronic Delocalization as a Unifying Descriptor for Interface Properties
 
-> **"Why do liquids shine?"** — A question born in a Japanese *sentō* (public bathhouse), March 27, 2026.
+> **"What is a liquid, really?"** — A question born in a Japanese *sentō* (public bathhouse), March 27, 2026.
 
-## Core Thesis
+## Origin
 
-The macroscopic optical response of materials — transparent, colored, black, or lustrous — can be phenomenologically unified using two variables:
+Staring at the bathwater surface, two observations:
 
-- **δ (delocalization index):** How freely electrons move (quantified via band width, effective mass, or band gap as proxies)
+1. **Liquids shine.** The water surface reflects light coherently, just like a metal mirror.
+2. **Liquids have surface tension.** The water holds its shape against gravity, forming a meniscus.
+
+Both are *interface properties* — they arise where one phase meets another.
+Both are well-described macroscopically (Fresnel equations, Young-Laplace equation).
+But neither has a satisfying *microscopic* explanation rooted in electronic structure.
+
+Existing definitions of "liquid" are macroscopic: "a state that has definite volume but no definite shape." What is the microscopic definition? What *electronic* property makes a liquid a liquid?
+
+### The Hypothesis
+
+These interface properties can be unified through a single variable: the **spatial delocalization of constituent particles** — defined as an inter-particle interaction quantity that governs the existence probability of particles at interfaces.
+
+- **Luster** = preservation of photon phase coherence at the interface. Delocalized particles (free electrons in metals, free molecules in liquids) respond collectively, maintaining coherence. Localized particles respond incoherently — no luster.
+- **Surface tension** = the thermodynamic cost of creating an interface. How much charge reaches the cell boundary (Miedema's n_ws) is determined by how delocalized the valence electrons are.
+
+Both chains start from the same electronic property **δ** (delocalization index):
+
+```
+Optical response:   δ × D_eff → ε(ω) → R(ω)
+Surface tension:    δ → n_ws → γ
+```
+
+## Framework
+
+Two variables classify the macroscopic optical response of materials — transparent, colored, black, or lustrous:
+
+- **δ (delocalization index):** How freely electrons move (quantified via IPR, Wannier spread, band width, or inverse effective mass)
 - **D_eff (effective optical conduction dimensionality):** In how many spatial directions those free electrons can respond to photons
-
-### Key Insight
-
-**Luster is the preservation of photon phase coherence at an interface.** What preserves phase coherence? The freedom of constituent particles:
-- In metals, free electrons (high δ_elec) respond collectively → coherent reflection
-- In liquids, free molecules (high δ_nuc) self-smooth the interface → coherent reflection
-- In insulators, localized particles respond incoherently → no luster
 
 Band gap *E*_g alone cannot explain why graphite (E_g ≈ 0) is black while metals (E_g = 0) are shiny. The δ × D_eff framework resolves this: graphite has D_eff = 2 (in-plane only), while metals have D_eff = 3.
 
@@ -56,35 +76,32 @@ Band gap *E*_g alone cannot explain why graphite (E_g ≈ 0) is black while meta
 sento-optics/
 ├── README.md                        # This file
 ├── README_ja.md                     # Japanese README
-├── theory/
+├── theory/                          # Theoretical framework
 │   ├── 01_core_framework.md         # Core framework: δ × D_eff
 │   ├── 02_glossiness_theory.md      # Phenomenological redescription of luster
 │   ├── 04_falsification.md          # Falsification conditions
-│   └── extensions/                  # Beyond main paper scope (future work)
-│       ├── 03_phase_unification.md  # Continuous unification of phases
-│       └── 05_gedig_connection.md   # Connection to geDIG
-├── data/
+│   └── extensions/                  # Beyond main paper scope
+├── data/                            # Literature data
 │   ├── carbon_allotropes.md         # Carbon allotrope optical data
-│   ├── dataset_v1.csv               # Quantitative dataset (open)
-│   ├── delta_proxy_database.md      # δ proxy values from literature
-│   └── supporting_evidence.md       # Supporting evidence (Ga, NH₃, etc.)
+│   ├── dataset_v1.csv               # Quantitative dataset
+│   └── delta_proxy_database.md      # δ proxy values from literature
 ├── simulation/
-│   ├── algorithm_spec.md            # Simulation algorithm specification
-│   ├── delocalization_optics_v2.py  # Proof-of-concept TB models
-│   ├── classification_v2.py         # Decision tree & statistical validation
-│   ├── plot_delta_deff_map.py       # δ × D_eff map plotting
-│   ├── plot_figures_en.py           # English figure generation
-│   ├── quantitative_validation.py   # Quantitative validation scripts
-│   └── figures/                     # Generated figures (9 total)
-├── review/
-│   └── reviewer_response.md         # Review feedback and responses
-├── references/
-│   └── bibliography.md              # Full bibliography
-└── drafts/
-    ├── main.tex                     # LaTeX manuscript draft
-    ├── main.pdf                     # Compiled PDF
-    ├── references.bib               # BibTeX references
-    └── paper_skeleton.md            # Paper skeleton (Japanese)
+│   ├── delocalization_optics_v2.py  # Paper 1: TB models for optical response
+│   ├── classification_v2.py         # Paper 1: Decision tree validation
+│   └── surface_tension/             # Paper 2: Surface tension via δ
+│       └── qe_slab/                 # DFT slab calculations (QE)
+│           ├── *_scf.in, *_pp.in    # 5-metal slab inputs (Na,K,Al,Cu,Zn)
+│           ├── plot_valence_ablation.py  # Ablation: full vs valence density
+│           └── wannier/             # MLWF spread calculations
+│               ├── run_wannier_all.py   # Wannier90 pipeline for 5 metals
+│               └── plot_wannier_summary.py  # Wannier spread analysis
+├── drafts/
+│   ├── main.tex                     # Paper 1: Optical classification (LaTeX)
+│   └── paper2_surface_tension/      # Paper 2: Surface tension
+│       ├── main.tex                 # Paper 2 manuscript (v4)
+│       └── references.bib           # Paper 2 bibliography
+└── review/
+    └── reviewer_response.md         # Review feedback and responses
 ```
 
 ## Key Predictions (Testable)
@@ -104,30 +121,42 @@ Surface tension γ is another interface property governed by electronic structur
 
 where δ_IPR (inverse participation ratio of Kohn–Sham orbitals) determines how much charge reaches the Wigner–Seitz cell boundary (Miedema's n_ws), which in turn determines surface tension.
 
-**Key results so far:**
-- DFT calculations on 11 metal dimers show r = 0.84 (p = 0.001) between δ_IPR and boundary electron density
-- δ_IPR is mathematically distinct from normalized density n/n̄ (mean r = 0.10, DFT verified)
-- The Al/Zn problem (Δr_s = 2.4%, Δγ = 46%) is qualitatively explained by sp vs. d-electron delocalization
+**Key results:**
+- DFT calculations on 11 metal dimers: r = 0.84 (p = 0.001) between δ_IPR and boundary electron density
+- **5-metal slab calculations** (Na, K, Al, Cu, Zn): valence electron decomposition shows sp metals have near-uniform interstitial density (Na: 1.09, K: 1.13, Al: 0.96) while d-metals show strong depletion (Cu: 0.33, Zn: 0.28) — a 3.5× ratio
+- **Ablation study**: full-electron density *masks* this trend for alkali metals (core electron contamination); valence decomposition recovers the correct sp > d ordering for all five metals
+- **Wannier spread** (MLWF, bulk calculations): sp metals (Al: 12.9, Na: 11.7 Å²) have 6–19× larger average spreads than d-metals (Cu: 1.9, Zn: 0.7 Å²), confirming the delocalization hierarchy without invoking surfaces
 
 **Current limitations (honestly stated):**
-- The δ_IPR → n_ws correlation uses isolated dimers as proxies for bulk metals — slab calculations are needed
-- δ does not yet *predict* γ better than Miedema's established n_ws model
+- δ does not yet *predict* γ better than Miedema's established n_ws model — it is an *explanatory* descriptor, not a predictive one
 - The "bridge" between optical response and surface tension is conceptual, not yet quantitative
 - Several initial hypotheses were falsified by self-criticism tests (γ ∝ ∫(dδ/dz)², water density anomaly prediction)
-- See `drafts/paper2_surface_tension/THEORY_NOTES.md` for the full research map
 
 **The bigger picture:** Both reflectivity R and surface tension γ are responses of the *same* electronic discontinuity at an interface — photons probe it electromagnetically, surface area changes probe it thermodynamically. No existing framework connects these two interface properties through a single electronic descriptor. δ is a candidate for that connection.
 
+### Microscopic Redefinition of "Liquid" (Paper 3 — planned)
+
+The original question: what *is* a liquid, microscopically?
+
+Existing definitions are macroscopic ("definite volume, no definite shape"). We propose that the liquid state can be characterized microscopically through nuclear delocalization δ_nuc — the spatial freedom of nuclei/molecules — which determines interface coherence and surface tension simultaneously.
+
+- **Liquid Ga**: reflectivity jumps at melting → nuclear delocalization onset
+- **Water**: anomalous surface tension from hydrogen-bond network (δ_nuc constrained)
+- **Liquid metals**: high γ from electronic delocalization + nuclear freedom
+
 ### Other future directions
 
-- **Liquid luster:** Extension to nuclear delocalization δ_nuc (liquid Ga reflectivity jump at melting)
 - **Catalysis:** δ_surface as predictor of catalytic activity (connection to d-band center theory)
 - **Interface phenomena:** Δδ at heterointerfaces as a driving force for novel optical response
 - **Inverse design:** From desired optical response → required (δ, D_eff) → material structure
 
 ## AI Usage Disclosure
 
-The core hypothesis ("particle freedom determines photon coherence preservation") was conceived by the author. Experimental design, literature data collection, quantitative validation, code development, and manuscript drafting were conducted with substantial AI assistance (Claude, Anthropic). The author independently verifies all datasets and code. Full scientific responsibility rests with the author.
+**Author's original intuition (steps 1–5):**
+The origin question ("What is a liquid?"), the two observations at the bathhouse (luster + surface tension), the recognition that both are interface properties lacking microscopic explanations, and the hypothesis that particle delocalization δ unifies them — these were conceived entirely by the author.
+
+**AI-assisted formalization (step 6 onward):**
+The translation of these intuitions into a quantitative framework — tight-binding simulations, DFT slab calculations, valence electron decomposition, Wannier spread analysis, statistical validation, self-criticism tests, and manuscript drafting — was carried out collaboratively with Claude (Anthropic). The author independently verifies all datasets, code, and scientific claims. Full scientific responsibility rests with the author.
 
 ## How to Cite
 

@@ -1,0 +1,33 @@
+&CONTROL
+  calculation = 'scf'
+  prefix      = 'k_bulk'
+  outdir      = './tmp_k/'
+  pseudo_dir  = '../pseudo/'
+/
+&SYSTEM
+  ibrav       = 0
+  nat         = 1
+  ntyp        = 1
+  ecutwfc     = 30.0
+  ecutrho     = 240.0
+  occupations = 'smearing'
+  smearing    = 'mp'
+  degauss     = 0.02
+  nosym       = .true.
+/
+&ELECTRONS
+  conv_thr = 1.0d-8
+/
+ATOMIC_SPECIES
+  K  39.0983  K.pbe-spn-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  2.6121235074  2.6121235074  2.6121235074
+  -2.6121235074  2.6121235074  2.6121235074
+  -2.6121235074  -2.6121235074  2.6121235074
+
+ATOMIC_POSITIONS crystal
+  K  0.0  0.0  0.0
+
+K_POINTS automatic
+  8 8 8 0 0 0

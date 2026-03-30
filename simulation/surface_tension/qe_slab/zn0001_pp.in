@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix = 'zn0001'
+  outdir = './tmp/'
+  filplot = 'zn0001_charge.dat'
+  plot_num = 0
+/

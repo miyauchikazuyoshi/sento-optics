@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix = 'al111'
+  outdir = './tmp/'
+  filplot = 'al111_charge.dat'
+  plot_num = 0
+/

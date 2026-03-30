@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix = 'na110'
+  outdir = './tmp/'
+  filplot = 'na110_charge.dat'
+  plot_num = 0
+/

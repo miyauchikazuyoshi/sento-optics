@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix = 'cu111'
+  outdir = './tmp_cu/'
+  filplot = 'cu111_charge.dat'
+  plot_num = 0
+/

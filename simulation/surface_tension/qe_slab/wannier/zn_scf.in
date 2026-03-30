@@ -1,0 +1,34 @@
+&CONTROL
+  calculation = 'scf'
+  prefix      = 'zn_bulk'
+  outdir      = './tmp_zn/'
+  pseudo_dir  = '../pseudo/'
+/
+&SYSTEM
+  ibrav       = 0
+  nat         = 2
+  ntyp        = 1
+  ecutwfc     = 40.0
+  ecutrho     = 320.0
+  occupations = 'smearing'
+  smearing    = 'mp'
+  degauss     = 0.02
+  nosym       = .true.
+/
+&ELECTRONS
+  conv_thr = 1.0d-8
+/
+ATOMIC_SPECIES
+  Zn  65.38  Zn.pbe-dn-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  2.6650000000  0.0000000000  0.0000000000
+  -1.3325000000  2.3079577011  0.0000000000
+  0.0000000000  0.0000000000  4.9470000000
+
+ATOMIC_POSITIONS crystal
+  Zn  0.333333  0.666667  0.25
+  Zn  0.666667  0.333333  0.75
+
+K_POINTS automatic
+  8 8 8 0 0 0

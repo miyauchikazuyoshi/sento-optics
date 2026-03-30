@@ -1,0 +1,8 @@
+&inputpp
+  outdir   = './tmp_k/'
+  prefix   = 'k_bulk'
+  seedname = 'k'
+  write_mmn = .true.
+  write_amn = .true.
+  write_unk = .false.
+/

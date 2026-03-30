@@ -1,0 +1,42 @@
+Basis set convergence for δ_IPR (11 homonuclear dimers)
+============================================================
+
+def2-svp: r(δ,boundary_ratio) = 0.843 (p=0.0011), N=11
+  Li  : δ=0.1317, ratio=0.4187, N_AO=18
+  Na  : δ=0.0735, ratio=0.0920, N_AO=30
+  Be  : δ=0.1555, ratio=0.7561, N_AO=18
+  Mg  : δ=0.0687, ratio=0.3214, N_AO=36
+  Al  : δ=0.0649, ratio=0.4027, N_AO=36
+  K   : δ=0.0441, ratio=0.0557, N_AO=48
+  Ca  : δ=0.0525, ratio=0.1639, N_AO=48
+  Cu  : δ=0.0402, ratio=0.0586, N_AO=62
+  Zn  : δ=0.0395, ratio=0.0750, N_AO=62
+  Si  : δ=0.0707, ratio=0.4703, N_AO=36
+  Ga  : δ=0.0470, ratio=0.1371, N_AO=64
+
+def2-tzvp: r(δ,boundary_ratio) = 0.719 (p=0.0127), N=11
+  Li  : δ=0.1635, ratio=0.4132, N_AO=28
+  Na  : δ=0.0446, ratio=0.0977, N_AO=64
+  Be  : δ=0.1344, ratio=0.7850, N_AO=38
+  Mg  : δ=0.0533, ratio=0.3140, N_AO=64
+  Al  : δ=0.0527, ratio=0.3995, N_AO=74
+  K   : δ=0.0408, ratio=0.0591, N_AO=66
+  Ca  : δ=0.0381, ratio=0.1693, N_AO=72
+  Cu  : δ=0.0405, ratio=0.0611, N_AO=90
+  Zn  : δ=0.0340, ratio=0.0707, N_AO=96
+  Si  : δ=0.0514, ratio=0.4484, N_AO=74
+  Ga  : δ=0.0368, ratio=0.1390, N_AO=96
+
+def2-qzvp: r(δ,boundary_ratio) = 0.820 (p=0.0020), N=11
+  Li  : δ=0.0511, ratio=0.4572, N_AO=70
+  Na  : δ=0.0347, ratio=0.1000, N_AO=92
+  Be  : δ=0.0837, ratio=0.7942, N_AO=72
+  Mg  : δ=0.0281, ratio=0.3209, N_AO=102
+  Al  : δ=0.0282, ratio=0.4031, N_AO=140
+  K   : δ=0.0236, ratio=0.0592, N_AO=112
+  Ca  : δ=0.0284, ratio=0.1756, N_AO=112
+  Cu  : δ=0.0194, ratio=0.0658, N_AO=168
+  Zn  : δ=0.0209, ratio=0.0705, N_AO=168
+  Si  : δ=0.0250, ratio=0.4504, N_AO=140
+  Ga  : δ=0.0272, ratio=0.1362, N_AO=150
+

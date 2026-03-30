@@ -48,7 +48,7 @@ Band gap *E*_g alone cannot explain why graphite (E_g ≈ 0) is black while meta
 
 | Milestone | Result |
 |-----------|--------|
-| E_g + D_eff decision tree → optical class | **7/7 correct** (100%) — requires layer count N for graphene/graphite distinction |
+| E_g + D_eff decision tree → optical class | **6/7 correct** (85.7%) — 7/7 with layer count N as third variable |
 | δ(1/m*) × D_eff machine classification | **3/7** (42.9%) — threshold-sensitive; graphene-graphite problem is a genuine limitation |
 | δ proxy intercorrelation | **r = 0.73–0.89** (3 independent proxies) |
 | δ–E_g inverse correlation | **r = −0.70** (literature data), **r = −0.86** (TB model) |

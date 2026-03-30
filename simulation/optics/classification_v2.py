@@ -6,8 +6,8 @@ Two classification approaches are compared:
 1. E_g + D_eff decision tree (physics-based, no fitted thresholds)
 2. δ(1/m*) × D_eff machine classification (threshold-based)
 
-The decision tree achieves 7/7 (100%) but requires layer count N
-for the graphene/graphite distinction.
+The decision tree achieves 6/7 (85.7%) with E_g + D_eff alone;
+7/7 (100%) when layer count N is added as a third variable.
 The δ×D_eff machine classifier achieves 4-5/7 depending on thresholds,
 exposing the graphene-graphite problem as a genuine limitation.
 

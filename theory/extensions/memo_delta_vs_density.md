@@ -154,7 +154,121 @@ provide a bridge to entanglement-based descriptions of phases
 
 ---
 
-*This memo records the author's insight (2026-03-31): the conceptual
-distinction between n(r) as a classical variable and δ as a quantum
-variable. The claim that δ is "more natural" is a physical intuition,
-not a theorem.*
+## Addendum: Probability Density vs Statistics of Probability Density
+
+### The distinction
+
+|ψ|² is the probability density --- this is Born's rule, foundational
+to quantum mechanics. n(r) = Σ|ψ_i(r)|² is its many-electron version.
+DFT uses this probability density as its fundamental variable. So in
+one sense, probability density functions are already central to
+condensed matter physics.
+
+But there is a crucial distinction between using the **distribution
+itself** and using **statistics of the distribution**:
+
+| Level | Statistics analogy | Condensed matter |
+|-------|-------------------|------------------|
+| Raw data | All samples | Wavefunction ψ(r) |
+| Distribution | p(x) | Electron density n(r) = \|ψ\|² |
+| **Summary statistics** | Variance, entropy, kurtosis | **← systematically underused** |
+
+In statistics, given a distribution p(x), one routinely computes
+summary statistics: mean, variance, skewness, kurtosis, entropy.
+These compress the full distribution into informative scalars.
+
+In condensed matter, the community has the distribution n(r) but has
+not systematically used its statistical properties as material
+descriptors for macroscopic predictions.
+
+### What δ_IPR actually is
+
+δ is not the probability density. It is a **statistic** of the
+probability density:
+
+```
+n(r)    = the distribution itself (3D field, infinite information)
+IPR     = Σ p_i² = "collision probability" (a single number)
+H₂      = -ln(IPR) = Rényi entropy of order 2
+δ_IPR   = 1/(N · IPR) = "effective number of sites occupied"
+```
+
+In the language of statistics:
+- n(r) is the PDF
+- IPR is the second moment of the squared probability (measures peakedness)
+- δ is the exponential of the entropy (measures effective support size)
+
+### Where distribution statistics ARE used in physics
+
+The idea is not entirely absent, but it remains confined to
+specialized subfields as a diagnostic tool, not as a predictor
+of macroscopic properties:
+
+| Field | Statistic used | Purpose |
+|-------|---------------|---------|
+| Anderson localization | IPR | Diagnose localized vs extended states |
+| Multifractal analysis | Generalized IPR (Rényi family) | Structure of critical wavefunctions |
+| Quantum information | Entanglement entropy | Classify topological order |
+| Electron localization function (ELF) | Kinetic energy density ratio | Visualize chemical bonds |
+
+In all these cases, the statistic is used to **diagnose a state**
+(is this state localized? is this phase topological?), NOT to
+**predict a macroscopic property** (does this material have luster?
+what is its surface tension?).
+
+### The novelty of δ as a material descriptor
+
+```
+Quantum mechanics  → defines |ψ|² (probability density)
+       ↓
+DFT               → uses n(r) = Σ|ψ_i|² to determine ground-state
+                     properties (Hohenberg-Kohn theorem)
+       ↓
+Anderson localization → uses IPR = Σ|ψ_i|⁴ to diagnose
+                        localization transitions
+       ↓
+δ framework        → uses IPR as a predictor of macroscopic
+                     material properties (luster, surface tension,
+                     phase identity) ← THIS STEP IS NEW
+```
+
+The gap between "IPR diagnoses localization" and "IPR predicts
+surface tension" is where the δ framework lives. It is a natural
+step --- given a probability distribution, computing its entropy
+and correlating with observables is standard practice in data
+science --- but it has not been taken in condensed matter physics.
+
+### Why this gap existed
+
+Possible reasons why the step from "distribution" to "statistics
+of distribution" was not taken earlier:
+
+1. **n(r) is already overwhelming.** The 3D electron density field
+   contains so much information that the impulse is to compute
+   MORE from it (forces, phonons, band structure), not to compress
+   it into a single number.
+
+2. **Reductionist tradition.** Condensed matter physics traditionally
+   seeks mechanisms (electron-phonon coupling → superconductivity,
+   exchange interaction → magnetism), not statistical descriptors.
+   A single-number descriptor feels "too simple" to be explanatory.
+
+3. **Basis dependence of IPR.** IPR depends on the choice of basis
+   (atomic orbitals vs plane waves), which makes physicists uneasy
+   about using it as a fundamental quantity. (But effective mass and
+   band gap are also model-dependent, and nobody hesitates to use
+   them.)
+
+4. **Disciplinary boundaries.** Information-theoretic measures of
+   wavefunctions are studied in quantum information theory. Material
+   properties are studied in condensed matter and materials science.
+   The two communities rarely interact on this level.
+
+---
+
+*This memo records the author's insights (2026-03-31). Part 1:
+the conceptual distinction between n(r) as a classical variable and
+δ as a quantum variable. Part 2: the distinction between using
+probability densities (standard in QM/DFT) and using statistics of
+probability densities as macroscopic predictors (novel in the δ
+framework). Both claims are physical intuitions, not theorems.*

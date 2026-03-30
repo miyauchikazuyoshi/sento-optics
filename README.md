@@ -74,34 +74,40 @@ Band gap *E*_g alone cannot explain why graphite (E_g ≈ 0) is black while meta
 
 ```
 sento-optics/
-├── README.md                        # This file
-├── README_ja.md                     # Japanese README
-├── theory/                          # Theoretical framework
-│   ├── 01_core_framework.md         # Core framework: δ × D_eff
-│   ├── 02_glossiness_theory.md      # Phenomenological redescription of luster
-│   ├── 04_falsification.md          # Falsification conditions
-│   └── extensions/                  # Beyond main paper scope
-├── data/                            # Literature data
-│   ├── carbon_allotropes.md         # Carbon allotrope optical data
-│   ├── dataset_v1.csv               # Quantitative dataset
-│   └── delta_proxy_database.md      # δ proxy values from literature
+├── README.md                           # This file
+├── README_ja.md                        # Japanese README
+├── theory/                             # Theoretical framework
+│   ├── 01_core_framework.md            #   δ × D_eff core
+│   ├── 02_glossiness_theory.md         #   Luster as coherence preservation
+│   ├── 04_falsification.md             #   Falsification conditions
+│   └── extensions/                     #   Future scope (phase unification, etc.)
+├── data/                               # Literature data
+│   ├── carbon_allotropes.md
+│   ├── dataset_v1.csv
+│   └── delta_proxy_database.md
 ├── simulation/
-│   ├── delocalization_optics_v2.py  # Paper 1: TB models for optical response
-│   ├── classification_v2.py         # Paper 1: Decision tree validation
-│   └── surface_tension/             # Paper 2: Surface tension via δ
-│       └── qe_slab/                 # DFT slab calculations (QE)
-│           ├── *_scf.in, *_pp.in    # 5-metal slab inputs (Na,K,Al,Cu,Zn)
-│           ├── plot_valence_ablation.py  # Ablation: full vs valence density
-│           └── wannier/             # MLWF spread calculations
-│               ├── run_wannier_all.py   # Wannier90 pipeline for 5 metals
-│               └── plot_wannier_summary.py  # Wannier spread analysis
+│   ├── optics/                         # Paper 1: Optical response
+│   │   ├── delocalization_optics_v2.py #   TB models (graphene, diamond, C60, 1D)
+│   │   ├── classification_v2.py        #   Decision tree validation
+│   │   ├── plot_*.py                   #   Figure generation
+│   │   └── figures/                    #   Generated plots
+│   └── surface_tension/               # Paper 2: Surface tension
+│       ├── test1–7_*.py                #   Self-criticism tests
+│       └── qe_slab/                    #   DFT slab calculations (QE)
+│           ├── *_scf.in                #     5-metal slab inputs
+│           ├── plot_valence_ablation.py #    Ablation: full vs valence
+│           └── wannier/                #     MLWF spread calculations
+│               ├── run_wannier_all.py  #       Wannier90 pipeline
+│               └── plot_wannier_summary.py
 ├── drafts/
-│   ├── main.tex                     # Paper 1: Optical classification (LaTeX)
-│   └── paper2_surface_tension/      # Paper 2: Surface tension
-│       ├── main.tex                 # Paper 2 manuscript (v4)
-│       └── references.bib           # Paper 2 bibliography
+│   ├── paper1_optics/                  # Paper 1 manuscript
+│   │   ├── main.tex, main_v5.tex
+│   │   └── references.bib
+│   └── paper2_surface_tension/         # Paper 2 manuscript
+│       ├── main.tex                    #   v4 (with Wannier results)
+│       └── references.bib
 └── review/
-    └── reviewer_response.md         # Review feedback and responses
+    └── reviewer_response.md
 ```
 
 ## Key Predictions (Testable)

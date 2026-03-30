@@ -96,27 +96,33 @@ sento-optics/
 │   ├── 02_glossiness_theory.md      # 光沢の現象論的再記述
 │   ├── 04_falsification.md          # 反証条件
 │   └── extensions/                  # 主論文スコープ外
-├── data/                            # 文献データ
-│   ├── carbon_allotropes.md         # 炭素同素体の光学データ
-│   ├── dataset_v1.csv               # 定量データセット
-│   └── delta_proxy_database.md      # δ代理変数データベース
+├── data/                               # 文献データ
+│   ├── carbon_allotropes.md
+│   ├── dataset_v1.csv
+│   └── delta_proxy_database.md
 ├── simulation/
-│   ├── delocalization_optics_v2.py  # Paper 1: TBモデル
-│   ├── classification_v2.py         # Paper 1: 決定木検証
-│   └── surface_tension/             # Paper 2: 表面張力
-│       └── qe_slab/                 # DFTスラブ計算（QE）
-│           ├── *_scf.in, *_pp.in    # 5金属スラブ入力
-│           ├── plot_valence_ablation.py  # アブレーション分析
-│           └── wannier/             # MLWF spread計算
-│               ├── run_wannier_all.py   # Wannier90パイプライン
-│               └── plot_wannier_summary.py  # Wannier spread分析
+│   ├── optics/                         # Paper 1: 光学応答
+│   │   ├── delocalization_optics_v2.py #   TBモデル（グラフェン等）
+│   │   ├── classification_v2.py        #   決定木検証
+│   │   ├── plot_*.py                   #   図生成
+│   │   └── figures/                    #   生成図
+│   └── surface_tension/               # Paper 2: 表面張力
+│       ├── test1–7_*.py                #   自己批判テスト
+│       └── qe_slab/                    #   DFTスラブ計算（QE）
+│           ├── *_scf.in                #     5金属スラブ入力
+│           ├── plot_valence_ablation.py #    アブレーション分析
+│           └── wannier/                #     MLWF spread計算
+│               ├── run_wannier_all.py  #       Wannier90パイプライン
+│               └── plot_wannier_summary.py
 ├── drafts/
-│   ├── main.tex                     # Paper 1: 光学分類（LaTeX）
-│   └── paper2_surface_tension/      # Paper 2: 表面張力
-│       ├── main.tex                 # Paper 2原稿 (v4)
-│       └── references.bib           # Paper 2参考文献
+│   ├── paper1_optics/                  # Paper 1 原稿
+│   │   ├── main.tex, main_v5.tex
+│   │   └── references.bib
+│   └── paper2_surface_tension/         # Paper 2 原稿
+│       ├── main.tex                    #   v4（Wannier結果含む）
+│       └── references.bib
 └── review/
-    └── reviewer_response.md         # レビュー指摘と対応
+    └── reviewer_response.md
 ```
 
 ## AI利用開示

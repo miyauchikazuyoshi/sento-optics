@@ -27,6 +27,18 @@ simulation/surface_tension/qe_slab/*.dat
 simulation/surface_tension/qe_slab/*.out
 simulation/surface_tension/qe_slab/*_pdos*
 simulation/surface_tension/qe_slab/*_charge.dat
+
+# Wannier90 calculation outputs (large binary/intermediate files)
+simulation/surface_tension/qe_slab/wannier/tmp_*/
+simulation/surface_tension/qe_slab/wannier/*.amn
+simulation/surface_tension/qe_slab/wannier/*.mmn
+simulation/surface_tension/qe_slab/wannier/*.chk
+simulation/surface_tension/qe_slab/wannier/*.eig
+simulation/surface_tension/qe_slab/wannier/*.nnkp
+simulation/surface_tension/qe_slab/wannier/*.wout
+simulation/surface_tension/qe_slab/wannier/*_scf.out
+simulation/surface_tension/qe_slab/wannier/*_nscf.out
+simulation/surface_tension/qe_slab/wannier/*_pw2wan.out
 *.aux
 *.bbl
 *.blg

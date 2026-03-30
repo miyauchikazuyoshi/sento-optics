@@ -20,8 +20,8 @@
 
 \preprint{Draft v5}
 
-\title{Electronic Delocalization as a Descriptor for Surface Tension: \\
-Connecting Inverse Participation Ratio to Miedema's Boundary Density}
+\title{What Does Miedema's Boundary Electron Density Measure? \\
+Valence Electron Delocalization as the Physical Origin of~$n_\mathrm{ws}$}
 
 \author{Kazuyoshi Miyauchi}
 \affiliation{Independent researcher}
@@ -60,10 +60,16 @@ independently confirm this hierarchy: sp metals
 have 6--19$\times$ larger average spreads than $d$-metals
 (Cu: 1.9, Zn: 0.7~\AA$^2$), providing a bulk-only measure
 of delocalization without invoking surfaces.
-This establishes that Miedema's~$n_\mathrm{ws}$ is a proxy for
-\emph{valence} electron delocalization, connecting surface
-tension to the same~$\delta$ that classifies optical response
-(Paper~I) through a common electronic-structure variable.
+These results establish that Miedema's~$n_\mathrm{ws}$
+is a proxy for \emph{valence} electron delocalization:
+$n_\mathrm{ws}$ is high not because the total electron count
+is high, but because delocalized valence electrons spread
+uniformly to cell boundaries.
+This reinterpretation answers the question raised by
+Williams, Gelatt, and Moruzzi [PRL 44, 429 (1980)]
+regarding the physical meaning of~$n_\mathrm{ws}$,
+and connects surface tension to the same~$\delta$ that
+classifies optical response (Paper~I).
 \end{abstract}
 
 \pacs{68.03.Cd, 71.15.Mb, 73.20.At, 31.15.E-}
@@ -260,10 +266,10 @@ we define the Mulliken-weighted IPR as
                         {\left(\sum_\mu p_\mu^{(n)}\right)^2},
   \label{eq:ipr_def}
 \end{equation}
-where $p_\mu^{(n)} = |c_{n\mu}|^2 S_{\mu\mu}$ is the Mulliken
-population of orbital~$n$ on basis function~$\mu$,
-$c_{n\mu} = \langle \mu | \psi_n \rangle$ is the expansion
-coefficient, and $S_{\mu\mu}$ is the diagonal overlap matrix element.
+where $p_\mu^{(n)} = c_{n\mu} (\mathbf{S} \mathbf{c}_n)_\mu$ is the
+Mulliken population of orbital~$n$ on basis function~$\mu$,
+$c_{n\mu}$ is the expansion coefficient of~$|\psi_n\rangle$
+in the atom-centered basis, and $\mathbf{S}$ is the overlap matrix.
 A perfectly delocalized state has
 $\mathrm{IPR} = 1/N_\mathrm{AO}$, while a state localized on a
 single basis function has $\mathrm{IPR} = 1$.
@@ -1000,7 +1006,7 @@ is, to our knowledge, entirely unexplored:
     used for the integrated local density of states.
     Sensitivity tests shifting the lower bound by
     $\pm 2$--$3$~eV show that the results are remarkably
-    robust: Al (0.981), Cu (0.326), and Zn (0.529) are
+    robust: Al (0.981), Cu (0.326), and Zn (0.279) are
     completely insensitive to window choice within
     $\pm 3$~eV, while Na shows a small decrease (1.066
     to 1.061) only at the most aggressive shift (+3~eV).

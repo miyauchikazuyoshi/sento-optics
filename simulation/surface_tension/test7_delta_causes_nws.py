@@ -44,12 +44,17 @@ except ImportError:
 
 
 def compute_cluster_delta_and_boundary(element, n_atoms, bond_length,
-                                        basis="def2-svp", xc="pbe"):
+                                        basis="def2-svp", xc="pbe",
+                                        spin=None, charge=0,
+                                        max_cycle=150, conv_tol=1e-9):
     """
     Compute both IPR-δ and boundary density for a linear cluster.
 
     "Boundary density" = electron density at the midpoint between atoms.
     This is the cluster analog of Miedema's n_ws.
+
+    For open-shell systems (odd electron count or transition metals),
+    unrestricted KS (UKS) is used automatically.
     """
     atoms = [element] * n_atoms
     coords = np.zeros((n_atoms, 3))
@@ -61,18 +66,48 @@ def compute_cluster_delta_and_boundary(element, n_atoms, bond_length,
         for a, c in zip(atoms, coords)
     )
 
-    mol = gto.M(atom=atom_str, basis=basis, spin=0, charge=0, verbose=0)
-    mf = dft.RKS(mol)
+    # Determine spin: if not given, auto-detect from total electrons
+    if spin is None:
+        mol_tmp = gto.M(atom=atom_str, basis=basis, charge=charge, verbose=0)
+        n_elec = mol_tmp.nelectron
+        spin = n_elec % 2  # 0 for even, 1 for odd
+
+    mol = gto.M(atom=atom_str, basis=basis, spin=spin, charge=charge, verbose=0)
+
+    # Use UKS for open-shell, RKS for closed-shell
+    if spin > 0:
+        mf = dft.UKS(mol)
+    else:
+        mf = dft.RKS(mol)
     mf.xc = xc
+    mf.max_cycle = max_cycle
+    mf.conv_tol = conv_tol
     mf.kernel()
 
-    mo_coeff = mf.mo_coeff
-    mo_occ = mf.mo_occ
+    if not mf.converged:
+        raise RuntimeError(f"SCF did not converge for {element}{n_atoms}")
+
+    # Handle both RKS (single array) and UKS (tuple/list of alpha/beta)
+    mo_coeff_raw = mf.mo_coeff
+    mo_occ_raw = mf.mo_occ
+    # UKS returns tuple/list, or ndarray with ndim=3
+    is_unrestricted = (isinstance(mo_coeff_raw, (list, tuple))
+                       or (isinstance(mo_coeff_raw, np.ndarray)
+                           and mo_coeff_raw.ndim == 3))
+
+    if is_unrestricted:
+        # Combine alpha and beta for IPR analysis (use alpha channel)
+        mo_coeff = mo_coeff_raw[0]
+        mo_occ = mo_occ_raw[0]
+    else:
+        mo_coeff = mo_coeff_raw
+        mo_occ = mo_occ_raw
+
     n_occ = int(np.sum(mo_occ > 0))
     n_ao = mo_coeff.shape[0]
     S = mol.intor("int1e_ovlp")
 
-    # IPR in AO basis
+    # IPR in AO basis (alpha channel for UKS)
     iprs = []
     for n in range(n_occ):
         c_n = mo_coeff[:, n]
@@ -84,6 +119,21 @@ def compute_cluster_delta_and_boundary(element, n_atoms, bond_length,
             ipr = 1.0
         iprs.append(ipr)
 
+    # For UKS, also include beta IPR values
+    if is_unrestricted:
+        mo_coeff_b = mo_coeff_raw[1]
+        mo_occ_b = mo_occ_raw[1]
+        n_occ_b = int(np.sum(mo_occ_b > 0))
+        for n in range(n_occ_b):
+            c_n = mo_coeff_b[:, n]
+            p_mu = np.abs(c_n * (S @ c_n))
+            p_sum = p_mu.sum()
+            if p_sum > 1e-10:
+                ipr = np.sum(p_mu**2) / p_sum**2
+            else:
+                ipr = 1.0
+            iprs.append(ipr)
+
     mean_ipr = np.mean(iprs)
     delta_ipr = 1.0 / (n_ao * mean_ipr) if mean_ipr > 0 else 0.0
 
@@ -94,11 +144,19 @@ def compute_cluster_delta_and_boundary(element, n_atoms, bond_length,
     grid_points[:, 2] = z_range
     ao_vals = mol.eval_gto("GTOval_sph", grid_points)
 
+    # Compute total density from all occupied MOs (both spins)
     density = np.zeros(len(z_range))
-    for n in range(mo_coeff.shape[1]):
-        if mo_occ[n] > 0:
-            psi_n = ao_vals @ mo_coeff[:, n]
-            density += mo_occ[n] * psi_n**2
+    if is_unrestricted:
+        for s, (mc, mo) in enumerate(zip(mo_coeff_raw, mo_occ_raw)):
+            for n in range(mc.shape[1]):
+                if mo[n] > 0:
+                    psi_n = ao_vals @ mc[:, n]
+                    density += mo[n] * psi_n**2
+    else:
+        for n in range(mo_coeff.shape[1]):
+            if mo_occ[n] > 0:
+                psi_n = ao_vals @ mo_coeff[:, n]
+                density += mo_occ[n] * psi_n**2
 
     # Boundary density: density at midpoints between atoms
     boundary_densities = []
@@ -151,25 +209,39 @@ def main():
         return
 
     # Test systems: vary element and cluster size
+    # Format: (element, n_atoms, bond_length_Angstrom, kwargs_dict)
+    # Bond lengths from NIST/CRC dimer data (re values)
     systems = [
-        ("Li", 2, 2.67),
-        ("Li", 4, 2.67),
-        ("Li", 6, 2.67),
-        ("Na", 2, 3.08),
-        ("Na", 4, 3.08),
-        ("Na", 6, 3.08),
-        ("Be", 2, 2.45),   # More tightly bound
-        ("Be", 4, 2.45),
-        ("Mg", 2, 3.89),   # sp metal, larger
-        ("Mg", 4, 3.89),
+        # Original elements
+        ("Li", 2, 2.67, {}),
+        ("Li", 4, 2.67, {}),
+        ("Li", 6, 2.67, {}),
+        ("Na", 2, 3.08, {}),
+        ("Na", 4, 3.08, {}),
+        ("Na", 6, 3.08, {}),
+        ("Be", 2, 2.45, {}),   # More tightly bound
+        ("Be", 4, 2.45, {}),
+        ("Mg", 2, 3.89, {}),   # sp metal, larger
+        ("Mg", 4, 3.89, {}),
+        # New elements — dimers only (N=2 is most reliable)
+        ("Al", 2, 2.70, {"spin": 2, "max_cycle": 300, "conv_tol": 1e-8}),  # Al2: triplet, re ~ 2.70 Å
+        ("K",  2, 3.92, {}),           # K2:  re ~ 3.92 Å
+        ("Ca", 2, 4.28, {}),           # Ca2: re ~ 4.28 Å
+        ("Cu", 2, 2.22, {"spin": 0, "max_cycle": 200, "conv_tol": 1e-8}),  # Cu2: re ~ 2.22 Å
+        ("Zn", 2, 4.19, {"max_cycle": 200, "conv_tol": 1e-8}),  # Zn2: re ~ 4.19 Å (van der Waals)
+        ("Si", 2, 2.25, {"spin": 2, "max_cycle": 300, "conv_tol": 1e-8}),  # Si2: triplet ground state
+        ("Ga", 2, 2.75, {"spin": 2, "max_cycle": 300, "conv_tol": 1e-8}),  # Ga2: triplet, re ~ 2.75 Å
     ]
 
     results = []
-    for elem, n, bl in systems:
+    failed = []
+    for item in systems:
+        elem, n, bl = item[0], item[1], item[2]
+        kwargs = item[3] if len(item) > 3 else {}
         label = f"{elem}{n}"
         print(f"  Computing {label}...")
         try:
-            res = compute_cluster_delta_and_boundary(elem, n, bl)
+            res = compute_cluster_delta_and_boundary(elem, n, bl, **kwargs)
             results.append(res)
             print(f"    δ_IPR = {res['delta_ipr']:.4f}, "
                   f"n_boundary = {res['mean_boundary']:.6f}, "
@@ -177,6 +249,12 @@ def main():
                   f"ratio = {res['boundary_ratio']:.4f}")
         except Exception as e:
             print(f"    FAILED: {e}")
+            failed.append((label, str(e)))
+
+    if failed:
+        print(f"\n  --- Failed systems ({len(failed)}) ---")
+        for label, err in failed:
+            print(f"    {label}: {err}")
 
     if len(results) < 3:
         print("Too few calculations succeeded.")
@@ -265,7 +343,9 @@ def main():
 
     # Color by element
     elem_colors = {"Li": "steelblue", "Na": "orange", "Be": "green",
-                   "Mg": "purple", "Al": "red"}
+                   "Mg": "purple", "Al": "red", "K": "brown",
+                   "Ca": "darkviolet", "Cu": "darkorange", "Zn": "teal",
+                   "Si": "crimson", "Ga": "olive"}
 
     # (a) Density profiles for dimers
     ax = axes[0, 0]

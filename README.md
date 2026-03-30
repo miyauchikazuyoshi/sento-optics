@@ -96,6 +96,30 @@ sento-optics/
 
 ## Future Directions
 
+### Surface Tension via δ (Paper 2 — in progress)
+
+Surface tension γ is another interface property governed by electronic structure. We propose a causal chain:
+
+**δ_IPR → n_ws → γ**
+
+where δ_IPR (inverse participation ratio of Kohn–Sham orbitals) determines how much charge reaches the Wigner–Seitz cell boundary (Miedema's n_ws), which in turn determines surface tension.
+
+**Key results so far:**
+- DFT calculations on 11 metal dimers show r = 0.84 (p = 0.001) between δ_IPR and boundary electron density
+- δ_IPR is mathematically distinct from normalized density n/n̄ (mean r = 0.10, DFT verified)
+- The Al/Zn problem (Δr_s = 2.4%, Δγ = 46%) is qualitatively explained by sp vs. d-electron delocalization
+
+**Current limitations (honestly stated):**
+- The δ_IPR → n_ws correlation uses isolated dimers as proxies for bulk metals — slab calculations are needed
+- δ does not yet *predict* γ better than Miedema's established n_ws model
+- The "bridge" between optical response and surface tension is conceptual, not yet quantitative
+- Several initial hypotheses were falsified by self-criticism tests (γ ∝ ∫(dδ/dz)², water density anomaly prediction)
+- See `drafts/paper2_surface_tension/THEORY_NOTES.md` for the full research map
+
+**The bigger picture:** Both reflectivity R and surface tension γ are responses of the *same* electronic discontinuity at an interface — photons probe it electromagnetically, surface area changes probe it thermodynamically. No existing framework connects these two interface properties through a single electronic descriptor. δ is a candidate for that connection.
+
+### Other future directions
+
 - **Liquid luster:** Extension to nuclear delocalization δ_nuc (liquid Ga reflectivity jump at melting)
 - **Catalysis:** δ_surface as predictor of catalytic activity (connection to d-band center theory)
 - **Interface phenomena:** Δδ at heterointerfaces as a driving force for novel optical response

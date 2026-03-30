@@ -19,3 +19,18 @@ drafts/*.synctex.gz
 
 # Claude internal
 .claude/
+
+# QE slab calculation outputs (large files)
+simulation/surface_tension/qe_slab/tmp/
+simulation/surface_tension/qe_slab/pseudo/
+simulation/surface_tension/qe_slab/*.dat
+simulation/surface_tension/qe_slab/*.out
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*Notes.bib
+CRASH
+input_tmp.in
+texput.log

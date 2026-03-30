@@ -1,0 +1,56 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'al111'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 30.0
+  ecutrho      = 240.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Al  26.9815  Al.pbe-n-kjpaw_psl.1.0.0.UPF
+
+! Al FCC: a = 4.05 Ang
+! (111) surface: in-plane lattice = a/sqrt(2) = 2.863 Ang
+! interlayer spacing d = a/sqrt(3) = 2.338 Ang
+! 7 layers + 15 Ang vacuum
+
+CELL_PARAMETERS angstrom
+  2.8635  0.0000  0.0000
+  1.4318  2.4801  0.0000
+  0.0000  0.0000  31.3660
+
+! 7 Al layers (ABC stacking) + vacuum
+! Layer positions: 0, d, 2d, ..., 6d with d = 2.338 Ang
+! Centered in the slab region
+
+ATOMIC_POSITIONS angstrom
+  Al  0.0000  0.0000   0.0000
+  Al  1.4318  0.8267   2.3380
+  Al  0.0000  1.6534   4.6760
+  Al  0.0000  0.0000   7.0140
+  Al  1.4318  0.8267   9.3520
+  Al  0.0000  1.6534  11.6900
+  Al  0.0000  0.0000  14.0280
+
+K_POINTS automatic
+  8 8 1  0 0 0

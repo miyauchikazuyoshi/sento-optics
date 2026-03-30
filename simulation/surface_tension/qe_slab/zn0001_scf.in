@@ -1,0 +1,55 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'zn0001'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 40.0
+  ecutrho      = 320.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Zn  65.38  Zn.pbe-dn-kjpaw_psl.1.0.0.UPF
+
+! Zn HCP: a = 2.665 Ang, c = 4.947 Ang
+! (0001) surface: in-plane = a
+! interlayer spacing d = c/2 = 2.474 Ang
+! 7 layers + 15 Ang vacuum
+
+CELL_PARAMETERS angstrom
+  2.6650  0.0000  0.0000
+  1.3325  2.3081  0.0000
+  0.0000  0.0000  32.3160
+
+! 7 Zn layers (AB stacking for HCP) + vacuum
+! A site: (0, 0, z), B site: (1/3, 2/3, z+d)
+
+ATOMIC_POSITIONS angstrom
+  Zn  0.0000  0.0000   0.0000
+  Zn  1.3325  0.7694   2.4740
+  Zn  0.0000  0.0000   4.9480
+  Zn  1.3325  0.7694   7.4220
+  Zn  0.0000  0.0000   9.8960
+  Zn  1.3325  0.7694  12.3700
+  Zn  0.0000  0.0000  14.8440
+
+K_POINTS automatic
+  8 8 1  0 0 0

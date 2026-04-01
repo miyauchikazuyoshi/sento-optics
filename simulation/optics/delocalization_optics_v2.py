@@ -640,6 +640,135 @@ def compute_c60_delta():
     return delta_proxy
 
 
+def _build_diamond_sk_hamiltonian(eps_s, eps_p, Vss, Vsp, Vpp_sigma, Vpp_pi, a, nsc=3):
+    """
+    ダイヤモンド構造のSlater-Koster sp3ハミルトニアンを構築。
+    4軌道(s,px,py,pz) × 2原子/セル × nsc^3セル。
+
+    Parameters:
+        eps_s, eps_p: オンサイトエネルギー [eV]
+        Vss, Vsp, Vpp_sigma, Vpp_pi: SK積分 [eV]
+        a: 格子定数 [Å]
+        nsc: スーパーセルサイズ
+    """
+    n_orb = 4  # s, px, py, pz
+    d_vecs = np.array([
+        [1, 1, 1], [1, -1, -1], [-1, 1, -1], [-1, -1, 1]
+    ]) * a / 4.0
+
+    # サイト位置の構築
+    sites = []
+    site_types = []  # 0=A, 1=B
+    for ix in range(nsc):
+        for iy in range(nsc):
+            for iz in range(nsc):
+                pos_a = np.array([ix, iy, iz], dtype=float) * a
+                sites.append(pos_a)
+                site_types.append(0)
+                pos_b = pos_a + d_vecs[0]
+                sites.append(pos_b)
+                site_types.append(1)
+    sites = np.array(sites)
+    n_sites = len(sites)
+    n_basis = n_sites * n_orb
+
+    L = nsc * a
+    bond_length = a * np.sqrt(3) / 4.0
+
+    # ハミルトニアン構築
+    H = np.zeros((n_basis, n_basis))
+
+    # オンサイトエネルギー
+    onsite = np.array([eps_s, eps_p, eps_p, eps_p])
+    for i in range(n_sites):
+        for orb in range(n_orb):
+            H[i * n_orb + orb, i * n_orb + orb] = onsite[orb]
+
+    # ホッピング（最近接のみ）
+    for i in range(n_sites):
+        for j in range(i + 1, n_sites):
+            dr = sites[j] - sites[i]
+            for dim in range(3):
+                dr[dim] -= L * np.round(dr[dim] / L)
+            dist = np.linalg.norm(dr)
+            if abs(dist - bond_length) < 0.2:
+                # 方向余弦
+                l, m, n = dr / dist
+                H_hop = _slater_koster_hopping(l, m, n, Vss, Vsp, Vpp_sigma, Vpp_pi)
+                for a_orb in range(n_orb):
+                    for b_orb in range(n_orb):
+                        H[i * n_orb + a_orb, j * n_orb + b_orb] = H_hop[a_orb, b_orb]
+                        H[j * n_orb + b_orb, i * n_orb + a_orb] = H_hop[a_orb, b_orb]
+
+    return H
+
+
+def compute_silicon_delta():
+    """
+    SiのδプロキシをSlater-Koster sp3モデルで計算。
+    Harrison universal parameters (Harrison 1980):
+        d = 2.352 Å, ℏ²/(md²) = 2.755 eV
+        εs = -13.55 eV, εp = -6.52 eV
+    """
+    a = 5.431  # 格子定数 [Å]
+    # Harrison universal parameters
+    eps_s = -13.55
+    eps_p = -6.52
+    h2md2 = 15.24 / (2.352 ** 2)  # ℏ²/(md²)
+    Vss = -1.40 * h2md2       # -3.86
+    Vsp = 1.84 * h2md2        #  5.07
+    Vpp_sigma = 3.24 * h2md2  #  8.93
+    Vpp_pi = -0.81 * h2md2    # -2.23
+
+    H = _build_diamond_sk_hamiltonian(eps_s, eps_p, Vss, Vsp, Vpp_sigma, Vpp_pi, a, nsc=3)
+    _, delta_proxy, _ = compute_ipr_from_eigenvectors(H)
+    return delta_proxy
+
+
+def compute_germanium_delta():
+    """
+    GeのδプロキシをSlater-Koster sp3モデルで計算。
+    Harrison universal parameters (Harrison 1980):
+        d = 2.450 Å, ℏ²/(md²) = 2.539 eV
+        εs = -14.38 eV, εp = -6.36 eV
+    注意: d電子遮蔽効果はsp3モデルに含まれない。
+    """
+    a = 5.658  # 格子定数 [Å]
+    eps_s = -14.38
+    eps_p = -6.36
+    h2md2 = 15.24 / (2.450 ** 2)  # ℏ²/(md²)
+    Vss = -1.40 * h2md2       # -3.55
+    Vsp = 1.84 * h2md2        #  4.67
+    Vpp_sigma = 3.24 * h2md2  #  8.23
+    Vpp_pi = -0.81 * h2md2    # -2.06
+
+    H = _build_diamond_sk_hamiltonian(eps_s, eps_p, Vss, Vsp, Vpp_sigma, Vpp_pi, a, nsc=3)
+    _, delta_proxy, _ = compute_ipr_from_eigenvectors(H)
+    return delta_proxy
+
+
+def compute_diamond_delta_sk():
+    """
+    ダイヤモンドのδプロキシをSlater-Koster sp3モデルで計算。
+    Si/Geとの公平な比較用。
+    Harrison universal parameters (Harrison 1980):
+        d = 1.545 Å, ℏ²/(md²) = 6.385 eV
+        εs = -17.52 eV, εp = -8.97 eV
+    """
+    a = 3.567  # 格子定数 [Å]
+    eps_s = -17.52
+    eps_p = -8.97
+    h2md2 = 15.24 / (1.545 ** 2)  # ℏ²/(md²)
+    Vss = -1.40 * h2md2       # -8.94
+    Vsp = 1.84 * h2md2        # 11.75
+    Vpp_sigma = 3.24 * h2md2  # 20.69
+    Vpp_pi = -0.81 * h2md2    # -5.17
+
+    H = _build_diamond_sk_hamiltonian(eps_s, eps_p, Vss, Vsp, Vpp_sigma, Vpp_pi, a, nsc=3)
+    _, delta_proxy, _ = compute_ipr_from_eigenvectors(H)
+    return delta_proxy
+
+
 # ============================================================
 # 5b. 全軌道 Slater-Koster タイトバインディング (s, px, py, pz)
 # ============================================================

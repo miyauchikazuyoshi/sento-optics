@@ -1,0 +1,9 @@
+phonon calculation at Gamma for dielectric constant
+&inputph
+  outdir   = './tmp/'
+  prefix   = 'diamond'
+  tr2_ph   = 1.0d-14
+  epsil    = .true.
+  fildyn   = 'diamond.dyn'
+/
+0.0 0.0 0.0

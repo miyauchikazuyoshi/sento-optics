@@ -49,3 +49,18 @@ simulation/surface_tension/qe_slab/wannier/*_pw2wan.out
 CRASH
 input_tmp.in
 texput.log
+
+# Wannier carbon calculation outputs (large files)
+simulation/wannier_carbon/*/tmp/
+simulation/wannier_carbon/pseudo/
+simulation/wannier_carbon/*/*.chk
+simulation/wannier_carbon/*/*.amn
+simulation/wannier_carbon/*/*.mmn
+simulation/wannier_carbon/*/*.eig
+simulation/wannier_carbon/*/*.nnkp
+simulation/wannier_carbon/*/*.dyn
+simulation/wannier_carbon/diamond/tmp/
+simulation/wannier_carbon/graphite/tmp/
+simulation/wannier_carbon/silicon/
+simulation/wannier_carbon/germanium/
+simulation/wannier_carbon/sulfur/

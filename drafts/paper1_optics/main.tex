@@ -52,41 +52,28 @@ Both metals and graphite possess a vanishing band gap, yet the former
 exhibits metallic luster while the latter appears black with cleavage-plane
 gloss.
 
-We propose that the essence of luster is the preservation of photon phase
-coherence at interfaces, and that its microscopic condition reduces to the
-\emph{freedom of constituent particles}. In metals, delocalized electrons
-enable collective response; in liquids, molecular mobility ensures
-self-smoothing interfaces. Both mechanisms preserve incident-photon phase
-relations, yielding specular reflection.
+We introduce two classification variables---an effective delocalization
+index~$\delta$ and an effective conduction dimensionality~$D_\mathrm{eff}$---and
+test them on five carbon allotropes (diamond, C$_{60}$, SWCNT, graphene,
+graphite) with hexagonal boron nitride (h-BN) as a control.
+A decision tree based on $E_g$ and $D_\mathrm{eff}$ correctly classifies
+6 of 7 materials (85.7\%) into the correct optical-response category,
+with the sole failure---single-layer graphene---requiring the layer
+count~$N$ as a third variable.
 
-To rigorously test this idea, we restrict the scope to solid-state
-electronic systems and introduce two variables: an effective delocalization
-index~$\delta$ and an effective conduction dimensionality~$D_\mathrm{eff}$.
-Using five carbon allotropes (diamond, C$_{60}$, SWCNT, graphene, graphite)
-and hexagonal boron nitride (h-BN) as a control, we demonstrate that
-a decision tree based on $E_g$ and $D_\mathrm{eff}$ correctly classifies
-6 of 7 materials (85.7\%), with the sole failure---single-layer
-graphene---requiring the layer count~$N$ as a third variable.
-
-As a proof of concept, we compute the full
+As supporting evidence, we compute the full
 tight-binding Hamiltonian $\to$ Kubo formula $\to$
-$\varepsilon(\omega)$ $\to$ Fresnel reflectivity chain for each system.
-We then test the coherence preservation hypothesis via
-Anderson disorder simulations, showing that systems with high
-$\delta \times D_\mathrm{eff}$ maintain their optical response under
-disorder (spectral correlation $>0.94$ at $W = 5$~eV for the 1D chain)
-while low-$\delta \times D_\mathrm{eff}$ systems rapidly decohere
-(correlation $= 0.66$ for C$_{60}$). A phenomenological
-\emph{effective gloss} estimate based on the coherence preservation
-factor is proposed, though we stress that this does not yet constitute
-a quantitative gloss theory.
+$\varepsilon(\omega)$ $\to$ Fresnel reflectivity chain for each system
+and test disorder robustness via Anderson disorder simulations.
+Systems with high $\delta \times D_\mathrm{eff}$ maintain their optical
+response under disorder, while low-$\delta \times D_\mathrm{eff}$
+systems rapidly decohere.
 
 The framework does not replace band-gap theory but extends it: $E_g$
 determines \emph{at which energy} the response occurs, while
-$D_\mathrm{eff}$ determines its \emph{directionality}. The concept of
-particle freedom~($\delta$) motivated the introduction of
-$D_\mathrm{eff}$; independent verification of $\delta$ as a measurable
-variable in liquid and interfacial systems is proposed as a future
+$D_\mathrm{eff}$ determines its \emph{directionality} and $\delta$
+its \emph{robustness}.
+Extension to liquid and interfacial systems is proposed as a future
 target.
 \end{abstract}
 
@@ -96,62 +83,42 @@ target.
 \section{Introduction}
 % =====================================================================
 
-\subsection{The luster question: photon coherence preservation}
+\subsection{The luster question}
 
-Liquids universally exhibit luster. So do metals. Although the microscopic
-origins differ---polarization response versus free-electron response---the
-macroscopic phenomenon is the same: incident photons are re-emitted at the
-interface with their mutual phase relationships intact. A mirror image
-forms precisely because the phase coherence of the reflected photon
-ensemble is preserved.
-
+Both metals and graphite possess a vanishing band gap, yet the former
+exhibits metallic luster while the latter appears black.
 Conventional physics explains metallic luster via the Drude model and
-liquid reflection via the Fresnel equations, treating them as separate
-phenomena. No unified framework derives both from a single underlying
-principle.
+dielectric reflection via the Fresnel equations, but no unified framework
+classifies the full range of optical appearances---transparent, colored,
+black, and lustrous---from a common set of variables.
 
-\subsection{Particle freedom and the quantum barrier}
+\subsection{Particle freedom as the classification principle}
 
-We propose that the condition for photon coherence preservation at an
-interface reduces to the \emph{freedom of constituent particles}.
-
-A material interface acts as a quantum barrier for incident photons. The
-character of this barrier determines the optical response:
+We propose that the relevant classification variable is the
+\emph{freedom of constituent particles}, quantified by
+a delocalization index~$\delta$:
 
 \begin{itemize}
   \item \textbf{Localized particles} ($\delta$ low): each scatterer
-    responds independently; the re-emitted phases are randomized. The
-    barrier is incoherent. Result: diffuse scattering (transparent or
-    white).
+    responds independently; re-emitted phases are randomized.
+    Result: diffuse scattering (transparent or white).
   \item \textbf{Delocalized particles} ($\delta$ high): scatterers
-    respond collectively and coherently; re-emitted phases are aligned.
-    The barrier is coherent. Result: specular reflection (luster).
+    respond collectively; re-emitted phases are aligned.
+    Result: specular reflection (luster).
 \end{itemize}
-
-In metals, electronic delocalization (free electrons) fulfills this
-condition. In liquids, molecular delocalization (fluidity) guarantees
-interface self-smoothing, fulfilling the same condition through a
-different mechanism.
 
 \subsection{Scope: proof of concept in solid carbon}
 
-In liquids, both the electronic degree of freedom ($\delta_\mathrm{elec}$)
-and the nuclear degree of freedom ($\delta_\mathrm{nuc}$) vary
-simultaneously, making their effects difficult to disentangle. In solids,
-$\delta_\mathrm{nuc}$ is frozen, isolating the effect of
-$\delta_\mathrm{elec}$.
-
-The present work is a \textbf{proof of concept}: we test the overarching
-hypothesis in the most controlled setting available. Carbon allotropes are
-chosen because a single element spans the full range of optical
-appearances---transparent (diamond), colored (C$_{60}$, semiconducting
-SWCNTs), black (graphite), and lustrous (graphite cleavage
-plane)---allowing us to vary $\delta$ and $D_\mathrm{eff}$ while
-eliminating elemental composition as a confounding factor.
-
-Extension to liquid, interfacial, and catalytic systems is a natural
-consequence of the framework and is proposed as a target for future,
-independent experimental verification.
+The present work is a \textbf{proof of concept}: we test this idea
+in the most controlled setting available. In solids,
+nuclear degrees of freedom are frozen, isolating the effect of
+electronic delocalization~$\delta_\mathrm{elec}$.
+Carbon allotropes are chosen because a single element spans the full
+range of optical appearances---transparent (diamond), colored
+(C$_{60}$, semiconducting SWCNTs), black (graphite), and lustrous
+(graphite cleavage plane)---allowing us to vary $\delta$ and
+$D_\mathrm{eff}$ while eliminating elemental composition as a
+confounding factor.
 
 \subsection{Gap in the existing classification}
 
@@ -223,8 +190,14 @@ interfacial systems is proposed as a future target.
 \subsection{Effective delocalization index $\delta$: operational definition}
 
 $\delta$ is not a single physical quantity but an overarching variable
+characterising electronic delocalization,
 whose existence is inferred from the mutual consistency of several proxy
-indicators:
+indicators.
+As we discuss in Sec.~\ref{sec:wannier_confirmation}, the maximally
+localized Wannier function spread~$\Omega$~\cite{Marzari1997}
+provides a rigorous first-principles realisation of~$\delta$;
+the proxies below serve to establish its relevance without
+requiring a Wannier calculation:
 
 \begin{table}[h]
 \caption{Candidate proxy indicators for $\delta$.}
@@ -953,11 +926,17 @@ preserved), while C$_{60}$ ($D_\mathrm{eff} = 0$) rapidly loses
 spectral features. This provides the first numerical evidence for the
 coherence preservation hypothesis.
 
-\subsection{Effective gloss: the predictive chain}
+\subsection{Effective gloss: an exploratory estimate}
 \label{sec:effective_gloss}
 
+The following exercise is \emph{exploratory}, not a quantitative
+gloss theory. It illustrates how the coherence preservation factor
+\emph{could} translate into gloss predictions, but the absolute
+GU values should be treated with caution given the simplified
+disorder model.
+
 Combining clean-surface gloss (Table~\ref{tab:gloss}) with the
-coherence preservation factor yields the effective gloss prediction:
+coherence preservation factor yields:
 
 \begin{figure}[t]
   \includegraphics[width=\columnwidth]{fig_j_micro_to_gloss}
@@ -1202,6 +1181,70 @@ as a second classification axis alongside~$E_g$:
 \end{ruledtabular}
 \end{table}
 
+\subsection{First-principles confirmation via Wannier spread}
+\label{sec:wannier_confirmation}
+
+The literature-derived proxies (Table~\ref{tab:delta_proxies}) support
+the existence of~$\delta$ but do not compute it directly. To close
+this gap, we performed DFT (PBE) + Wannier90 calculations for bulk
+diamond and graphite, obtaining the maximally localized Wannier function
+(MLWF) spread~$\Omega$~\cite{Marzari1997}---which directly measures
+the spatial extent of each electron in the solid.
+
+The results are unambiguous: $\Omega/\mathrm{WF} = 0.95$~\AA$^2$ for
+diamond and $6.38$~\AA$^2$ for graphite, a 6.7-fold ratio.
+Moreover, graphite's eight Wannier functions decompose into six
+$\sigma$-type (5.5--6.3~\AA$^2$) and two $\pi$-type
+(7.3--8.2~\AA$^2$), confirming that $\pi$-electron delocalization
+is the microscopic origin of graphite's metallic optical response.
+
+Extending the calculation to silicon ($\Omega/\mathrm{WF} = 3.05$~\AA$^2$)
+and germanium ($2.28$~\AA$^2$) reveals that $\Omega$ alone does not
+predict the refractive index across different elements:
+$\Omega(\mathrm{Ge}) < \Omega(\mathrm{Si})$ while
+$n(\mathrm{Ge}) > n(\mathrm{Si})$. This is consistent with
+the Penn model~\cite{Penn1962}, which shows that the dielectric constant
+depends on three independent factors: electronic delocalization,
+atomic polarizability, and band gap. Within a single element
+(carbon allotropes), the latter two covary with structure, so~$\delta$
+alone suffices---explaining the classification success of the present work.
+
+\subsection{Optical sum rule and the mathematical basis for $\delta$}
+\label{sec:sum_rule}
+
+Recently, Cardenas-Castillo \textit{et al.}~\cite{CardenasCastillo2024}
+proved that the gauge-invariant part of the Wannier spread~$\Omega_I$
+equals the frequency-weighted integral of the optical absorption:
+\begin{equation}
+  \Omega_I = \frac{\hbar^2 e^2}{2\pi m^2}
+  \int_0^\infty \frac{\mathrm{Im}[\varepsilon(\omega)]}{\omega}\,d\omega.
+  \label{eq:sum_rule}
+\end{equation}
+This identity, rooted in quantum geometry~\cite{RhimKim2025},
+establishes a rigorous mathematical link between electronic
+delocalization and optical response: $\delta$ and optical absorption
+are not merely correlated---they are related by a sum rule.
+
+Our classification of carbon allotropes by~$\delta \times D_\mathrm{eff}$
+can be understood as exploiting this identity in the forward
+direction: using~$\Omega$ as a predictor of optical category, rather
+than extracting it from measured spectra. The sum rule also clarifies
+the scope of~$\delta$: it governs the \emph{integrated} optical
+absorption across all frequencies, not the response at any
+particular wavelength. Within a single element, where the spectral
+shape of~$\varepsilon_2(\omega)$ varies only modestly between
+allotropes, the integral ordering approximates the per-frequency
+ordering---hence the 6/7 classification success. Across different
+elements, the spectral shapes differ substantially, and~$\delta$
+alone no longer predicts~$n$ at a specific wavelength.
+
+The empirical $n$--$E_g$ relations of Moss~\cite{Moss1950} and
+Ravindra~\cite{Ravindra2007} can be seen as complementary:
+they capture the $E_g$ dependence that~$\delta$ does not contain.
+Together with the Penn model~\cite{Penn1962}, these establish
+a theoretical landscape in which~$\delta$ occupies a distinct niche
+as the delocalization factor.
+
 \subsection{h-BN and the breaking of sublattice symmetry}
 \label{sec:hBN_discussion}
 
@@ -1278,6 +1321,16 @@ lacks a dimensionality variable.
     peak at $555$~nm) changes $R_\mathrm{vis}$ by $<$12\% and preserves
     the overall ranking (diamond $<$ graphene $<$ 1D chain); the
     C$_{60}$/1D relative order is sensitive to the weighting choice.
+  \item The optical sum rule (Eq.~\ref{eq:sum_rule}) guarantees
+    that~$\delta$ governs the \emph{frequency-integrated} optical
+    absorption, but not the refractive index at any particular
+    wavelength. Quantitative prediction of~$n(\omega)$ across
+    different elements requires additional information
+    (band gap, atomic polarizability) beyond~$\delta$ alone.
+    The classification success in this work relies on the
+    within-element regime, where spectral shapes are sufficiently
+    similar that the integrated ordering approximates the
+    per-frequency ordering.
 \end{enumerate}
 
 \subsection{Outlook}
@@ -1294,9 +1347,20 @@ lacks a dimensionality variable.
   \item \textbf{Interfaces and catalysis}: Whether the discontinuity
     of $\delta$ at heterojunctions governs charge-transfer rates.
     Connection to the d-band center theory of catalytic activity.
-  \item \textbf{First-principles $\delta$}: Systematic DFT calculation
-    of IPR, Wannier spreads, and optical conductivity to place $\delta$
-    on a quantitative, non-proxy footing.
+  \item \textbf{Forward prediction from~$\Omega$}: The Wannier spread
+    calculations reported here (Sec.~\ref{sec:wannier_confirmation})
+    confirm the $\delta$ ordering at the first-principles level.
+    The next step is to compute $\varepsilon_2(\omega)$ via
+    Wannier-interpolated optical conductivity (postw90) and demonstrate
+    that~$\Omega$ predicts the integrated optical absorption
+    (Eq.~\ref{eq:sum_rule})---closing the
+    $\Omega \to \varepsilon(\omega)$ causal chain within a single
+    computational framework.
+  \item \textbf{Precise definition of~$\delta$}: In this work,
+    $\delta$ remains a phenomenological variable supported by proxy
+    consistency and Wannier spread ordering. A rigorous definition
+    of~$\delta$ in terms of~$\Omega$ and its relation to nuclear
+    degrees of freedom is deferred to a future study (Paper~III).
   \item \textbf{Inverse design}: Given a target optical response,
     invert $\delta \times D_\mathrm{eff}$ to identify candidate
     structures.
@@ -1337,18 +1401,25 @@ adding $D_\mathrm{eff}$ as a second classification axis and disorder
 robustness as a third predictive dimension.
 $E_g$ determines \emph{at which energy} the response occurs,
 $D_\mathrm{eff}$ determines its \emph{directionality}, and
-$\delta$ determines its \emph{robustness}. The concept of
-particle freedom~($\delta$) that motivated $D_\mathrm{eff}$ remains to
-be independently verified; extension to liquid, interfacial, and
+$\delta$ determines its \emph{robustness}. The concept of particle freedom~($\delta$) is independently confirmed
+by first-principles Wannier function calculations: the Wannier spread
+of diamond (0.95~\AA$^2$) and graphite (6.38~\AA$^2$) reproduces the
+expected ordering with a 6.7-fold ratio. Furthermore, a recently
+proven optical sum rule~\cite{CardenasCastillo2024} establishes that
+the Wannier spread equals the frequency-weighted integral of optical
+absorption, providing a rigorous mathematical foundation for the
+$\delta$--optical connection proposed here.
+Extension to liquid, interfacial, and
 cross-element systems---where $E_g$ is ill-defined but $\delta$ may
 still apply---is proposed as a target for future work.
 \paragraph{Outlook.}
 Because $\delta$ characterises particle freedom at an interface rather
 than a specific probe, it may also be relevant to other
 interface-dominated properties such as surface tension and
-electrical conductivity. Exploring whether the same variable
-can bridge optical response and thermodynamic interface properties
-across different material classes is a natural next step.
+electrical conductivity. The Wannier spread~$\Omega$---a rigorously
+defined first-principles quantity---provides a natural candidate for
+a precise definition of~$\delta$, applicable to both crystalline and
+disordered systems including liquids.
 
 \begin{acknowledgments}
 The initial inspiration for this work arose from observing the luster

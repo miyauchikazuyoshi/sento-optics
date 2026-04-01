@@ -30,8 +30,34 @@ echo "Graphite Omega:"
 grep "Omega Total" graphite.wout
 cd ..
 
+echo "=== SILICON ==="
+cd silicon
+$PW < scf.in > scf.out 2>&1
+$PW < nscf.in > nscf.out 2>&1
+$W90 -pp silicon
+$PW2WAN < pw2wan.in > pw2wan.out 2>&1
+$W90 silicon
+echo "Silicon Omega:"
+grep "Omega Total" silicon.wout
+cd ..
+
+echo "=== GERMANIUM ==="
+cd germanium
+$PW < scf.in > scf.out 2>&1
+$PW < nscf.in > nscf.out 2>&1
+$W90 -pp germanium
+$PW2WAN < pw2wan.in > pw2wan.out 2>&1
+$W90 germanium
+echo "Germanium Omega:"
+grep "Omega Total" germanium.wout
+cd ..
+
 echo "=== COMPARISON ==="
 echo "Diamond:"
 grep "Omega Total" diamond/diamond.wout
 echo "Graphite:"
 grep "Omega Total" graphite/graphite.wout
+echo "Silicon:"
+grep "Omega Total" silicon/silicon.wout
+echo "Germanium:"
+grep "Omega Total" germanium/germanium.wout

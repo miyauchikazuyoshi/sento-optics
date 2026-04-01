@@ -312,11 +312,11 @@ PySCF~\cite{PySCF2018}を用いて
   \item \textbf{IPRに基づく非局在化}：
     Kohn--Sham軌道係数から、各占有軌道~$n$の
     各基底関数~$\mu$上のMulliken占有数
-    $p_\mu^{(n)} = |c_{n\mu}|^2 S_{\mu\mu}$を計算した。
-    軌道ごとのIPRは
-    $\mathrm{IPR}_n = \sum_\mu (p_\mu^{(n)})^2 / (\sum_\mu p_\mu^{(n)})^2$
-    であり、$\delta_\mathrm{IPR}$は
-    式~\eqref{eq:delta_ipr}から求められる。
+    $p_\mu^{(n)} = c_{n\mu}\,(\mathbf{S}\,\mathbf{c}_n)_\mu$
+    を計算した（$\mathbf{S}$は重なり行列、
+    式~\eqref{eq:ipr_def}参照）。
+    軌道ごとのIPRおよび$\delta_\mathrm{IPR}$は
+    式~\eqref{eq:ipr_def}--\eqref{eq:delta_ipr}から求められる。
 
   \item \textbf{境界密度}：
     最近接原子間の中点における電子密度を評価した
@@ -899,6 +899,13 @@ $n_\mathrm{ws}$を介して表面張力に結びつける。
     金属の表面張力に結びつけた発表済み論文はない。
     本研究のMLWF広がり解析（表~\ref{tab:wannier}）は
     我々の知る限りそのような関連を示した初めてのものである。
+    Wannier スプレッド~$\Omega$~\cite{Marzari1997} は
+    $\delta$ の厳密な第一原理的実現を与える。
+    Cardenas-Castillo \textit{et al.}~\cite{CardenasCastillo2024}
+    の光学 sum rule と組み合わせることで、
+    電子非局在化と光学吸収の間に数学的接続が確立され、
+    本研究の表面張力解析と Paper~I の光学分類の双方を
+    支える基盤となる。
   \item Halas \textit{et al.}~\cite{Halas2002}は
     「非局在化電子」と表面エネルギーを結びつけたが、
     自由電子モデル内での整数個の電子数（1個または2個）を用い、
@@ -1048,6 +1055,12 @@ Paper~I~\cite{SentoOpticsPaper1}で報告した光学分類と
 合わせると、$\delta_\mathrm{IPR}$は光学的および熱力学的な
 領域にわたる界面特性を結びつける
 統一的な電子構造変数の候補として浮上する。
+非局在化の階層構造を独立に確認した Wannier スプレッド~$\Omega$ は、
+結晶固体のみならず無秩序系にも適用可能な、
+$\delta$ の厳密な第一原理的実現を提供する。
+$\Omega$ に基づく $\delta$ の精密な定義と、
+電子と原子核双方の非局在化が関与する液体系への拡張は
+Paper~III で扱う。
 
 $\delta_\mathrm{IPR}$が提供するのはより良い数値ではなく、
 物理的な\emph{理由}---spおよび$d$金属にわたる

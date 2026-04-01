@@ -326,13 +326,12 @@ For each cluster, we computed:
 \begin{enumerate}
   \item \textbf{IPR-based delocalization}:
     From the Kohn--Sham orbital coefficients, the Mulliken
-    populations $p_\mu^{(n)} = |c_{n\mu}|^2 S_{\mu\mu}$
+    populations $p_\mu^{(n)} = c_{n\mu}\,(\mathbf{S}\,\mathbf{c}_n)_\mu$
     were computed for each occupied orbital~$n$ on each
-    basis function~$\mu$.
-    The IPR per orbital is
-    $\mathrm{IPR}_n = \sum_\mu (p_\mu^{(n)})^2 / (\sum_\mu p_\mu^{(n)})^2$,
-    and $\delta_\mathrm{IPR}$ follows from
-    Eq.~\eqref{eq:delta_ipr}.
+    basis function~$\mu$, where $\mathbf{S}$ is the overlap matrix
+    (Eq.~\eqref{eq:ipr_def}).
+    The IPR per orbital and $\delta_\mathrm{IPR}$ follow from
+    Eqs.~\eqref{eq:ipr_def}--\eqref{eq:delta_ipr}.
 
   \item \textbf{Boundary density}:
     The electron density was evaluated at the midpoint
@@ -913,6 +912,19 @@ No previous framework has identified a single electronic
 descriptor that governs both optical and thermodynamic
 interface properties.
 
+The sp--$d$ hierarchy central to the present work---sp-metal
+electrons are more delocalized than $d$-metal electrons---receives
+independent confirmation from first-principles Wannier function
+calculations. Comparing silicon (period~3, no $d$~core) and
+germanium (period~4, 3$d^{10}$~core) in the same diamond-cubic
+structure, the Wannier spread is 25\% smaller for germanium
+($\Omega/\mathrm{WF} = 2.28$~\AA$^2$ vs 3.05~\AA$^2$),
+directly demonstrating $d$-electron screening of the sp$^3$
+orbitals. This contraction is the solid-state analogue of
+the $d$-block contraction known in atomic
+physics~\cite{Pyykko1988}, here quantified for the first
+time via Wannier spread.
+
 \subsection{Unexplored territory}
 
 A systematic literature survey confirms that the connection
@@ -937,6 +949,13 @@ is, to our knowledge, entirely unexplored:
     The MLWF spread analysis in this work
     (Table~\ref{tab:wannier}) is, to our knowledge,
     the first such connection.
+    The Wannier spread~$\Omega$~\cite{Marzari1997} provides
+    a rigorous first-principles realisation of~$\delta$; combined
+    with the optical sum rule of Cardenas-Castillo
+    \textit{et al.}~\cite{CardenasCastillo2024}, it establishes
+    a mathematical link between electronic delocalization and
+    optical absorption that underpins both the present surface
+    tension analysis and the optical classification in Paper~I.
   \item Halas \textit{et al.}~\cite{Halas2002} connected
     ``delocalized electrons'' to surface energy, but used an
     integer electron count (1 or~2) within a free-electron
@@ -1098,7 +1117,13 @@ Combined with the optical classification reported in
 Paper~I~\cite{SentoOpticsPaper1}, $\delta_\mathrm{IPR}$ emerges
 as a candidate for a unified electronic-structure variable
 connecting interface properties across optical and thermodynamic
-domains.
+domains. The Wannier spread~$\Omega$, which independently confirms
+the delocalization hierarchy (result~5 above), provides a rigorous
+first-principles realisation of~$\delta$ that is applicable to both
+crystalline solids and disordered systems.
+A precise definition of~$\delta$ in terms of~$\Omega$, and its
+extension to liquid systems---where both electronic and nuclear
+delocalization play a role---will be addressed in Paper~III.
 
 What $\delta_\mathrm{IPR}$ provides is not better numbers,
 but a physical \emph{reason}---the first electronic-structure

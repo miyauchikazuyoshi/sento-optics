@@ -32,6 +32,19 @@
 | **Cardenas-Castillo et al. (2024) PRB 110, 075203** | **Ω_I = ∫ Im[ε(ω)] dω の証明** | **我々の仮説の数学的基盤** |
 | **Rhim & Kim (2025) PRB 111, 085202** | 量子計量 → 誘電マーカー | Ω が quantum metric の運動量積分 |
 
+### 古典的不確定性と量子-古典クロスオーバー
+
+| 論文 | 内容 | 我々との関係 |
+|------|------|------------|
+| Usha Devi & Karthik (2012) Am. J. Phys. 80, 708 | 古典アンサンブルの不確定性積が量子と同一構造 | δ_nuc の古典-量子対応の数学的基盤 |
+| Mandelbrot (1956) IRE Trans. IT-2, 190 | ΔU·Δ(1/T) ≥ k_B 熱力学的不確定性 | k_B が ℏ の役割を果たす対応 |
+| Uffink & van Lith (1999) Found. Phys. 29, 655 | Mandelbrot 関係の批判的レビュー | 「古典的不確定性原理」の限界明確化 |
+| Zhu & Wang (2024) arXiv:2407.06715 | Δp ≥ √(2π)ℏ/λ_th ボルツマン下限 | 熱揺らぎが ℏ/2 より厳しい下限を課す |
+| Magomedov (2024) Solid State Commun. 391 | T_m/Θ_D で量子/古典融解を分類 | Lindemann 条件の量子-古典境界 — Paper III に直接関連 |
+| Ullrich, Singh & Vopson (2017) AIP Adv. 7, 045109 | Θ_D = T₀·exp(γ·E_g) 経験則 | Θ_D-E_g-Ω 連鎖の一環。δ_elec と δ_nuc の非独立性 |
+| Ackland et al. (2017) Science | Li の量子核効果、再入融解 | 加圧下の量子-古典クロスオーバーの実験的検証例 |
+| Chiatti (2024) Entropy 26, 692 | de Broglie の kT = hν; 熱時間 h/kT | 温度-振動数対応の歴史的先行 |
+
 ### d 電子遮蔽
 
 | 論文 | 内容 | 我々との関係 |

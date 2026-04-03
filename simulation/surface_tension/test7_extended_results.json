@@ -1,0 +1,152 @@
+{
+  "Li": {
+    "element": "Li",
+    "delta_all": 0.13120830842511122,
+    "delta_valence": 0.186210434090606,
+    "n_states_all": 3,
+    "n_states_valence": 1,
+    "boundary_density": 0.012787498106852247,
+    "boundary_ratio": 0.42881034677302543,
+    "converged": true
+  },
+  "Na": {
+    "element": "Na",
+    "delta_all": 0.08686330197623887,
+    "delta_valence": 0.13416866259980156,
+    "n_states_all": 11,
+    "n_states_valence": 1,
+    "boundary_density": 0.008633738380472772,
+    "boundary_ratio": 0.0945246663752249,
+    "converged": true
+  },
+  "K": {
+    "element": "K",
+    "delta_all": 0.04375876449856677,
+    "delta_valence": 0.04572456273532863,
+    "n_states_all": 19,
+    "n_states_valence": 1,
+    "boundary_density": 0.005335965907296154,
+    "boundary_ratio": 0.05702189687315088,
+    "converged": true
+  },
+  "Be": {
+    "element": "Be",
+    "delta_all": 0.15313805827160762,
+    "delta_valence": 0.23142538430903514,
+    "n_states_all": 4,
+    "n_states_valence": 2,
+    "boundary_density": 0.031821643256926296,
+    "boundary_ratio": 0.7483212363606668,
+    "converged": true
+  },
+  "Mg": {
+    "element": "Mg",
+    "delta_all": 0.06538800670141993,
+    "delta_valence": 0.09132559291071603,
+    "n_states_all": 12,
+    "n_states_valence": 2,
+    "boundary_density": 0.006820186749258382,
+    "boundary_ratio": 0.29932111779827675,
+    "converged": true
+  },
+  "Ca": {
+    "element": "Ca",
+    "delta_all": 0.04820036172841021,
+    "delta_valence": 0.05760881825164943,
+    "n_states_all": 20,
+    "n_states_valence": 2,
+    "boundary_density": 0.007312318720716466,
+    "boundary_ratio": 0.14932104597868506,
+    "converged": true
+  },
+  "Al": {
+    "element": "Al",
+    "delta_all": 0.0792593031161545,
+    "delta_valence": 0.1208040688112937,
+    "n_states_all": 26,
+    "n_states_valence": 6,
+    "boundary_density": 0.04273129696667406,
+    "boundary_ratio": 0.39262476848778405,
+    "converged": true
+  },
+  "Si": {
+    "element": "Si",
+    "delta_all": 0.0698274107111105,
+    "delta_valence": 0.14146170974659988,
+    "n_states_all": 28,
+    "n_states_valence": 8,
+    "boundary_density": 0.10635662950457599,
+    "boundary_ratio": 0.465339034351986,
+    "converged": true
+  },
+  "Ga": {
+    "element": "Ga",
+    "delta_all": 0.048824648810919594,
+    "delta_valence": 0.060725162402544844,
+    "n_states_all": 62,
+    "n_states_valence": 6,
+    "boundary_density": 0.04029425363428159,
+    "boundary_ratio": 0.13224078753134844,
+    "converged": true
+  },
+  "Cu": {
+    "element": "Cu",
+    "delta_all": 0.04441241124580643,
+    "delta_valence": 0.057209086874917936,
+    "n_states_all": 29,
+    "n_states_valence": 11,
+    "boundary_density": 0.05889089741357568,
+    "boundary_ratio": 0.058631071973314054,
+    "converged": true
+  },
+  "Zn": {
+    "element": "Zn",
+    "delta_all": 0.03961390609341868,
+    "delta_valence": 0.051783353875047344,
+    "n_states_all": 30,
+    "n_states_valence": 2,
+    "boundary_density": 0.003219263707869147,
+    "boundary_ratio": 0.07346239113554319,
+    "converged": true
+  },
+  "Fe": {
+    "element": "Fe",
+    "delta_all": 0.04215958619912821,
+    "delta_valence": 0.06896211313667802,
+    "n_states_all": 52,
+    "n_states_valence": 16,
+    "boundary_density": 0.07125851839041804,
+    "boundary_ratio": 0.055048841395414,
+    "converged": true
+  },
+  "Ni": {
+    "element": "Ni",
+    "delta_all": 0.05095976678805849,
+    "delta_valence": 0.08221040298805772,
+    "n_states_all": 56,
+    "n_states_valence": 20,
+    "boundary_density": 0.07685049587734352,
+    "boundary_ratio": 0.06515524093536858,
+    "converged": true
+  },
+  "Ag": {
+    "element": "Ag",
+    "delta_all": 0.043926529091431944,
+    "delta_valence": 0.05054938435452556,
+    "n_states_all": 47,
+    "n_states_valence": 11,
+    "boundary_density": 0.13696303684082492,
+    "boundary_ratio": 0.06018642515921258,
+    "converged": true
+  },
+  "Ti": {
+    "element": "Ti",
+    "delta_all": 0.035956534851040015,
+    "delta_valence": 0.06257453545849938,
+    "n_states_all": 44,
+    "n_states_valence": 8,
+    "boundary_density": 0.1380716903804153,
+    "boundary_ratio": 0.12175032965811662,
+    "converged": true
+  }
+}

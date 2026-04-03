@@ -47,7 +47,8 @@ Here we propose that the inverse participation ratio (IPR)
 of Kohn--Sham orbitals provides this missing link.
 DFT calculations on 11 metal dimers show that
 the IPR-based delocalization index~$\delta_\mathrm{IPR}$
-correlates with boundary electron density ($r = 0.84$, $p = 0.001$),
+correlates with the interatomic midpoint electron density---a
+dimer-level proxy for boundary density---at $r = 0.84$ ($p = 0.001$),
 a result that is robust across three basis sets
 (def2-SVP/TZVP/QZVP: $r = 0.72$--$0.84$).
 Periodic slab calculations on five metals (Na, K, Al, Cu, Zn)
@@ -447,8 +448,9 @@ hypothesis---is robust:
   def2-QZVP & 0.820 & 0.002 \\
 \end{tabular}
 \end{center}
-The Spearman rank correlations are similarly stable
-($\rho = 0.80$, $0.71$, $0.72$), confirming that the
+The Spearman rank correlation coefficients are similarly stable
+(def2-SVP: $\rho = 0.80$; def2-TZVP: $\rho = 0.71$;
+def2-QZVP: $\rho = 0.72$), confirming that the
 \emph{ranking} of elements by delocalization is
 basis-independent even though the numerical values
 of~$\delta_\mathrm{IPR}$ are not.
@@ -586,17 +588,22 @@ $n_\mathrm{ws}(\mathrm{Al}) / n_\mathrm{ws}(\mathrm{Zn})$
 correctly predicts a large $\gamma$ ratio.
 
 
-\subsection{$\delta_\mathrm{IPR}$ correlates with boundary density}
+\subsection{$\delta_\mathrm{IPR}$ correlates with interatomic midpoint density}
 
 The central result of this paper connects
-$\delta_\mathrm{IPR}$ to boundary density.
+$\delta_\mathrm{IPR}$ to interatomic electron density.
 Figure~\ref{fig:test7} shows the DFT cluster results.
 
 For homonuclear dimers of 11 elements spanning alkali metals,
 alkaline earths, p-block metals, and transition metals,
 the correlation between $\delta_\mathrm{IPR}$ and
-the boundary density ratio is $r = 0.84$
+the midpoint density ratio is $r = 0.84$
 ($n = 11$, $p = 0.001$).
+We note that dimer midpoint density is a proxy for---but not
+identical to---Miedema's $n_\mathrm{ws}$, which is defined at
+the Wigner--Seitz cell boundary in bulk solids.
+The slab calculations in Sec.~\ref{sec:slab} provide a more
+direct connection to the solid-state boundary density.
 Metals with higher $\delta_\mathrm{IPR}$ (more delocalized
 valence electrons) have higher electron density at the
 interatomic midpoint, consistent with the proposed mechanism:
@@ -983,6 +990,22 @@ is, to our knowledge, entirely unexplored:
     ($r = 0.08$).
     $\delta_\mathrm{IPR}$ illuminates the physics behind
     $n_\mathrm{ws}$ but does not replace it as a predictor.
+
+  \item \textbf{Core-electron contamination in dimer $\delta_\mathrm{IPR}$.}
+    The dimer $\delta_\mathrm{IPR}$ (Eq.~\ref{eq:delta_IPR_def}) averages
+    the IPR over \emph{all} occupied Kohn--Sham orbitals, including core
+    states. Since core orbitals are strongly localized on the atomic site,
+    they contribute high IPR values that pull $\delta_\mathrm{IPR}$ toward
+    zero irrespective of valence delocalization. This is at odds with the
+    valence-centric physical picture established by the slab calculations,
+    where only valence electrons determine $n_\mathrm{mid}/n_\mathrm{bulk}$.
+    A valence-only $\delta_\mathrm{IPR}$---restricted to states above a
+    core-valence energy threshold---would be more consistent with the slab
+    analysis and is expected to strengthen the $\delta$--$n_\mathrm{ws}$
+    correlation. This refinement is left for future work.
+    The MLWF spreads (Sec.~\ref{sec:wannier}), being computed from
+    valence bands only, are not affected by this issue and serve as
+    an independent confirmation uncontaminated by core states.
 
   \item \textbf{Slab convergence.}
     Systematic convergence tests of

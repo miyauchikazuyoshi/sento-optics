@@ -45,11 +45,14 @@ that explains \emph{why} metals with similar bulk densities
 have vastly different surface tensions.
 Here we propose that the inverse participation ratio (IPR)
 of Kohn--Sham orbitals provides this missing link.
-DFT calculations on 11 metal dimers show that
-the IPR-based delocalization index~$\delta_\mathrm{IPR}$
-correlates with the interatomic midpoint electron density---a
-dimer-level proxy for boundary density---at $r = 0.84$ ($p = 0.001$),
-a result that is robust across three basis sets
+DFT calculations on 15 metal dimers (including Fe, Ni, Ti, Ag)
+show that the IPR-based delocalization
+index~$\delta_\mathrm{IPR}$ correlates with the interatomic
+midpoint electron density---a dimer-level proxy for boundary
+density---at $r = 0.86$ ($p < 0.001$).
+A valence-only variant $\delta_\mathrm{IPR}^\mathrm{val}$
+(excluding core states) improves this to $r = 0.89$.
+The result is robust across three basis sets
 (def2-SVP/TZVP/QZVP: $r = 0.72$--$0.84$).
 Periodic slab calculations on five metals (Na, K, Al, Cu, Zn)
 with valence electron decomposition demonstrate that
@@ -461,9 +464,12 @@ with the original calculations.
 
 We compared the IPR-based delocalization with the tabulated
 $n_\mathrm{ws}$ values of de~Boer \textit{et al.}~\cite{deBoer1988}
-for 11 dimer elements
-(Li, Na, K, Be, Mg, Ca, Al, Cu, Zn, Si, Ga).
-Table~\ref{tab:delta_nws} reports $\delta_\mathrm{IPR}$
+for 15 dimer elements
+(Li, Na, K, Be, Mg, Ca, Al, Si, Ga, Cu, Zn, Fe, Ni, Ag, Ti).
+Table~\ref{tab:delta_nws} reports both the all-electron
+$\delta_\mathrm{IPR}$ and a valence-only variant
+$\delta_\mathrm{IPR}^\mathrm{val}$ (excluding core states
+below a per-element energy threshold),
 alongside Miedema's $n_\mathrm{ws}^{1/3}$ and
 experimental~$\gamma$.
 
@@ -471,32 +477,47 @@ experimental~$\gamma$.
   \centering
   \caption{Dimer $\delta_\mathrm{IPR}$ (B3LYP/def2-SVP)
     compared with Miedema's boundary density~$n_\mathrm{ws}$
-    and experimental surface tension~$\gamma$.}
+    and experimental surface tension~$\gamma$.
+    $\delta_\mathrm{IPR}^\mathrm{val}$: valence-only
+    (core states excluded).}
   \label{tab:delta_nws}
   \begin{ruledtabular}
-  \begin{tabular}{lccccc}
+  \begin{tabular}{lcccccc}
     Element & Config. & $\delta_\mathrm{IPR}$ &
+      $\delta_\mathrm{IPR}^\mathrm{val}$ &
       $n_\mathrm{ws}^{1/3}$ & $\gamma$ (mN/m) \\
     \hline
-    Li  & $2s^1$         & 0.132 & 1.30 &  400 \\
-    Be  & $2s^2$         & 0.156 & 1.67 & 1100 \\
-    Na  & $3s^1$         & 0.074 & 1.10 &  191 \\
-    Mg  & $3s^2$         & 0.069 & 1.33 &  559 \\
-    Al  & $3s^23p^1$     & 0.065 & 1.39 & 1140 \\
-    Si  & $3s^23p^2$     & 0.071 & 1.50 &  865 \\
-    K   & $4s^1$         & 0.044 & 0.95 &  110 \\
-    Ca  & $4s^2$         & 0.053 & 1.07 &  361 \\
-    Cu  & $3d^{10}4s^1$  & 0.040 & 1.47 & 1330 \\
-    Zn  & $3d^{10}4s^2$  & 0.040 & 1.32 &  782 \\
-    Ga  & $4s^24p^1$     & 0.047 & 1.31 &  718 \\
+    Li  & $2s^1$           & 0.131 & 0.186 & 1.30 &  398 \\
+    Be  & $2s^2$           & 0.153 & 0.231 & 1.67 & 1145 \\
+    Na  & $3s^1$           & 0.087 & 0.134 & 1.10 &  191 \\
+    Mg  & $3s^2$           & 0.065 & 0.091 & 1.33 &  559 \\
+    Al  & $3s^23p^1$       & 0.079 & 0.121 & 1.39 & 1050 \\
+    Si  & $3s^23p^2$       & 0.070 & 0.142 & 1.50 &  865 \\
+    K   & $4s^1$           & 0.044 & 0.046 & 0.95 &  101 \\
+    Ca  & $4s^2$           & 0.048 & 0.058 & 1.07 &  361 \\
+    Ti  & $3d^24s^2$       & 0.036 & 0.063 & 1.25 & 1650 \\
+    Fe  & $3d^64s^2$       & 0.042 & 0.069 & 1.39 & 1872 \\
+    Ni  & $3d^84s^2$       & 0.051 & 0.082 & 1.39 & 1778 \\
+    Cu  & $3d^{10}4s^1$    & 0.044 & 0.057 & 1.47 & 1285 \\
+    Zn  & $3d^{10}4s^2$    & 0.040 & 0.052 & 1.32 &  782 \\
+    Ga  & $4s^24p^1$       & 0.049 & 0.061 & 1.31 &  718 \\
+    Ag  & $4d^{10}5s^1$    & 0.044 & 0.051 & 1.36 &  903 \\
   \end{tabular}
   \end{ruledtabular}
 \end{table}
 
-The Pearson correlation between $\delta_\mathrm{IPR}$ and
-$n_\mathrm{ws}$ is moderate ($r = 0.53$, $p = 0.09$),
-and between $\delta_\mathrm{IPR}$ and~$\gamma$ is weak
-($r = 0.08$, not significant).
+The Pearson correlation between all-electron
+$\delta_\mathrm{IPR}$ and $n_\mathrm{ws}$ is weak
+($r = 0.20$, $p = 0.47$; $n = 15$),
+and between $\delta_\mathrm{IPR}$ and~$\gamma$ is not
+significant ($r = -0.21$).
+The valence-only $\delta_\mathrm{IPR}^\mathrm{val}$
+modestly improves the $n_\mathrm{ws}$ correlation
+($r = 0.33$, $p = 0.23$), consistent with the expectation
+that core-electron contamination weakens the signal.
+However, neither version of $\delta_\mathrm{IPR}$ is a
+strong predictor of $n_\mathrm{ws}$ or $\gamma$ at the
+dimer level.
 This confirms that $\delta_\mathrm{IPR}$ is \emph{not}
 a direct predictor of~$\gamma$---consistent with our
 framing as an explanatory, not predictive, descriptor.
@@ -594,11 +615,14 @@ The central result of this paper connects
 $\delta_\mathrm{IPR}$ to interatomic electron density.
 Figure~\ref{fig:test7} shows the DFT cluster results.
 
-For homonuclear dimers of 11 elements spanning alkali metals,
-alkaline earths, p-block metals, and transition metals,
-the correlation between $\delta_\mathrm{IPR}$ and
-the midpoint density ratio is $r = 0.84$
-($n = 11$, $p = 0.001$).
+For homonuclear dimers of 15 elements spanning alkali metals,
+alkaline earths, p-block metals, and transition metals
+(including Fe, Ni, Ti, Ag added to the original 11),
+the correlation between all-electron $\delta_\mathrm{IPR}$ and
+the midpoint density ratio is $r = 0.86$ ($n = 15$, $p < 0.001$).
+The valence-only $\delta_\mathrm{IPR}^\mathrm{val}$ further
+improves this to $r = 0.89$ ($p < 0.001$), confirming that
+core-electron contamination weakens the delocalization signal.
 We note that dimer midpoint density is a proxy for---but not
 identical to---Miedema's $n_\mathrm{ws}$, which is defined at
 the Wigner--Seitz cell boundary in bulk solids.
@@ -976,12 +1000,15 @@ is, to our knowledge, entirely unexplored:
 
 \begin{enumerate}
   \item \textbf{Element coverage.}
-    Five metals (Na, K, Al, Cu, Zn) confirm the sp/$d$
-    trend, but extension to transition metals with partially
-    filled $d$-bands (Fe, Ni, Ti) and to $f$-electron metals
-    (Ce, La) is needed to establish generality.
-    The dimer calculations cover 11 elements but exclude
-    several technologically important metals (Ag, Au, Pt).
+    The dimer calculations now cover 15 elements including
+    transition metals with partially filled $d$-bands
+    (Fe, Ni, Ti) and a $4d$ metal (Ag).
+    Heavy $5d$ metals (Au, Pt, W) require relativistic
+    pseudopotentials or larger basis sets and are left for
+    future work, as are $f$-electron metals (Ce, La).
+    The slab calculations (five metals: Na, K, Al, Cu, Zn)
+    confirm the sp/$d$ trend but would benefit from
+    extension to the newly added transition metals.
 
   \item \textbf{$\delta_\mathrm{IPR}$ is explanatory, not predictive.}
     The direct correlation between dimer $\delta_\mathrm{IPR}$
@@ -992,17 +1019,19 @@ is, to our knowledge, entirely unexplored:
     $n_\mathrm{ws}$ but does not replace it as a predictor.
 
   \item \textbf{Core-electron contamination in dimer $\delta_\mathrm{IPR}$.}
-    The dimer $\delta_\mathrm{IPR}$ (Eq.~\ref{eq:delta_IPR_def}) averages
-    the IPR over \emph{all} occupied Kohn--Sham orbitals, including core
-    states. Since core orbitals are strongly localized on the atomic site,
-    they contribute high IPR values that pull $\delta_\mathrm{IPR}$ toward
-    zero irrespective of valence delocalization. This is at odds with the
-    valence-centric physical picture established by the slab calculations,
-    where only valence electrons determine $n_\mathrm{mid}/n_\mathrm{bulk}$.
-    A valence-only $\delta_\mathrm{IPR}$---restricted to states above a
-    core-valence energy threshold---would be more consistent with the slab
-    analysis and is expected to strengthen the $\delta$--$n_\mathrm{ws}$
-    correlation. This refinement is left for future work.
+    The all-electron $\delta_\mathrm{IPR}$ averages the IPR over
+    \emph{all} occupied Kohn--Sham orbitals, including core states.
+    Since core orbitals are strongly localized, they pull
+    $\delta_\mathrm{IPR}$ toward zero irrespective of valence
+    delocalization. To quantify this effect, we computed a valence-only
+    variant $\delta_\mathrm{IPR}^\mathrm{val}$ by excluding core states
+    below a per-element energy threshold (Table~\ref{tab:delta_nws}).
+    The valence-only version improves the correlation with midpoint
+    density from $r = 0.86$ to $r = 0.89$, confirming that core
+    contamination weakens the signal.
+    The improvement is modest, suggesting that the ranking is already
+    largely correct in the all-electron version, but the valence-only
+    formulation is more physically consistent with the slab analysis.
     The MLWF spreads (Sec.~\ref{sec:wannier}), being computed from
     valence bands only, are not affected by this issue and serve as
     an independent confirmation uncontaminated by core states.

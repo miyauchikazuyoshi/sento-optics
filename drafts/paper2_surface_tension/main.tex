@@ -54,15 +54,22 @@ A valence-only variant $\delta_\mathrm{IPR}^\mathrm{val}$
 (excluding core states) improves this to $r = 0.89$.
 The result is robust across three basis sets
 (def2-SVP/TZVP/QZVP: $r = 0.72$--$0.84$).
-Periodic slab calculations on five metals (Na, K, Al, Cu, Zn)
-with valence electron decomposition demonstrate that
-sp metals have near-uniform interstitial density
-(Na: 1.09, K: 1.13, Al: 0.96) while $d$-metals show
-strong depletion (Cu: 0.33, Zn: 0.28)---a 3.5$\times$ ratio
-between sp and $d$ averages.
-An ablation study shows that total electron density
-masks this trend for alkali metals; valence decomposition
-recovers the correct sp $>$ $d$ ordering for all five metals.
+Periodic slab calculations on 14 metals---8~sp-type
+(Li, Be, Na, Mg, Al, Si, K, Ca) and 6~$d$-type
+(Ti, Fe, Cu, Zn, Ga, Ag)---with valence electron
+decomposition demonstrate a statistically significant
+separation: sp metals show near-uniform interstitial
+density (mean $n_\mathrm{mid}/n_\mathrm{bulk} = 0.96$)
+while $d$-metals show strong depletion
+(mean $= 0.38$)---a 2.5$\times$ ratio
+($t = 5.84$, $p = 0.00008$).
+This trend holds for partially filled $d$-bands
+(Fe $d^6$: 0.37) as well as closed-shell $d^{10}$
+(Cu: 0.33, Zn: 0.28).
+An ablation study on the original five metals shows
+that total electron density masks this trend for alkali
+metals; valence decomposition recovers the correct
+sp $>$ $d$ ordering.
 Maximally localized Wannier function (MLWF) calculations
 independently confirm this hierarchy: sp metals
 (Al: $\bar{\Omega} = 12.9$, Na: 11.7~\AA$^2$)
@@ -681,10 +688,13 @@ delivering more charge to the boundary.
 \end{figure}
 
 
-\subsection{Five-metal slab calculations: valence electron delocalization}
+\subsection{Slab calculations: valence electron delocalization across 14 metals}
 
 The most direct test of the proposed mechanism comes from
-periodic DFT slab calculations across five metals.
+periodic DFT slab calculations. We first established the
+method with five metals (Na, K, Al, Cu, Zn) and subsequently
+expanded to 14 metals by adding Li, Be, Mg, Ca, Si, Ga,
+Ti, Fe, and Ag.
 Using valence-only charge densities (Sec.~\ref{sec:methods}),
 the interstitial density ratio
 $n_\mathrm{mid}/n_\mathrm{bulk}$ cleanly separates
@@ -778,6 +788,62 @@ Miedema's empirical $n_\mathrm{ws}$ implicitly captures this:
 sp metals have high $n_\mathrm{ws}$ because their valence
 electrons are delocalized; $d$-metals have low $n_\mathrm{ws}$
 because $d$-electrons cluster at nuclei.
+
+\textbf{4.\ Expansion to 14 metals confirms the sp/$d$ separation.}
+To test generality, we extended the slab calculations to
+14 metals (Table~\ref{tab:14metals}).
+The sp/$d$ separation is statistically significant
+($t = 5.84$, $p = 0.00008$), with sp metals
+(mean $n_\mathrm{mid}/n_\mathrm{bulk} = 0.96 \pm 0.19$)
+clearly separated from $d$~metals
+(mean $= 0.38 \pm 0.13$; ratio = 2.5$\times$).
+
+\begin{table}[htb]
+  \centering
+  \caption{Valence $n_\mathrm{mid}/n_\mathrm{bulk}$ for 14 metals.
+    sp~metals show near-uniform interstitial density;
+    $d$~metals show depletion.
+    Ti ($d^2$, partially filled) is intermediate.}
+  \label{tab:14metals}
+  \begin{ruledtabular}
+  \begin{tabular}{lccccc}
+    Metal & Config. & Type & Valence & $\gamma$ (mN/m) \\
+    \hline
+    \multicolumn{5}{l}{\emph{sp metals}} \\
+    Li  & $2s^1$         & sp    & \textbf{1.047} &  398 \\
+    Be  & $2s^2$         & sp    & \textbf{0.986} & 1145 \\
+    Na  & $3s^1$         & sp    & \textbf{1.093} &  191 \\
+    Mg  & $3s^2$         & sp    & \textbf{1.049} &  559 \\
+    Al  & $3s^23p^1$     & sp    & \textbf{0.963} & 1050 \\
+    K   & $4s^1$         & sp    & \textbf{1.130} &  101 \\
+    Ca  & $4s^2$         & sp    & \textbf{0.944} &  361 \\
+    Si  & $3s^23p^2$     & sp$^3$ & \textbf{0.476} &  865 \\
+    \hline
+    \multicolumn{5}{l}{\emph{$d$ metals}} \\
+    Ti  & $3d^24s^2$     & $d^2$  & 0.669 & 1650 \\
+    Fe  & $3d^64s^2$     & $d^6$  & 0.365 & 1872 \\
+    Cu  & $3d^{10}4s^1$  & $d^{10}$ & 0.329 & 1285 \\
+    Zn  & $3d^{10}4s^2$  & $d^{10}$ & 0.279 &  782 \\
+    Ga  & $3d^{10}4s^24p^1$ & $d^{10}$ & 0.282 &  718 \\
+    Ag  & $4d^{10}5s^1$  & $d^{10}$ & 0.374 &  903 \\
+  \end{tabular}
+  \end{ruledtabular}
+\end{table}
+
+Three observations merit discussion:
+(i)~All pure sp metals (Li through Ca) fall in the range 0.94--1.13,
+confirming the free-electron-like uniformity observed in the
+original five metals.
+(ii)~Si ($\mathrm{sp}^3$, 0.48) is intermediate, consistent with
+directional bonding that promotes localization relative to metallic sp.
+(iii)~Among $d$ metals, Ti ($d^2$, 0.67) is intermediate between
+the sp~group and the $d^{10}$ group (Cu/Zn/Ga/Ag: 0.28--0.37).
+This is consistent with Friedel's picture~\cite{Friedel1969}:
+as $d$-band filling increases, the $d$-band narrows and electrons
+become more localized, reducing the interstitial density.
+Fe ($d^6$, 0.37) already approaches the $d^{10}$ values,
+indicating that even partially filled $d$-bands produce
+substantial localization.
 
 
 \subsection{Wannier spread confirms delocalization hierarchy}
@@ -942,6 +1008,33 @@ explains why chemisorption energies follow Miedema-like
 trends, $\delta_\mathrm{IPR}$ explains why surface energies
 follow $n_\mathrm{ws}$.
 
+The 14-metal slab data (Table~\ref{tab:14metals}) provide
+a finer-grained picture.
+Among $d$~metals, Ti ($d^2$: 0.67) is intermediate between
+the sp~group ($\sim\!1.0$) and the $d^{10}$~group ($\sim\!0.3$),
+while Fe ($d^6$: 0.37) is already close to $d^{10}$.
+This progression---Ti $>$ Fe $>$ Cu $>$ Zn---mirrors
+Friedel's $d$-band filling picture~\cite{Friedel1969}:
+as the $d$-band fills, it narrows and the $d$-electrons
+become more localized, reducing the interstitial density.
+The sp/$d$ bifurcation in boundary density is thus not a
+binary distinction but a continuous gradient governed by
+$d$-band filling, with $d^{10}$ at the extreme localized end.
+
+We note, however, that $\delta_\mathrm{IPR}$ and
+$n_\mathrm{ws}$ measure related but distinct quantities.
+$\delta$ captures how freely valence electrons spread
+(wavefunction delocalization), while $n_\mathrm{ws}$ captures
+how much charge arrives at the cell boundary including
+indirect contributions from $d$-electron screening.
+This distinction explains why the dimer
+$\delta$--$n_\mathrm{ws}$ correlation is moderate ($r = 0.33$)
+despite the strong $\delta$--midpoint-density correlation
+($r = 0.89$): midpoint density measures the same physics
+as $\delta$ (wavefunction spread), whereas Miedema's
+$n_\mathrm{ws}$ incorporates screening effects that
+$\delta$ does not account for.
+
 \subsection{Connection to optical response}
 
 In Paper~I~\cite{SentoOpticsPaper1}, we showed that
@@ -1023,15 +1116,18 @@ is, to our knowledge, entirely unexplored:
 
 \begin{enumerate}
   \item \textbf{Element coverage.}
-    The dimer calculations now cover 15 elements including
-    transition metals with partially filled $d$-bands
-    (Fe, Ni, Ti) and a $4d$ metal (Ag).
-    Heavy $5d$ metals (Au, Pt, W) require relativistic
-    pseudopotentials or larger basis sets and are left for
-    future work, as are $f$-electron metals (Ce, La).
-    The slab calculations (five metals: Na, K, Al, Cu, Zn)
-    confirm the sp/$d$ trend but would benefit from
-    extension to the newly added transition metals.
+    The dimer calculations cover 15 elements and the slab
+    calculations cover 14 metals, including partially filled
+    $d$-bands (Fe~$d^6$, Ti~$d^2$), closed-shell $d^{10}$
+    (Cu, Zn, Ga, Ag), and a $4d$ metal (Ag).
+    The sp/$d$ separation is statistically significant
+    ($p = 0.00008$).
+    Ni did not converge in the slab calculation (spin-polarized
+    SCF instability) and is left for future work, along with
+    heavy $5d$ metals (Au, Pt, W) requiring relativistic
+    pseudopotentials and $f$-electron metals (Ce, La).
+    The Wannier calculations remain at five metals and would
+    benefit from extension to the expanded set.
 
   \item \textbf{$\delta_\mathrm{IPR}$ is explanatory, not predictive.}
     The direct correlation between dimer $\delta_\mathrm{IPR}$

@@ -258,7 +258,7 @@ def write_pp_input(key, info):
   filplot = '{key}_valence.dat'
   plot_num = 10
   emin = {info['emin_valence']:.1f}
-  emax = 0.0
+  emax = 100.0
 /
 """)
 

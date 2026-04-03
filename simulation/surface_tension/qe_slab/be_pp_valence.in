@@ -4,5 +4,5 @@
   filplot = 'be_valence.dat'
   plot_num = 10
   emin = -15.0
-  emax = 0.0
+  emax = 100.0
 /

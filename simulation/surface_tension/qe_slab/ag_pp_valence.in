@@ -4,5 +4,5 @@
   filplot = 'ag_valence.dat'
   plot_num = 10
   emin = -8.0
-  emax = 0.0
+  emax = 100.0
 /

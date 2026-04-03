@@ -2,52 +2,118 @@
 
 > **「液体とは何か？」** — 2026年3月27日、銭湯にて。
 
-## 着想
+## このリポジトリについて
 
-湯船の水面を眺めていて、2つのことに気づいた。
+これは研究プログラムの**思考の軌跡**です — 銭湯での観察から定量的物理学へ。
+
+アイデアはシンプル: **構成粒子の空間的非局在化**（δ）が界面物性 — 光沢、表面張力、そして究極的には「液体とは何か」の定義 — を支配する。日常の直感をメモとして記録し、数値検証にかけ、生き残った主張を論文にする。
+
+```
+日常の疑問                    →  理論メモ                       →  数値検証              →  論文
+「なぜ水面は光る？」          →  theory/optics/                →  simulation/optics/    →  Paper 1
+「なぜ金属にγがある？」       →  theory/surface_tension/       →  simulation/surface_tension/ → Paper 2
+「液体とは何か？」            →  theory/phase/                 →  （計画中）            →  Paper 3
+```
+
+## アイデア
+
+湯船の水面を眺めていて:
 
 1. **液体は光る。** 水面は金属鏡のように光をコヒーレントに反射する。
-2. **液体は表面張力を持つ。** 水は重力に逆らって形を保ち、メニスカスを形成する。
+2. **液体は表面張力を持つ。** 水は重力に逆らって形を保つ。
 
-どちらも*界面現象*だ — 一つの相が別の相と出会うところに生まれる。
-どちらもマクロな記述は完成している（フレネル方程式、ヤング-ラプラス方程式）。
-しかし、電子構造に根ざした*ミクロな説明*は存在しない。
+どちらも*界面現象*であり、どちらも電子構造に根ざしたミクロな説明を欠いている。どちらも単一の変数に帰着できる:
 
-「液体」の既存の定義はマクロ的だ：「一定の体積を持つが一定の形を持たない状態」。
-ミクロな定義は何か？ どの*電子的性質*が液体を液体たらしめているのか？
-
-### 仮説
-
-これらの界面物性は、単一の変数で統一できる：**構成粒子の空間的非局在化** — 粒子間相互作用量として粒子の界面における存在確率を決定するもの。
-
-- **光沢** = 界面における光子の位相コヒーレンスの保存。非局在化した粒子（金属中の自由電子、液体中の自由分子）は集団的に応答し、コヒーレンスを維持する。局在した粒子は非コヒーレントに応答する — 光沢なし。
-- **表面張力** = 界面を生成する熱力学的コスト。セル境界にどれだけの電荷が到達するか（Miedemaのn_ws）は、価電子の非局在化の度合いによって決まる。
-
-どちらもの因果連鎖も同じ電子的性質 **δ**（非局在化指標）から始まる：
+**δ（非局在化指標）** — 構成粒子がどれだけ自由に空間に広がるか。
 
 ```
 光学応答:    δ × D_eff → ε(ω) → R(ω)
 表面張力:    δ → n_ws → γ
+相の分類:    (δ_nuc, δ_elec) → 固体 / 液体 / 気体 / プラズマ / ...
 ```
 
-## 枠組み
+より深い洞察: 量子力学は確率分布の**第2モーメント**（分散、広がり、不確定性）を基本的記述量として使う。第1モーメントが原理的に不確定だからだ。δ枠組みはこの戦略を古典系にも拡張する — 「粒子がどこにあるか」より「粒子がどれだけ広がっているか」が物性を決める場面では、δが自然な変数になる。
 
-物質のマクロな光学応答（透明・有色・黒・光沢）を2変数で分類する：
+## 論文
 
-- **δ（非局在化指標）:** 電子がどれだけ自由に動けるか（IPR, Wannier spread, バンド幅, 逆有効質量で定量化）
-- **D_eff（有効光学伝導次元）:** その自由電子が何次元方向に光子に応答できるか
+数値検証を経て、自己批判テストに耐えた主張を論文にしている。
 
-バンドギャップE_gだけでは、グラファイト（E_g ≈ 0）が黒くて金属（E_g = 0）が光る理由を説明できない。δ × D_eff枠組みはこれを解決する：グラファイトはD_eff = 2（面内のみ）、金属はD_eff = 3。
+### Paper 1: バンドギャップを超える光学分類
 
-### 位置づけ
-- 本枠組みは「普遍理論」ではなく**強い現象論的統一仮説**
-- δは操作的に定義された有効指標（候補：IPR, Wannier spread, バンド幅, 逆有効質量）
-- D_effは結晶学的次元ではなく、低エネルギー光学応答に寄与する有効伝導次元
-- バンドギャップ理論を**置き換える**のではなく**包含する**：E_gはδから導出可能な中間変数として再解釈される
+> *Classifying Optical Appearance beyond the Band Gap: Effective Conduction Dimensionality and Electronic Delocalization in Carbon Allotropes*
 
-## 検証状況
+**主張**: δ × D_effはバンドギャップ単独では不可能な光学分類（透明/有色/黒/光沢）を可能にする。グラファイトと金属はどちらもE_g ≈ 0だが、D_effが異なる（2 vs 3）。
 
-**主要検証系：炭素同素体**（単一元素、構造のみが変数）
+| 結果 | 値 |
+|------|-----|
+| E_g + D_eff 決定木の正答率 | **6/7** (85.7%) |
+| δプロキシ間の相互相関 | **r = 0.73–0.89** |
+| δ–E_g 逆相関 | **r = −0.70**（文献）, **r = −0.86**（TB） |
+
+ステータス: Draft v7（ほぼ完成）。プレプリントメタデータ: [`zenodo/paper1_metadata.json`](zenodo/paper1_metadata.json)
+
+- 理論: [`theory/optics/02_glossiness_theory.md`](theory/optics/02_glossiness_theory.md)
+- コード: [`simulation/optics/`](simulation/optics/)
+- 原稿: [`drafts/paper1_optics/main.tex`](drafts/paper1_optics/main.tex)
+
+### Paper 2: Miedemaのn_wsはなぜ機能するか？
+
+> *What Does Miedema's Boundary Electron Density Measure? Valence Electron Delocalization as the Physical Origin of n_ws*
+
+**主張**: Miedemaのn_ws — 45年間使われてきた表面張力の経験的予測子 — は価電子非局在化δ_elecのプロキシである。これはWilliams, Gelatt & Moruzzi (PRL, 1980) が提起した問い「n_wsは*なぜ*γを予測できるのか？」への回答。
+
+| 結果 | 値 |
+|------|-----|
+| δ_IPR vs 境界電子密度（ダイマー） | **r = 0.84** (p = 0.001) |
+| sp/d 間隙密度比（スラブ） | **3.5倍** |
+| Wannier spread sp/d比 | **6–19倍** |
+
+ステータス: Draft v6（進行中）。プレプリントメタデータ: [`zenodo/paper2_metadata.json`](zenodo/paper2_metadata.json)
+
+- 理論: [`theory/surface_tension/surface_tension_theory.md`](theory/surface_tension/surface_tension_theory.md)
+- コード: [`simulation/surface_tension/`](simulation/surface_tension/)
+- 原稿: [`drafts/paper2_surface_tension/main.tex`](drafts/paper2_surface_tension/main.tex)
+
+### Paper 3: 「液体」のミクロ的再定義（計画中）
+
+**主張**（仮説）: 液体状態は (δ_nuc, δ_elec) — 核の非局在化（拡散）と電子の非局在化（Wannier spread）で特徴づけられる。液体と気体の違いはδ_nuc（どちらも粒子は動く）ではなくδ_elec（電子の重なり → 凝集力 → 一定体積）にある。
+
+ステータス: 理論的枠組み段階。数値検証はまだ。
+
+- 理論: [`theory/phase/paper3_phase_diagram_theory.md`](theory/phase/paper3_phase_diagram_theory.md)
+
+## 思考の軌跡
+
+`theory/` ディレクトリは思考過程を記録している — 日常の疑問がどのように既存の数学的構造に着地していくか。
+
+### 基盤
+- [`theory/core/01_core_framework.md`](theory/core/01_core_framework.md) — δ × D_effの定義と光学分類
+- [`theory/core/04_falsification.md`](theory/core/04_falsification.md) — この枠組みを壊す条件（具体的・定量的）
+- [`theory/core/glossary.md`](theory/core/glossary.md) — 全記号・用語の定義
+
+### 主要な接続（アイデアが既存の物理に着地した場所）
+
+| メモ | 何を接続しているか |
+|------|-------------------|
+| [`memo_quantum_classical_melting_crossover.md`](theory/connections/memo_quantum_classical_melting_crossover.md) | coth公式で量子/古典のδ_nucを統一; 拡散方程式がδ_nucの支配方程式; なぜ第2モーメントが正しい物理変数か |
+| [`memo_liquid_definition_via_omega.md`](theory/connections/memo_liquid_definition_via_omega.md) | Wannier spread Ω + 拡散 → 液体のミクロ定義（先行研究なし） |
+| [`memo_literature_and_sum_rule.md`](theory/connections/memo_literature_and_sum_rule.md) | Cardenas-Castillo (2024) 総和則でδ→光学が定理に（周波数積分量に対して） |
+| [`memo_remsing_klein_liquid_si.md`](theory/connections/memo_remsing_klein_liquid_si.md) | Remsing & Klein (2020) 液体Si AIMD — 最近接の先行研究、4つのノベルティが残存 |
+| [`renyi_entropy_memo.md`](theory/phase/renyi_entropy_memo.md) | IPR = e^{−H₂}（Rényiエントロピー）— δの情報理論的基盤 |
+| [`05_gedig_connection.md`](theory/connections/05_gedig_connection.md) | 相転移とgeDIG認知フレームワークの構造的同型性 |
+| [`memo_delta_vs_density.md`](theory/connections/memo_delta_vs_density.md) | δ（量子的:「何サイトに広がる？」）vs n(r)（古典的:「どこにある？」）— なぜギャップが存在したか |
+| [`memo_periodic_table_and_refractive_index.md`](theory/connections/memo_periodic_table_and_refractive_index.md) | δ単独では屈折率を予測できない; 3因子補正 n²−1 ∝ δ × α / E_g² |
+
+### その他の接続
+- [`memo_classical_uncertainty_and_coherence.md`](theory/connections/memo_classical_uncertainty_and_coherence.md) — 古典的不確定性と量子的不確定性の類似
+- [`memo_field_theories_and_entropy.md`](theory/connections/memo_field_theories_and_entropy.md) — 既存の5つの場の理論に対するδのメタ記述子としての位置づけ
+- [`memo_mesoscale_quantum_classical.md`](theory/connections/memo_mesoscale_quantum_classical.md) — δをメソスケールの有効記述子として位置づける
+- [`memo_dynamic_equilibrium_and_verification.md`](theory/connections/memo_dynamic_equilibrium_and_verification.md) — 1入力3出力の検証戦略
+- [`liquid_lens_conjecture.md`](theory/connections/liquid_lens_conjecture.md) — 推測: 可変焦点レンズ設計へのδの応用
+
+## 検証系
+
+**主要検証系: 炭素同素体**（単一元素、構造のみが変数）
 
 | 物質 | δ（πバンド幅） | D_eff | E_g (eV) | 光学応答 |
 |------|----------------|-------|----------|---------|
@@ -57,81 +123,34 @@
 | グラフェン | ~9 eV | 2 | 0 | πα = 2.3%/層 |
 | グラファイト | ~9 eV（面内） | 2 | ~0 | 黒 + 劈開面光沢 |
 
-**対照系：h-BN**（グラファイトと同じ層状sp²構造だが、B-N電気陰性度差によりδが低い → D_eff = 0、透明/白色）
-
-## 研究計画
-
-### Paper 1: 光学応答の分類（概念実証済み）
-
-δ × D_effによる炭素同素体の光学応答分類。タイトバインディングモデルで検証。
-
-### Paper 2: 表面張力とδ（進行中）
-
-因果連鎖：**δ_IPR → n_ws → γ**
-
-**主要結果：**
-- 11金属ダイマーのDFT計算：δ_IPRと境界電子密度の相関 r = 0.84 (p = 0.001)
-- **5金属スラブ計算**（Na, K, Al, Cu, Zn）：価電子分解でsp金属の間隙密度が均一（Na: 1.09, K: 1.13, Al: 0.96）、d金属は枯渇（Cu: 0.33, Zn: 0.28）— 3.5倍の差
-- **アブレーション研究**：全電子密度ではアルカリ金属のトレンドが隠れる（芯電子汚染）。価電子分解で全5金属の正しいsp > d順序を回復
-- **Wannier spread**（MLWF, バルク計算）：sp金属（Al: 12.9, Na: 11.7 Å²）はd金属（Cu: 1.9, Zn: 0.7 Å²）の6–19倍の平均広がり。表面計算なしで非局在化の階層を確認
-
-### Paper 3: 「液体」のミクロ的再定義（計画中）
-
-元の問い：液体とは、ミクロに見て何なのか？
-
-既存の定義はマクロ的（「一定の体積を持つが一定の形を持たない」）。液体状態は核の非局在化δ_nuc — 核/分子の空間的自由度 — で特徴づけられると提案する。
-
-- **液体Ga**：融解時に反射率がジャンプ → 核非局在化の開始
-- **水**：水素結合ネットワークによる異常な表面張力（δ_nucが制約される）
-- **液体金属**：電子非局在化 + 核の自由度 → 高いγ
+**対照系: h-BN**（グラファイトと同じsp²構造だが、δが低い → 透明/白色）
 
 ## リポジトリ構造
 
 ```
 sento-optics/
-├── README.md                        # 英語版README
-├── README_ja.md                     # 本ファイル
-├── theory/                          # 理論的枠組み
-│   ├── 01_core_framework.md         # 核心枠組み：δ × D_eff
-│   ├── 02_glossiness_theory.md      # 光沢の現象論的再記述
-│   ├── 04_falsification.md          # 反証条件
-│   └── extensions/                  # 主論文スコープ外
-├── data/                               # 文献データ
-│   ├── carbon_allotropes.md
-│   ├── dataset_v1.csv
-│   └── delta_proxy_database.md
-├── simulation/
-│   ├── optics/                         # Paper 1: 光学応答
-│   │   ├── delocalization_optics_v2.py #   TBモデル（グラフェン等）
-│   │   ├── classification_v2.py        #   決定木検証
-│   │   ├── plot_*.py                   #   図生成
-│   │   └── figures/                    #   生成図
-│   └── surface_tension/               # Paper 2: 表面張力
-│       ├── test1–7_*.py                #   自己批判テスト
-│       └── qe_slab/                    #   DFTスラブ計算（QE）
-│           ├── *_scf.in                #     5金属スラブ入力
-│           ├── plot_valence_ablation.py #    アブレーション分析
-│           └── wannier/                #     MLWF spread計算
-│               ├── run_wannier_all.py  #       Wannier90パイプライン
-│               └── plot_wannier_summary.py
-├── drafts/
-│   ├── paper1_optics/                  # Paper 1 原稿
-│   │   ├── main.tex, main_v5.tex
-│   │   └── references.bib
-│   └── paper2_surface_tension/         # Paper 2 原稿
-│       ├── main.tex                    #   v4（Wannier結果含む）
-│       └── references.bib
-└── review/
-    └── reviewer_response.md
+├── theory/                             # 思考の軌跡
+│   ├── core/                           #   基盤（論文横断）
+│   ├── optics/                         #   Paper 1 理論
+│   ├── surface_tension/                #   Paper 2 理論
+│   ├── phase/                          #   Paper 3 理論
+│   └── connections/                    #   他分野との接続
+├── simulation/                         # 数値検証
+│   ├── optics/                         #   TBモデル、決定木
+│   └── surface_tension/                #   DFTスラブ、Wannier、自己テスト
+├── data/                               # 文献データ、データセット
+├── drafts/                             # 論文原稿（LaTeX）
+│   ├── paper1_optics/
+│   └── paper2_surface_tension/
+├── zenodo/                             # プレプリント投稿メタデータ
+└── review/                             # 文献調査、査読対応
 ```
 
 ## AI利用開示
 
-**著者の直感（ステップ1–5）：**
-「液体とは何か？」という問い、銭湯での2つの観察（光沢＋表面張力）、両者がミクロな説明を欠く界面現象であるという認識、そして粒子の非局在化δがこれらを統一するという仮説 — ここまでは著者の着想による。
+**著者の直感:** 「液体とは何か？」という問い、銭湯での観察（光沢＋表面張力が界面現象であること）、粒子の非局在化δがこれらを統一するという仮説 — ここまでは著者の着想による。
 
-**AIによる形式化（ステップ6以降）：**
-これらの直感を定量的枠組みに翻訳するプロセス — タイトバインディングシミュレーション、DFTスラブ計算、価電子分解、Wannier spread解析、統計的検証、自己批判テスト、論文執筆 — はClaude（Anthropic）との協働で実施した。著者はすべてのデータセット、コード、科学的主張を独自に検証している。科学的責任はすべて著者に帰する。
+**AIによる形式化:** 直感を定量的枠組みに翻訳するプロセス — タイトバインディングシミュレーション、DFT計算、Wannier解析、統計的検証、自己批判テスト、論文執筆 — はClaude（Anthropic）およびChatGPT（OpenAI）との協働で実施した。著者はすべてのデータセット、コード、科学的主張を独自に検証している。科学的責任はすべて著者に帰する。
 
 ## 引用
 
@@ -139,7 +158,7 @@ sento-optics/
 
 ## フィードバック歓迎
 
-独立研究者による進行中の研究です。専門家によるレビュー、批判、鋭い指摘は歓迎するだけでなく、積極的に求めています。論理の欠陥、見落とされた先行研究、より良い検証方法を見つけた方は、issueを立てるかご連絡ください。このリポジトリに自己批判テストが存在するのは、提案に値する仮説は破壊を試みる価値のある仮説だと著者が信じているからです。
+独立研究者による進行中の研究です。専門家によるレビュー、批判、鋭い指摘を積極的に求めています。論理の欠陥、見落とされた先行研究、より良い検証方法を見つけた方は、issueを立てるかご連絡ください。このリポジトリに自己批判テストが存在するのは、提案に値する仮説は破壊を試みる価値のある仮説だと考えるからです。
 
 ## ライセンス
 

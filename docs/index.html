@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sento-optics — What is a liquid, really?</title>
+  <meta name="description" content="Electronic delocalization as a unifying descriptor for interface properties. A research project born in a Japanese bathhouse.">
+  <meta property="og:title" content="sento-optics">
+  <meta property="og:description" content="What is a liquid, really? — A physics research project born in a Japanese sentō.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="images/ogp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="sento-optics">
+  <meta name="twitter:description" content="What is a liquid, really? — A physics research project born in a Japanese sento.">
+  <meta name="twitter:image" content="images/ogp.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Language Toggle -->
+  <nav id="lang-nav">
+    <button id="lang-toggle" onclick="toggleLang()" aria-label="Toggle language">
+      <span id="lang-label">EN</span>
+    </button>
+    <a href="https://github.com/miyauchikazuyoshi/sento-optics" class="github-link" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <canvas id="hero-particles"></canvas>
+    <div class="hero-content">
+      <p class="hero-origin" data-en="A question born in a Japanese sentō (public bathhouse), March 27, 2026." data-ja="2026年3月27日、銭湯にて生まれた問い。"></p>
+      <h1 class="hero-title" data-en="&ldquo;What is a liquid, really?&rdquo;" data-ja="「液体とは、本当は何なのか？」"></h1>
+      <p class="hero-sub" data-en="Two observations at the bathwater surface:" data-ja="湯船の水面を眺めていて、2つのことに気づいた:"></p>
+      <div class="hero-observations">
+        <div class="obs">
+          <span class="obs-num">1</span>
+          <p data-en="Liquids shine. The water surface reflects light coherently, like a metal mirror." data-ja="液体は光る。水面は金属鏡のように光をコヒーレントに反射する。"></p>
+        </div>
+        <div class="obs">
+          <span class="obs-num">2</span>
+          <p data-en="Liquids have surface tension. The water holds its shape against gravity." data-ja="液体は表面張力を持つ。水は重力に逆らって形を保つ。"></p>
+        </div>
+      </div>
+      <p class="hero-punch" data-en="Both are interface properties. Both lack a microscopic explanation. Both trace back to a single variable." data-ja="どちらも界面現象。どちらもミクロな説明がない。どちらも一つの変数に帰着する。"></p>
+    </div>
+    <div class="hero-water"></div>
+  </section>
+
+  <!-- The Idea -->
+  <section id="idea">
+    <h2 data-en="The Idea" data-ja="アイデア"></h2>
+    <div class="idea-grid">
+      <div class="idea-card">
+        <h3>δ</h3>
+        <p class="idea-name" data-en="Delocalization Index" data-ja="非局在化指標"></p>
+        <p data-en="How freely constituent particles spread across space. The second moment of a probability distribution — the same quantity quantum mechanics uses because the first moment is inherently uncertain." data-ja="構成粒子がどれだけ自由に空間に広がるか。確率分布の第2モーメント — 量子力学が第1モーメントの不確定性ゆえに採用したのと同じ量。"></p>
+      </div>
+      <div class="idea-card">
+        <h3>D<sub>eff</sub></h3>
+        <p class="idea-name" data-en="Effective Conduction Dimensionality" data-ja="有効伝導次元"></p>
+        <p data-en="In how many spatial directions particles can respond to photons. Not crystallographic dimension — optical dimension." data-ja="粒子が何次元方向に光子に応答できるか。結晶学的次元ではなく、光学的次元。"></p>
+      </div>
+    </div>
+    <div class="idea-chains">
+      <div class="chain">
+        <span class="chain-label" data-en="Optical response" data-ja="光学応答"></span>
+        <code>δ × D<sub>eff</sub> → ε(ω) → R(ω)</code>
+      </div>
+      <div class="chain">
+        <span class="chain-label" data-en="Surface tension" data-ja="表面張力"></span>
+        <code>δ → n<sub>ws</sub> → γ</code>
+      </div>
+      <div class="chain">
+        <span class="chain-label" data-en="Phase identity" data-ja="相の分類"></span>
+        <code>(δ<sub>nuc</sub>, δ<sub>elec</sub>) → phase</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- Papers -->
+  <section id="papers">
+    <h2 data-en="Papers" data-ja="論文"></h2>
+    <p class="section-desc" data-en="Claims that survived numerical verification and self-criticism." data-ja="数値検証と自己批判テストに耐えた主張を論文にしている。"></p>
+    <div class="papers-grid">
+      <div class="paper-card">
+        <span class="paper-status status-near" data-en="Draft v7" data-ja="Draft v7"></span>
+        <h3>Paper 1</h3>
+        <p class="paper-title" data-en="Optical Classification beyond the Band Gap" data-ja="バンドギャップを超える光学分類"></p>
+        <p data-en="δ × D_eff classifies optical appearance where band gap alone fails. 85.7% accuracy on carbon allotropes." data-ja="δ × D_effはバンドギャップ単独では不可能な光学分類を実現。炭素同素体で85.7%の正答率。"></p>
+        <div class="paper-stats">
+          <span>6/7 correct</span>
+          <span>r = 0.73–0.89</span>
+        </div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-status status-prog" data-en="Draft v6" data-ja="Draft v6"></span>
+        <h3>Paper 2</h3>
+        <p class="paper-title" data-en="Why Does Miedema's n_ws Work?" data-ja="Miedemaのn_wsはなぜ機能するか？"></p>
+        <p data-en="Miedema's 45-year-old predictor is a proxy for valence electron delocalization. Answers Williams et al. (1980)." data-ja="45年間使われてきたMiedemaの予測子は価電子非局在化のプロキシ。Williams et al. (1980) の問いに回答。"></p>
+        <div class="paper-stats">
+          <span>r = 0.84</span>
+          <span>sp/d: 3.5×</span>
+        </div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-status status-plan" data-en="Planned" data-ja="計画中"></span>
+        <h3>Paper 3</h3>
+        <p class="paper-title" data-en="Microscopic Redefinition of &ldquo;Liquid&rdquo;" data-ja="「液体」のミクロ的再定義"></p>
+        <p data-en="The liquid–gas distinction is not nuclear freedom (both move) but electronic overlap (cohesion → fixed volume)." data-ja="液体と気体の違いは核の自由度（どちらも動く）ではなく電子の重なり（凝集力→一定体積）。"></p>
+        <div class="paper-stats">
+          <span data-en="Theoretical framework" data-ja="理論段階"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive: δ Slider -->
+  <section id="demo-slider">
+    <h2 data-en="Try it: Optical Classification of Carbon" data-ja="体験: 炭素の光学分類"></h2>
+    <p class="demo-desc" data-en="Carbon allotropes are the ideal test bed — same element, only structure varies. Adjust δ and D_eff to see how the same atoms produce transparent, colored, black, or lustrous materials." data-ja="炭素同素体は理想的な検証系 — 同じ元素で構造だけが異なる。δとD_effを動かして、同じ原子がどのように透明・有色・黒・光沢を生み出すか見てみよう。"></p>
+    <div class="slider-container">
+      <div class="slider-panel">
+        <div class="slider-row">
+          <label>δ</label>
+          <input type="range" id="delta-slider" min="0" max="100" value="50">
+          <span id="delta-val">0.50</span>
+        </div>
+        <div class="slider-row">
+          <label>D<sub>eff</sub></label>
+          <input type="range" id="deff-slider" min="0" max="3" value="3" step="1">
+          <span id="deff-val">3</span>
+        </div>
+        <div class="presets">
+          <button onclick="setPreset('diamond')" data-en="Diamond" data-ja="ダイヤモンド"></button>
+          <button onclick="setPreset('c60')" data-en="C60" data-ja="C60"></button>
+          <button onclick="setPreset('swcnt')" data-en="SWCNT" data-ja="SWCNT"></button>
+          <button onclick="setPreset('graphene')" data-en="Graphene" data-ja="グラフェン"></button>
+          <button onclick="setPreset('graphite')" data-en="Graphite" data-ja="グラファイト"></button>
+          <button onclick="setPreset('metal')" data-en="Metal" data-ja="金属"></button>
+        </div>
+      </div>
+      <div class="canvas-panel">
+        <canvas id="optics-canvas" width="300" height="300"></canvas>
+        <p id="optics-label" class="optics-label"></p>
+        <p id="optics-example" class="optics-example"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive: Phase Diagram -->
+  <section id="demo-phase">
+    <h2 data-en="Phase Diagram: (δ_nuc, δ_elec)" data-ja="相図: (δ_nuc, δ_elec)"></h2>
+    <p class="demo-desc" data-en="All phases of matter on a single map. Hover to explore. Click the button to see water's heating path." data-ja="すべての物質の相を一枚の地図に。ホバーで探索。ボタンで水の加熱パスを表示。"></p>
+    <div class="phase-container">
+      <svg id="phase-svg" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div id="phase-tooltip" class="phase-tooltip"></div>
+      <button id="water-path-btn" onclick="animateWaterPath()" data-en="Animate: Heating Water" data-ja="アニメーション: 水を加熱"></button>
+    </div>
+  </section>
+
+  <!-- Thinking Trail -->
+  <section id="trail">
+    <h2 data-en="Thinking Trail" data-ja="思考の軌跡"></h2>
+    <p class="section-desc" data-en="How everyday questions landed on existing mathematical structures." data-ja="日常の疑問がどのように既存の数学的構造に着地していったか。"></p>
+    <div class="trail-list">
+      <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/theory/connections/memo_quantum_classical_melting_crossover.md" class="trail-item" target="_blank" rel="noopener">
+        <span class="trail-icon">∿</span>
+        <div>
+          <strong data-en="Quantum–Classical Crossover" data-ja="量子-古典クロスオーバー"></strong>
+          <p data-en="coth formula unifies quantum/classical δ. Why the 2nd moment is the right variable." data-ja="coth公式で量子/古典のδを統一。なぜ第2モーメントが正しい変数か。"></p>
+        </div>
+      </a>
+      <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/theory/connections/memo_liquid_definition_via_omega.md" class="trail-item" target="_blank" rel="noopener">
+        <span class="trail-icon">Ω</span>
+        <div>
+          <strong data-en="Liquid Definition via Wannier Spread" data-ja="Wannier spreadによる液体定義"></strong>
+          <p data-en="Ω + diffusion equation → microscopic liquid definition. No prior work found." data-ja="Ω + 拡散方程式 → 液体のミクロ定義。先行研究なし。"></p>
+        </div>
+      </a>
+      <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/theory/connections/memo_literature_and_sum_rule.md" class="trail-item" target="_blank" rel="noopener">
+        <span class="trail-icon">Σ</span>
+        <div>
+          <strong data-en="Sum Rule Discovery" data-ja="総和則の発見"></strong>
+          <p data-en="Cardenas-Castillo (2024) makes δ→optics a theorem for frequency-integrated quantities." data-ja="Cardenas-Castillo (2024) の総和則でδ→光学が定理に。"></p>
+        </div>
+      </a>
+      <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/theory/phase/renyi_entropy_memo.md" class="trail-item" target="_blank" rel="noopener">
+        <span class="trail-icon">H₂</span>
+        <div>
+          <strong data-en="Rényi Entropy Connection" data-ja="Rényiエントロピーとの接続"></strong>
+          <p data-en="IPR = e^{−H₂}. Information-theoretic grounding of δ." data-ja="IPR = e^{−H₂}。δの情報理論的基盤。"></p>
+        </div>
+      </a>
+      <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/theory/connections/memo_delta_vs_density.md" class="trail-item" target="_blank" rel="noopener">
+        <span class="trail-icon">ρ</span>
+        <div>
+          <strong data-en="δ vs Density: Why the Gap Existed" data-ja="δ vs 密度: なぜギャップが存在したか"></strong>
+          <p data-en="δ asks 'how many sites?' (quantum). n(r) asks 'where?' (classical)." data-ja="δは「何サイトに広がる？」（量子的）。n(r)は「どこにある？」（古典的）。"></p>
+        </div>
+      </a>
+      <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/theory/connections/memo_remsing_klein_liquid_si.md" class="trail-item" target="_blank" rel="noopener">
+        <span class="trail-icon">Si</span>
+        <div>
+          <strong data-en="Liquid Si: Closest Prior Work" data-ja="液体Si: 最近接の先行研究"></strong>
+          <p data-en="Remsing & Klein (2020) AIMD on liquid Si. Four novelties remain." data-ja="Remsing & Klein (2020) の液体Si AIMD。4つのノベルティが残存。"></p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4 data-en="Cite" data-ja="引用"></h4>
+        <p class="cite-text">Miyauchi, K. (2026). <em>Phenomenological unification of optical response in carbon allotropes via electron delocalization index δ and effective conduction dimensionality D_eff.</em></p>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="AI Disclosure" data-ja="AI利用開示"></h4>
+        <p data-en="Original intuition by the author. Formalization with Claude (Anthropic) and ChatGPT (OpenAI). All claims independently verified." data-ja="着想は著者による。形式化はClaude（Anthropic）・ChatGPT（OpenAI）と協働。全主張を独自に検証。"></p>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Feedback" data-ja="フィードバック"></h4>
+        <p data-en="Expert criticism actively sought." data-ja="専門家の批判を積極的に求めています。"></p>
+        <a href="https://github.com/miyauchikazuyoshi/sento-optics/issues" target="_blank" rel="noopener" data-en="Open an Issue" data-ja="Issueを立てる"></a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Kazuyoshi Miyauchi — sento-optics</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

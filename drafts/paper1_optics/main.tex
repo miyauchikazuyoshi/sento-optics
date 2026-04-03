@@ -1,5 +1,14 @@
 % Optical Response Classification of Carbon Allotropes
 % via Electronic Delocalization and Effective Conduction Dimensionality
+% Draft v8 — April 2026
+% Changes from v7 (Stanford Agentic Reviewer response):
+%   - Fixed "no first-principles" contradiction: Methods now explicitly
+%     separates literature-derived proxies from DFT+Wannier confirmation
+%   - Discussion Wannier section clarified as independent confirmation,
+%     not part of the main classification analysis
+%   - D_eff frequency dependence: clarified all-energy vs visible-window
+%     and added limitation discussion
+%   - Added excitonic/local-field effects limitation paragraph
 % Draft v7 — March 2026
 % Changes from v6 (Codex review):
 %   - Title: "Predicting Gloss" → "Classifying Optical Appearance beyond the Band Gap"
@@ -292,6 +301,20 @@ The partial correlation with $E_g$ is a feature, not a bug---it
 reflects the physical reality that both variables derive from the
 same band structure.
 
+\emph{Limitation: frequency-resolved $D_\mathrm{eff}(\omega)$.}
+A more rigorous formulation would restrict the sum in
+Eq.~\ref{eq:Deff} to transitions within an energy window
+$[\omega - \Delta\omega, \omega + \Delta\omega]$, yielding a
+frequency-resolved $D_\mathrm{eff}(\omega)$ that tracks which
+spatial directions contribute to the optical response at each photon
+energy. The present work uses the all-energy definition for
+simplicity and because it is sufficient to classify the systems
+studied here. However, for materials where qualitatively different
+transitions dominate in different spectral ranges (e.g., interband
+$d$-to-$s$ vs.\ intraband Drude in transition metals), a
+frequency-resolved $D_\mathrm{eff}(\omega)$ would be necessary.
+This extension is left for future work.
+
 \begin{table}[h]
 \caption{Crystallographic vs.\ effective conduction dimensionality.}
 \label{tab:Deff}
@@ -345,8 +368,18 @@ second-order effects include:
 \begin{itemize}
   \item \textbf{Polarity/ionicity} ($p$): contributes to h-BN whiteness
     via $\pi$-electron localization.
-  \item \textbf{Excitonic effects}: modify optical response near the
-    band edge.
+  \item \textbf{Excitonic and local-field effects}: bound excitons
+    modify optical absorption near the band edge. These effects are
+    particularly large in h-BN (exciton binding energy $\sim$0.7~eV
+    \cite{Arnaud2006}) and C$_{60}$ (Frenkel excitons). The present
+    tight-binding optical models do not include excitonic or local-field
+    corrections; classification outcomes for these systems should
+    therefore be interpreted as first-approximation results.
+    Including the Bethe--Salpeter equation (BSE) in the optical
+    modeling is a natural next step, though we note that the
+    decision-tree classification relies on $E_g$ and $D_\mathrm{eff}$
+    (not on the detailed spectral shape), which are less sensitive to
+    excitonic renormalization than $\varepsilon(\omega)$ itself.
   \item \textbf{Thickness/stacking number} $N$: the graphene-to-graphite
     crossover (Beer--Lambert regime).
 \end{itemize}
@@ -370,8 +403,15 @@ second-order effects include:
 
 \subsection{Collection of $\delta$-proxy data from published sources}
 
-All numerical data were obtained from published literature and open
-databases; no first-principles calculations were performed.
+The $\delta$-proxy indicators ($W_\pi$, $1/m^*$, $E_g$) in
+Tables~\ref{tab:bandwidth}--\ref{tab:bandgap} were obtained from
+published literature and open databases.
+Separately, first-principles DFT~+~Wannier90 calculations for
+diamond, graphite, silicon, and germanium were performed as an
+independent confirmation of the $\delta$ ordering; these are described
+in Sec.~\ref{sec:wannier_confirmation}. The main classification
+analysis (Secs.~\ref{sec:results}--\ref{sec:disorder}) relies
+exclusively on literature-derived data and tight-binding models.
 
 \subsubsection{$\pi$-band width $W_\pi$}
 
@@ -1184,12 +1224,17 @@ as a second classification axis alongside~$E_g$:
 \subsection{First-principles confirmation via Wannier spread}
 \label{sec:wannier_confirmation}
 
-The literature-derived proxies (Table~\ref{tab:delta_proxies}) support
-the existence of~$\delta$ but do not compute it directly. To close
-this gap, we performed DFT (PBE) + Wannier90 calculations for bulk
-diamond and graphite, obtaining the maximally localized Wannier function
-(MLWF) spread~$\Omega$~\cite{Marzari1997}---which directly measures
-the spatial extent of each electron in the solid.
+The main classification (Secs.~\ref{sec:results}--\ref{sec:disorder})
+relies on literature-derived proxies and tight-binding models.
+These proxies support the existence of~$\delta$ but do not compute it
+from first principles. As an \emph{independent confirmation}, we
+performed DFT (PBE) + Wannier90 calculations for bulk diamond and
+graphite, obtaining the maximally localized Wannier function (MLWF)
+spread~$\Omega$~\cite{Marzari1997}---which directly measures the
+spatial extent of each electron in the solid.
+This confirmation is separate from the classification analysis:
+its purpose is to verify that the $\delta$ ordering established
+by proxies is reproduced at the first-principles level.
 
 The results are unambiguous: $\Omega/\mathrm{WF} = 0.95$~\AA$^2$ for
 diamond and $6.38$~\AA$^2$ for graphite, a 6.7-fold ratio.

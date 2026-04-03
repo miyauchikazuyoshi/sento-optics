@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'ag111'
+  outdir  = './tmp/'
+  filplot = 'ag_valence.dat'
+  plot_num = 10
+  emin = -8.0
+  emax = 0.0
+/

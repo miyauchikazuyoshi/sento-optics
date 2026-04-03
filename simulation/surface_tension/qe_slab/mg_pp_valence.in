@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'mg0001'
+  outdir  = './tmp/'
+  filplot = 'mg_valence.dat'
+  plot_num = 10
+  emin = -8.0
+  emax = 0.0
+/

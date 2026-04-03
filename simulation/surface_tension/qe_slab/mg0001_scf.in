@@ -1,0 +1,47 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'mg0001'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 30.0
+  ecutrho      = 240.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Mg  24.3050  Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  3.210000  0.000000  0.000000
+  1.605000  2.779942  0.000000
+  0.000000  0.000000  30.630000
+
+ATOMIC_POSITIONS angstrom
+  Mg  0.000000  0.000000  0.000000
+  Mg  1.605000  0.926647  2.605000
+  Mg  0.000000  0.000000  5.210000
+  Mg  1.605000  0.926647  7.815000
+  Mg  0.000000  0.000000  10.420000
+  Mg  1.605000  0.926647  13.025000
+  Mg  0.000000  0.000000  15.630000
+
+K_POINTS automatic
+  8 8 1  0 0 0

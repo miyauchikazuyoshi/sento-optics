@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix  = 'ti0001'
+  outdir  = './tmp/'
+  filplot = 'ti_charge.dat'
+  plot_num = 0
+/

@@ -1,0 +1,47 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'ti0001'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 40.0
+  ecutrho      = 320.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Ti  47.8670  Ti.pbe-spn-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  2.950000  0.000000  0.000000
+  1.475000  2.554775  0.000000
+  0.000000  0.000000  29.070000
+
+ATOMIC_POSITIONS angstrom
+  Ti  0.000000  0.000000  0.000000
+  Ti  1.475000  0.851592  2.345000
+  Ti  0.000000  0.000000  4.690000
+  Ti  1.475000  0.851592  7.035000
+  Ti  0.000000  0.000000  9.380000
+  Ti  1.475000  0.851592  11.725000
+  Ti  0.000000  0.000000  14.070000
+
+K_POINTS automatic
+  8 8 1  0 0 0

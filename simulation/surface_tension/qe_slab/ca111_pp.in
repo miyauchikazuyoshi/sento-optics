@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix  = 'ca111'
+  outdir  = './tmp/'
+  filplot = 'ca_charge.dat'
+  plot_num = 0
+/

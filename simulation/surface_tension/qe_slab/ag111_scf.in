@@ -1,0 +1,47 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'ag111'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 40.0
+  ecutrho      = 320.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Ag  107.8680  Ag.pbe-n-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  2.892067  0.000000  0.000000
+  1.446033  2.504603  0.000000
+  0.000000  0.000000  29.168176
+
+ATOMIC_POSITIONS angstrom
+  Ag  0.000000  0.000000  0.000000
+  Ag  1.446033  0.834868  2.361363
+  Ag  2.892067  1.669736  4.722725
+  Ag  0.000000  0.000000  7.084088
+  Ag  1.446033  0.834868  9.445450
+  Ag  2.892067  1.669736  11.806813
+  Ag  0.000000  0.000000  14.168176
+
+K_POINTS automatic
+  8 8 1  0 0 0

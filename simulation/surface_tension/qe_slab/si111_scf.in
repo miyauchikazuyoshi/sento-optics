@@ -1,0 +1,48 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'si111'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 8
+  ntyp         = 1
+  ecutwfc      = 30.0
+  ecutrho      = 240.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Si  28.0860  Si.pbe-n-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  3.839590  0.000000  0.000000
+  1.919795  3.325182  0.000000
+  0.000000  0.000000  36.945084
+
+ATOMIC_POSITIONS angstrom
+  Si  0.000000  0.000000  0.000000
+  Si  1.919795  1.108394  3.135012
+  Si  3.839590  2.216788  6.270024
+  Si  0.000000  0.000000  9.405036
+  Si  1.919795  1.108394  12.540048
+  Si  3.839590  2.216788  15.675060
+  Si  0.000000  0.000000  18.810072
+  Si  1.919795  1.108394  21.945084
+
+K_POINTS automatic
+  8 8 1  0 0 0

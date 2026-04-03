@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix  = 'li110'
+  outdir  = './tmp/'
+  filplot = 'li_charge.dat'
+  plot_num = 0
+/

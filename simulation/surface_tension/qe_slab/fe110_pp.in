@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix  = 'fe110'
+  outdir  = './tmp/'
+  filplot = 'fe_charge.dat'
+  plot_num = 0
+/

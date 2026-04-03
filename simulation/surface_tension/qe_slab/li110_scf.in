@@ -1,0 +1,47 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'li110'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 30.0
+  ecutrho      = 240.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Li  6.9410  Li.pbe-s-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  3.490000  0.000000  0.000000
+  0.000000  2.467803  0.000000
+  0.000000  0.000000  29.806816
+
+ATOMIC_POSITIONS angstrom
+  Li  0.000000  0.000000  0.000000
+  Li  1.745000  1.233901  2.467803
+  Li  0.000000  0.000000  4.935605
+  Li  1.745000  1.233901  7.403408
+  Li  0.000000  0.000000  9.871211
+  Li  1.745000  1.233901  12.339013
+  Li  0.000000  0.000000  14.806816
+
+K_POINTS automatic
+  8 8 1  0 0 0

@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix  = 'be0001'
+  outdir  = './tmp/'
+  filplot = 'be_charge.dat'
+  plot_num = 0
+/

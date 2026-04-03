@@ -1,0 +1,8 @@
+&INPUTPP
+  prefix  = 'ti0001'
+  outdir  = './tmp/'
+  filplot = 'ti_valence.dat'
+  plot_num = 10
+  emin = -10.0
+  emax = 0.0
+/

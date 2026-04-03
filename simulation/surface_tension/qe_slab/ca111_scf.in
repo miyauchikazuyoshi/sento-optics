@@ -1,0 +1,47 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'ca111'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 30.0
+  ecutrho      = 240.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Ca  40.0780  Ca.pbe-spn-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  3.945656  0.000000  0.000000
+  1.972828  3.417038  0.000000
+  0.000000  0.000000  34.329687
+
+ATOMIC_POSITIONS angstrom
+  Ca  0.000000  0.000000  0.000000
+  Ca  1.972828  1.139013  3.221615
+  Ca  3.945656  2.278025  6.443229
+  Ca  0.000000  0.000000  9.664844
+  Ca  1.972828  1.139013  12.886458
+  Ca  3.945656  2.278025  16.108073
+  Ca  0.000000  0.000000  19.329687
+
+K_POINTS automatic
+  8 8 1  0 0 0

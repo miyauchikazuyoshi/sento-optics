@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix  = 'ni111'
+  outdir  = './tmp/'
+  filplot = 'ni_charge.dat'
+  plot_num = 0
+/

@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix  = 'ga111'
+  outdir  = './tmp/'
+  filplot = 'ga_charge.dat'
+  plot_num = 0
+/

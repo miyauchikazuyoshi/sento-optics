@@ -1,0 +1,47 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'be0001'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 40.0
+  ecutrho      = 320.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Be  9.0120  Be.pbe-n-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  2.290000  0.000000  0.000000
+  1.145000  1.983198  0.000000
+  0.000000  0.000000  25.740000
+
+ATOMIC_POSITIONS angstrom
+  Be  0.000000  0.000000  0.000000
+  Be  1.145000  0.661066  1.790000
+  Be  0.000000  0.000000  3.580000
+  Be  1.145000  0.661066  5.370000
+  Be  0.000000  0.000000  7.160000
+  Be  1.145000  0.661066  8.950000
+  Be  0.000000  0.000000  10.740000
+
+K_POINTS automatic
+  8 8 1  0 0 0

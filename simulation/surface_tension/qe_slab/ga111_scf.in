@@ -1,0 +1,47 @@
+&CONTROL
+  calculation  = 'scf'
+  prefix       = 'ga111'
+  outdir       = './tmp/'
+  pseudo_dir   = './pseudo/'
+  verbosity    = 'high'
+  tprnfor      = .true.
+  tstress      = .true.
+/
+
+&SYSTEM
+  ibrav        = 0
+  nat          = 7
+  ntyp         = 1
+  ecutwfc      = 40.0
+  ecutrho      = 320.0
+  occupations  = 'smearing'
+  smearing     = 'mp'
+  degauss      = 0.02
+  nosym        = .true.
+/
+
+&ELECTRONS
+  conv_thr     = 1.0d-8
+  mixing_beta  = 0.3
+  mixing_mode  = 'local-TF'
+/
+
+ATOMIC_SPECIES
+  Ga  69.7230  Ga.pbe-dn-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS angstrom
+  3.189052  0.000000  0.000000
+  1.594526  2.761800  0.000000
+  0.000000  0.000000  30.623098
+
+ATOMIC_POSITIONS angstrom
+  Ga  0.000000  0.000000  0.000000
+  Ga  1.594526  0.920600  2.603850
+  Ga  3.189052  1.841200  5.207699
+  Ga  0.000000  0.000000  7.811549
+  Ga  1.594526  0.920600  10.415399
+  Ga  3.189052  1.841200  13.019249
+  Ga  0.000000  0.000000  15.623098
+
+K_POINTS automatic
+  8 8 1  0 0 0

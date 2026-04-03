@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix  = 'mg0001'
+  outdir  = './tmp/'
+  filplot = 'mg_charge.dat'
+  plot_num = 0
+/

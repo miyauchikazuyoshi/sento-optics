@@ -1,0 +1,6 @@
+&INPUTPP
+  prefix  = 'si111'
+  outdir  = './tmp/'
+  filplot = 'si_charge.dat'
+  plot_num = 0
+/

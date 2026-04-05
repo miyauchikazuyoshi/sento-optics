@@ -3,7 +3,7 @@
     "title": "Classifying Optical Appearance beyond the Band Gap: Effective Conduction Dimensionality and Electronic Delocalization in Carbon Allotropes",
     "upload_type": "publication",
     "publication_type": "preprint",
-    "description": "The macroscopic optical appearance of materials -- transparent, colored, black, or lustrous -- cannot be fully classified by the band gap alone. Both metals and graphite possess a vanishing band gap, yet the former exhibits metallic luster while the latter appears black with cleavage-plane gloss. We propose that the essence of luster is the preservation of photon phase coherence at interfaces, and that its microscopic condition reduces to the freedom of constituent particles. To rigorously test this idea, we restrict the scope to solid-state electronic systems and introduce two variables: an effective delocalization index delta and an effective conduction dimensionality D_eff. Using five carbon allotropes (diamond, C60, SWCNT, graphene, graphite) and hexagonal boron nitride (h-BN) as a control, we demonstrate that a decision tree based on E_g and D_eff correctly classifies 6 of 7 materials (85.7%), with the sole failure -- single-layer graphene -- requiring the layer count N as a third variable. As a proof of concept, we compute the full tight-binding Hamiltonian to Kubo formula to dielectric function to Fresnel reflectivity chain for each system. Anderson disorder simulations show that systems with high delta x D_eff maintain their optical response under disorder while low-delta x D_eff systems rapidly decohere, providing a testable prediction for disorder robustness of optical appearance.",
+    "description": "The macroscopic optical appearance of materials -- transparent, colored, black, or lustrous -- cannot be fully classified by the band gap alone. Both metals and graphite possess a vanishing band gap, yet the former exhibits metallic luster while the latter appears black with cleavage-plane gloss. We propose that existing physical quantities -- the inverse participation ratio (IPR) and the Wannier function spread -- can serve as a unified descriptor (delta) for optical classification when combined with an effective conduction dimensionality D_eff. Using five carbon allotropes (diamond, C60, SWCNT, graphene, graphite) and hexagonal boron nitride (h-BN) as a control, we demonstrate that a decision tree based on E_g and D_eff correctly classifies 6 of 7 materials (85.7%), with the sole failure -- single-layer graphene -- requiring the layer count N as a third variable. Tight-binding simulations with Kubo-formula optical conductivity and Fresnel reflectivity confirm the classification chain. Anderson disorder simulations show that systems with high delta x D_eff maintain their optical response under disorder while low-delta x D_eff systems rapidly decohere. DFT + Wannier90 calculations for diamond and graphite independently confirm the delocalization ordering. The recently proven optical sum rule connecting Wannier spread to Im[epsilon(omega)]/omega (Cardenas-Castillo et al. 2024) provides a rigorous mathematical foundation for the delta-optics connection.",
     "creators": [
       {
         "name": "Miyauchi, Kazuyoshi",
@@ -15,11 +15,13 @@
       "band gap",
       "electronic delocalization",
       "inverse participation ratio",
+      "Wannier spread",
       "conduction dimensionality",
       "carbon allotropes",
       "Anderson disorder",
       "phase coherence",
-      "tight-binding model"
+      "tight-binding model",
+      "optical sum rule"
     ],
     "related_identifiers": [
       {
@@ -31,6 +33,6 @@
     "license": "cc-by-4.0",
     "access_right": "open",
     "language": "eng",
-    "notes": "Preprint. All simulation code, tight-binding parameters, and figure-generation scripts are available at the linked GitHub repository. AI-assisted research; full disclosure in manuscript."
+    "notes": "Preprint (v8). All simulation code, tight-binding parameters, and figure-generation scripts are available at the linked GitHub repository. AI-assisted research (Claude, ChatGPT); full disclosure in manuscript."
   }
 }

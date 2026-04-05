@@ -3,7 +3,7 @@
     "title": "What Does Miedema's Boundary Electron Density Measure? Valence Electron Delocalization as the Physical Origin of n_ws",
     "upload_type": "publication",
     "publication_type": "preprint",
-    "description": "Surface tension of liquid metals varies by over an order of magnitude across the periodic table. Density functional theory (DFT) can compute these values numerically, and Miedema's semi-empirical model achieves +/-10-20% accuracy using the Wigner-Seitz boundary electron density n_ws, but neither provides an electronic-structure descriptor that explains why metals with similar bulk densities (e.g., Al and Zn, Delta r_s = 2.4%, Delta gamma = 46%) have vastly different surface tensions. Here we propose that the inverse participation ratio (IPR) of Kohn-Sham orbitals provides this missing link. DFT calculations on 11 metal dimers show that the IPR-based delocalization index delta_IPR correlates with boundary electron density (r = 0.84, p = 0.001), a result that is robust across three basis sets (def2-SVP/TZVP/QZVP: r = 0.72-0.84). Periodic slab calculations on five metals (Na, K, Al, Cu, Zn) with valence electron decomposition demonstrate that sp metals have near-uniform interstitial density while d-metals show strong depletion -- a 3.5x ratio between sp and d averages. Maximally localized Wannier function (MLWF) calculations independently confirm this hierarchy. These results establish that Miedema's n_ws is a proxy for valence electron delocalization, answering the question raised by Williams, Gelatt, and Moruzzi (PRL 44, 429, 1980) regarding the physical meaning of n_ws.",
+    "description": "Surface tension of liquid metals varies by over an order of magnitude across the periodic table. Density functional theory (DFT) can compute these values numerically, and Miedema's semi-empirical model achieves +/-10-20% accuracy using the Wigner-Seitz boundary electron density n_ws, but neither provides an electronic-structure descriptor that explains why metals with similar bulk densities (e.g., Al and Zn, Delta r_s = 2.4%, Delta gamma = 46%) have vastly different surface tensions. Here we propose that the inverse participation ratio (IPR) of Kohn-Sham orbitals -- an existing quantity widely used in Anderson localization analysis -- provides this missing link when reinterpreted as a unified descriptor for interfacial properties. DFT calculations on 15 metal dimers show that a valence-only IPR-based delocalization index correlates with interatomic midpoint electron density at r = 0.89 (p < 0.001). Periodic slab calculations on 14 metals (8 sp-type, 6 d-type including Fe, Ti, Ag) with valence electron decomposition demonstrate a statistically significant sp/d separation: sp metals show near-uniform interstitial density (mean n_mid/n_bulk = 0.96) while d-metals show strong depletion (mean = 0.38) -- a 2.5x ratio (t = 5.84, p = 0.00008). The d-band filling progression Ti(d2: 0.67) > Fe(d6: 0.37) > Cu(d10: 0.33) is consistent with Friedel's model of d-band narrowing with filling. Maximally localized Wannier function (MLWF) calculations independently confirm this hierarchy. These results establish that Miedema's n_ws is a proxy for valence electron delocalization, answering the question raised by Williams, Gelatt, and Moruzzi (PRL 44, 429, 1980) regarding the physical meaning of n_ws.",
     "creators": [
       {
         "name": "Miyauchi, Kazuyoshi",
@@ -18,7 +18,10 @@
       "boundary electron density",
       "Wannier functions",
       "density functional theory",
-      "liquid metals"
+      "liquid metals",
+      "sp-d bifurcation",
+      "Friedel model",
+      "valence electron decomposition"
     ],
     "related_identifiers": [
       {
@@ -30,6 +33,6 @@
     "license": "cc-by-4.0",
     "access_right": "open",
     "language": "eng",
-    "notes": "Preprint. All simulation code, DFT input files, and data are available at the linked GitHub repository. AI-assisted research; full disclosure in manuscript."
+    "notes": "Preprint (v8). All simulation code, DFT input files, slab data for 14 metals, and analysis scripts are available at the linked GitHub repository. AI-assisted research (Claude, ChatGPT); full disclosure in manuscript."
   }
 }

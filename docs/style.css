@@ -210,6 +210,28 @@ section {
   50% { opacity: 0.8; transform: translateX(10%); }
 }
 
+/* === Summary === */
+#summary {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 0;
+}
+
+.summary-text {
+  color: var(--text-dim);
+  font-size: 1rem;
+  line-height: 1.8;
+  border-left: 3px solid var(--accent);
+  padding-left: 1.2rem;
+}
+
+.papers-legend {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
 /* === Idea === */
 #idea h2 {
   text-align: center;

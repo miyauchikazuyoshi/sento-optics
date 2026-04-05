@@ -64,9 +64,9 @@ Status: Preprint v8. **DOI: [10.5281/zenodo.19425523](https://zenodo.org/records
 
 | Result | Value |
 |--------|-------|
-| δ_IPR vs boundary density (dimers) | **r = 0.84** (p = 0.001) |
-| sp/d interstitial density ratio (slabs) | **3.5×** |
-| Wannier spread sp/d ratio | **6–19×** |
+| δ_IPR (valence) vs midpoint density (15 dimers) | **r = 0.89** (p < 0.001) |
+| sp/d interstitial density ratio (14-metal slabs) | **2.5×** (p = 0.00008) |
+| Wannier spread sp/d ratio (5 metals) | **6–19×** |
 
 Status: Preprint v8. **DOI: [10.5281/zenodo.19425541](https://zenodo.org/records/19425541)**
 

@@ -702,6 +702,25 @@ delta_elec(solid) approx delta_elec(liquid) >> delta_elec(vapor).
 
 - Marzari, N., Mostofi, A. A., Yates, J. R., Souza, I. and Vanderbilt, D., "Maximally localized Wannier functions: Theory and applications," Rev. Mod. Phys. **84**, 1419-1475 (2012). DOI: 10.1103/RevModPhys.84.1419.
 
+### Ab Initio: Expanded Alkali Metals and Methodology
+
+- Kresse, G. and Hafner, J., "Ab initio molecular dynamics for liquid metals," Phys. Rev. B **47**, 558 (1993). DOI: 10.1103/PhysRevB.47.558. — Foundational AIMD method.
+- Desjarlais, M. P., Kress, J. D. and Collins, L. A., "Electrical conductivity for warm, dense aluminum plasmas and liquids," Phys. Rev. E **66**, 025401(R) (2002). DOI: 10.1103/PhysRevE.66.025401. — Kubo-Greenwood method for optical conductivity from QMD.
+- Kietzmann, A., Redmer, R., Desjarlais, M. P. and Mattsson, T. R., "Complex behavior of fluid lithium under extreme conditions," Phys. Rev. Lett. **101**, 070401 (2008). DOI: 10.1103/PhysRevLett.101.070401. — Fluid Li across M-NM transition.
+
+### Optical Properties of Expanded Fluid Metals
+
+- Smith, N. V., "The optical properties of liquid metals," Adv. Phys. **16**, 629-636 (1967). DOI: 10.1080/00018736700101695.
+- Hensel, F. et al., "The optical properties of expanded liquid cesium," High Press. Res. **4**, 379-381 (1990). DOI: 10.1080/08957959008246185. — Reflectivity of expanded Cs near M-NM transition.
+
+### Alkali Metal Vapors
+
+- Chaban, V. V. and Prezhdo, O. V., "Ab initio molecular dynamics of dimerization and clustering in alkali metal vapors," J. Phys. Chem. A **120**, 4302-4306 (2016). DOI: 10.1021/acs.jpca.6b04609. — Dimer/trimer formation in Na, K, Cs vapors.
+
+### Particle Dynamics in Expanded Metals
+
+- Pilgrim, W. C. and Morkel, C., "State dependent particle dynamics in liquid alkali metals," J. Phys.: Condens. Matter **18**, R585-R633 (2006). DOI: 10.1088/0953-8984/18/37/R01. — Dynamics change from collective to localized below ~2ρ_crit.
+
 ### Recent (2020+)
 
 - Khomkin, A. L. and Shumikhin, A. S., "Gaseous Metal and the Problem of Vapor-Liquid Transition in Metal Vapors," J. Exp. Theor. Phys. **130**, 602-609 (2020). DOI: 10.1134/S106377612003005X.

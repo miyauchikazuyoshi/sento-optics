@@ -614,7 +614,7 @@ delta_elec as a continuous interpolating variable. The advantage:
 
 The mercury critical point is an ideal test system for Paper III:
 
-- **Existing ab initio MD data**: Desjarlais (2003) and others
+- **Existing ab initio MD data**: Kresse \& Hafner (1997) and others
   have computed electronic structure across the density range.
   Adding Wannier spread Omega as an analysis variable to existing
   trajectories requires no new simulations.
@@ -653,6 +653,61 @@ framework. It explains why liquid metals retain metallic properties
 The heating path of water (Section 5.3) already noted this
 non-monotonicity. The metal vaporization case makes it more dramatic:
 delta_elec(solid) approx delta_elec(liquid) >> delta_elec(vapor).
+
+---
+
+---
+
+## 10. References for Section 9 (Metal Vaporization and Hg Critical Point)
+
+### Monographs and Major Reviews
+
+- Hensel, F. and Warren, W. W. Jr., *Fluid Metals: The Liquid-Vapor Transition of Metals* (Princeton Univ. Press, 1999). ISBN 0-691-05830-X. — Definitive monograph.
+- Mott, N. F., *Metal-Insulator Transitions*, 2nd ed. (Taylor & Francis, 1990). DOI: 10.1201/b12795. — Mott criterion for M-NM transitions.
+- Redmer, R., Hensel, F. and Holst, B. (Eds.), *Metal-to-Nonmetal Transitions*, Springer Ser. Mater. Sci. Vol. 132 (Springer, 2010). DOI: 10.1007/978-3-642-03953-9.
+- Hensel, F. and Uchtmann, H., "The metal-insulator transition in expanded fluid metals," Annu. Rev. Phys. Chem. **40**, 61-83 (1989). DOI: 10.1146/annurev.pc.40.100189.000425.
+- Redmer, R., "Physical properties of dense, low-temperature plasmas," Phys. Rep. **282**, 35-157 (1997). DOI: 10.1016/S0370-1573(96)00033-6.
+
+### Mercury: Experimental
+
+- Kikoin, I. K. and Senchenkov, A. P., "Electrical Conductivity of Mercury in the Temperature Range 0-2000 C," Fiz. Met. Metalloved. **24**, 843 (1967).
+- El-Hanany, U. and Warren, W. W. Jr., "Knight Shift in Expanded Liquid Mercury," Phys. Rev. Lett. **34**, 1276 (1975). DOI: 10.1103/PhysRevLett.34.1276.
+- Uchtmann, H., Brusius, U., Yao, M. and Hensel, F., "Optical Properties of Fluid Mercury in the Liquid-Vapour Critical Region," Z. Phys. Chem. **156**, 151 (1988). DOI: 10.1524/zpch.1988.156.Part_1.151.
+- Ishikawa, D., Inui, M., Matsuda, K. et al., "Fast Sound in Expanded Fluid Hg Accompanying the Metal-Nonmetal Transition," Phys. Rev. Lett. **93**, 097801 (2004). DOI: 10.1103/PhysRevLett.93.097801.
+- Inui, M., Matsuda, K., Ishikawa, D. et al., "Medium-Range Fluctuations Accompanying the Metal-Nonmetal Transition in Expanded Fluid Hg," Phys. Rev. Lett. **98**, 185504 (2007). DOI: 10.1103/PhysRevLett.98.185504.
+
+### Mercury: Ab Initio MD
+
+- Kresse, G. and Hafner, J., "Ab initio simulation of the metal/nonmetal transition in expanded fluid mercury," Phys. Rev. B **55**, 7539 (1997). DOI: 10.1103/PhysRevB.55.7539. — **Primary AIMD reference for Hg M-NM transition.**
+- Calderin, L., Gonzalez, L. E. and Gonzalez, D. J., "Static, dynamic and electronic properties of expanded fluid mercury," J. Phys.: Condens. Matter **23**, 375105 (2011). PMID: 21878714.
+- Bryk, T., Bakai, O. and Seitsonen, A. P., "Elastic properties of fluid mercury across the metal-nonmetal transition: Ab initio simulation study," Condens. Matter Phys. **28**, 23301 (2025). arXiv: 2506.09757. — **Most recent AIMD study.**
+
+### Fluctuons / Mesoscopic Models
+
+- Bakai, O., Bratchenko, M. and Dyuldya, S., "Three-state mesoscopic model of a heterophase fluid in application to expanded mercury," J. Mol. Liq. **260**, 245-260 (2018). DOI: 10.1016/j.molliq.2018.03.068.
+
+### Alkali Metals: Expanded Liquid / Vapor
+
+- Jungst, S., Knuth, B. and Hensel, F., "Observation of singular diameters in the coexistence curves of metals," Phys. Rev. Lett. **55**, 2160 (1985). DOI: 10.1103/PhysRevLett.55.2160.
+- Raty, J.-Y., Schwegler, E. and Bonev, S. A., "Electronic and structural transitions in dense liquid sodium," Nature **449**, 448-451 (2007). DOI: 10.1038/nature06123.
+- Chaban, V. V. and Prezhdo, O. V., "Ab initio molecular dynamics of dimerization and clustering in alkali metal vapors," J. Phys. Chem. A **120**, 4302-4306 (2016). DOI: 10.1021/acs.jpca.6b04609.
+- Pilgrim, W. C. and Morkel, C., "State dependent particle dynamics in liquid alkali metals," J. Phys.: Condens. Matter **18**, R585-R633 (2006). DOI: 10.1088/0953-8984/18/37/R01.
+
+### Mott Transition Universality
+
+- Edwards, P. P. and Sienko, M. J., "Universality aspects of the metal-nonmetal transition in condensed media," Phys. Rev. B **17**, 2575 (1978). DOI: 10.1103/PhysRevB.17.2575.
+- Edwards, P. P., "'...a metal conducts and a non-metal doesn't'," Phil. Trans. R. Soc. A **368**, 941-965 (2010). DOI: 10.1098/rsta.2009.0282.
+
+### Wannier Functions in Disordered / Liquid Systems
+
+- Marzari, N., Mostofi, A. A., Yates, J. R., Souza, I. and Vanderbilt, D., "Maximally localized Wannier functions: Theory and applications," Rev. Mod. Phys. **84**, 1419-1475 (2012). DOI: 10.1103/RevModPhys.84.1419.
+
+### Recent (2020+)
+
+- Khomkin, A. L. and Shumikhin, A. S., "Gaseous Metal and the Problem of Vapor-Liquid Transition in Metal Vapors," J. Exp. Theor. Phys. **130**, 602-609 (2020). DOI: 10.1134/S106377612003005X.
+- Preising, M. and Redmer, R., "Metallization of dense fluid helium from ab initio simulations," Phys. Rev. B **102**, 224107 (2020). DOI: 10.1103/PhysRevB.102.224107. — State-of-the-art DFT-MD for nonmetal-to-metal transition.
+- Preising, M. and Redmer, R., "Nonmetal-to-metal transition in dense fluid helium," Contrib. Plasma Phys. **62**, e202100105 (2022). DOI: 10.1002/ctpp.202100105.
+- Samokhin, A. A. and Pivovarov, P. A., "Effect of the Metal-Nonmetal Transition on the Pressure Pulse in Laser Ablation of Mercury," Phys. Wave Phenom. **30**, 364-369 (2022). DOI: 10.3103/S1541308X22060061.
 
 ---
 

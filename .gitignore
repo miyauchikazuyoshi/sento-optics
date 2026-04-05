@@ -21,6 +21,9 @@ drafts/**/*.synctex.gz
 # Claude internal
 .claude/
 
+# Private planning docs (not for public repo)
+drafts/conference_targets_2026.md
+
 # QE slab calculation outputs (large files)
 simulation/surface_tension/qe_slab/tmp*/
 simulation/surface_tension/qe_slab/pseudo/

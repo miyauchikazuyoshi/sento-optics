@@ -239,6 +239,22 @@ section {
   text-align: center;
 }
 
+.idea-intro {
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.8;
+  max-width: 720px;
+  margin: 1rem auto 2rem;
+  text-align: center;
+}
+
+.chains-label {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
 .idea-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -528,7 +528,136 @@ demonstrated.
 
 ---
 
+## 9. Metal Vaporization: L-shaped Trajectory and the Mercury Critical Point
+
+**Added 2026-04-04, based on discussion of vaporized metal free electrons.**
+
+### 9.1 What happens to free electrons when metals vaporize?
+
+In solid metals, free electrons form bands delocalized across the
+crystal (delta_elec high). Upon vaporization, the crystal structure
+is destroyed and band structure vanishes. Each electron is re-bound
+to its parent atom: Na vapor is a collection of isolated Na atoms
+with electrons localized in 3s orbitals. delta_elec drops sharply.
+
+The metal vaporization trajectory in (delta_nuc, delta_elec) space:
+
+```
+Solid metal:  delta_nuc low,  delta_elec high
+Liquid metal: delta_nuc high, delta_elec high (metallic bonding maintained)
+Metal vapor:  delta_nuc very high, delta_elec LOW (isolated atoms)
+```
+
+This is NOT a diagonal trajectory. It is an **L-shaped path**:
+delta_nuc rises while delta_elec drops. The two variables move
+in opposite directions during vaporization.
+
+**Experimental confirmation**: Metal vapor does not exhibit metallic
+luster. Sodium lamp emits yellow line spectra (atomic transitions)
+but no specular reflection. Electrons are not delocalized, so
+photon phase coherence is not preserved.
+
+### 9.2 The mercury critical point: continuous metal-nonmetal transition
+
+Mercury provides the most studied example of the continuous
+delta_elec transition. At the critical point (Tc approx 1750 K,
+Pc approx 1670 atm), density changes continuously and a
+metal-to-nonmetal transition occurs.
+
+**Existing theories** describe this as:
+
+- Density decrease -> band overlap vanishes -> gap opens -> nonmetal
+- Three conduction regimes identified (Hensel & Warren 1999):
+  - Weak-scattering metal (13.6-11 g/cm3)
+  - Strong-scattering metal (11.0-9.2 g/cm3)
+  - Nonmetal (< 9.2 g/cm3)
+- Ab initio MD (Desjarlais 2003, Phys. Rev. B 68, 064204) shows
+  the 6s-6p gap opening at density approx 8.8 g/cm3, corresponding
+  to optical gap formation
+- The metal-nonmetal transition is NOT a first-order phase transition
+  but a continuous crossover (contrary to early predictions by
+  Landau and Zeldovich)
+- "Fluctuons" model proposes mesoscopic inhomogeneity with coexisting
+  metallic, semiconducting, and gas-like domains near the critical point
+
+**The key difficulty**: reliable theoretical methods do not exist for
+the intermediate region. Effective potentials become state-dependent,
+and no single framework covers the full density range.
+
+### 9.3 delta_elec as the missing continuous variable
+
+In the delta framework, the mercury critical point is described as:
+
+- Density decrease -> interatomic distance increase -> wavefunction
+  overlap decrease -> delta_elec decrease -> conductivity and
+  reflectivity decrease
+
+This is the same phenomenon described by existing theories, but with
+delta_elec as a continuous interpolating variable. The advantage:
+
+1. **No regime boundaries**: Existing theory needs three separate
+   regimes (weak-scattering, strong-scattering, nonmetal) with
+   different effective descriptions. delta_elec varies smoothly
+   across all three.
+
+2. **Continuous crossover is natural**: Since delta_elec is a
+   continuous variable, the metal-nonmetal transition being a
+   continuous crossover (not first-order) is the default prediction.
+
+3. **Fluctuons as spatial delta fluctuations**: The mesoscopic
+   inhomogeneity near the critical point can be described as
+   spatial fluctuations of delta_elec --- some regions have
+   high delta (metallic domains), others low (nonmetallic domains),
+   with the correlation length diverging at the critical point.
+
+### 9.4 Candidate for Paper III verification
+
+The mercury critical point is an ideal test system for Paper III:
+
+- **Existing ab initio MD data**: Desjarlais (2003) and others
+  have computed electronic structure across the density range.
+  Adding Wannier spread Omega as an analysis variable to existing
+  trajectories requires no new simulations.
+
+- **Experimental data**: Conductivity, reflectivity, and optical
+  gap as functions of density are well measured (Hensel & Warren 1999).
+
+- **Testable prediction**: delta_elec (Wannier spread) should
+  decrease continuously with density and correlate with the
+  measured conductivity/reflectivity at each density point.
+
+- **What delta adds**: A single continuous descriptor that
+  interpolates the three existing regimes without regime boundaries.
+
+> **Caveat**: "Smoothly interpolating" and "quantitatively
+> reproducing" are different. Existing researchers have struggled
+> with quantitative reproduction for decades. If delta merely
+> provides a qualitative narrative without improving quantitative
+> predictions, its value in this context is limited.
+
+### 9.5 Connection to the (delta_nuc, delta_elec) phase diagram
+
+The vaporization trajectories of different materials differ:
+
+| Material | Solid | Liquid | Vapor | Trajectory shape |
+|----------|-------|--------|-------|-----------------|
+| Metal (Na) | (low, high) | (high, high) | (v.high, low) | L-shaped |
+| Water | (low, med) | (high, med) | (v.high, low) | Gradual descent |
+| Noble gas | (low, 0) | N/A | (v.high, 0) | Horizontal |
+
+The non-monotonicity of delta_elec during metal vaporization
+(high -> high -> low) is a distinctive feature of the two-variable
+framework. It explains why liquid metals retain metallic properties
+(luster, conductivity) while their vapors do not.
+
+The heating path of water (Section 5.3) already noted this
+non-monotonicity. The metal vaporization case makes it more dramatic:
+delta_elec(solid) approx delta_elec(liquid) >> delta_elec(vapor).
+
+---
+
 *This document records the theoretical framework discussed on
-2026-03-30/31. All extensions beyond Papers 1 and 2 are hypotheses.
+2026-03-30/31, with additions from 2026-04-03/04.
+All extensions beyond Papers 1 and 2 are hypotheses.
 The framework's value will be determined by whether it generates
 testable predictions that existing theories cannot make independently.*

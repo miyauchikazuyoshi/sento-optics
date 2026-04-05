@@ -382,11 +382,16 @@ function renderPhaseDiagram() {
     svg.appendChild(g);
   });
 
-  // Tap outside SVG closes tooltip
-  document.addEventListener('click', () => {
-    document.getElementById('phase-tooltip').style.display = 'none';
-    svg.querySelectorAll('rect').forEach(r => { r.setAttribute('stroke','#2a3550'); r.setAttribute('stroke-width','1'); });
-  });
+  // Tap outside SVG closes tooltip (only add once)
+  if (!window._phaseClickRegistered) {
+    document.addEventListener('click', () => {
+      const tt = document.getElementById('phase-tooltip');
+      if (tt) tt.style.display = 'none';
+      const s = document.getElementById('phase-svg');
+      if (s) s.querySelectorAll('rect').forEach(r => { r.setAttribute('stroke','#2a3550'); r.setAttribute('stroke-width','1'); });
+    });
+    window._phaseClickRegistered = true;
+  }
 }
 
 // === Water Heating Path Animation ===

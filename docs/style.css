@@ -179,6 +179,13 @@ section {
   color: var(--gold);
 }
 
+.hero-program {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  margin-top: 1rem;
+  font-style: italic;
+}
+
 .hero-water {
   position: absolute;
   bottom: 0;

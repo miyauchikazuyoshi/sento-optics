@@ -50,7 +50,7 @@
 | δプロキシ間の相互相関 | **r = 0.73–0.89** |
 | δ–E_g 逆相関 | **r = −0.70**（文献）, **r = −0.86**（TB） |
 
-ステータス: Draft v7（ほぼ完成）。プレプリントメタデータ: [`zenodo/paper1_metadata.json`](zenodo/paper1_metadata.json)
+ステータス: プレプリント v8。**DOI: [10.5281/zenodo.19425523](https://zenodo.org/records/19425523)**
 
 - 理論: [`theory/optics/02_glossiness_theory.md`](theory/optics/02_glossiness_theory.md)
 - コード: [`simulation/optics/`](simulation/optics/)
@@ -68,7 +68,7 @@
 | sp/d 間隙密度比（スラブ） | **3.5倍** |
 | Wannier spread sp/d比 | **6–19倍** |
 
-ステータス: Draft v6（進行中）。プレプリントメタデータ: [`zenodo/paper2_metadata.json`](zenodo/paper2_metadata.json)
+ステータス: プレプリント v8。**DOI: [10.5281/zenodo.19425541](https://zenodo.org/records/19425541)**
 
 - 理論: [`theory/surface_tension/surface_tension_theory.md`](theory/surface_tension/surface_tension_theory.md)
 - コード: [`simulation/surface_tension/`](simulation/surface_tension/)

@@ -50,7 +50,7 @@ Claims that have been numerically verified and survived self-criticism are writt
 | δ proxy intercorrelation | **r = 0.73–0.89** |
 | δ–E_g inverse correlation | **r = −0.70** (lit.), **r = −0.86** (TB) |
 
-Status: Draft v7 (near complete). Preprint metadata: [`zenodo/paper1_metadata.json`](zenodo/paper1_metadata.json)
+Status: Preprint v8. **DOI: [10.5281/zenodo.19425523](https://zenodo.org/records/19425523)**
 
 - Theory: [`theory/optics/02_glossiness_theory.md`](theory/optics/02_glossiness_theory.md)
 - Code: [`simulation/optics/`](simulation/optics/)
@@ -68,7 +68,7 @@ Status: Draft v7 (near complete). Preprint metadata: [`zenodo/paper1_metadata.js
 | sp/d interstitial density ratio (slabs) | **3.5×** |
 | Wannier spread sp/d ratio | **6–19×** |
 
-Status: Draft v6 (in progress). Preprint metadata: [`zenodo/paper2_metadata.json`](zenodo/paper2_metadata.json)
+Status: Preprint v8. **DOI: [10.5281/zenodo.19425541](https://zenodo.org/records/19425541)**
 
 - Theory: [`theory/surface_tension/surface_tension_theory.md`](theory/surface_tension/surface_tension_theory.md)
 - Code: [`simulation/surface_tension/`](simulation/surface_tension/)

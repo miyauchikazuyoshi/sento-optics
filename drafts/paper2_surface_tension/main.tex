@@ -76,12 +76,12 @@ independently confirm this hierarchy: sp metals
 have 6--19$\times$ larger average spreads than $d$-metals
 (Cu: 1.9, Zn: 0.7~\AA$^2$), providing a bulk-only measure
 of delocalization without invoking surfaces.
-These results establish that Miedema's~$n_\mathrm{ws}$
+These results support the interpretation that Miedema's~$n_\mathrm{ws}$
 is a proxy for \emph{valence} electron delocalization:
 $n_\mathrm{ws}$ is high not because the total electron count
 is high, but because delocalized valence electrons spread
 uniformly to cell boundaries.
-This reinterpretation answers the question raised by
+This reinterpretation offers a mechanistic interpretation of the question raised by
 Williams, Gelatt, and Moruzzi [PRL 44, 429 (1980)]
 regarding the physical meaning of~$n_\mathrm{ws}$,
 and connects surface tension to the same~$\delta$ that
@@ -134,7 +134,7 @@ surface tension so well has not been elucidated.
 
 The gap between these extremes is best illustrated by
 the Al/Zn problem.
-Aluminum ($r_s = 2.07$, $\gamma = 1140$~mN/m) and
+Aluminum ($r_s = 2.07$, $\gamma = 1050$~mN/m) and
 zinc ($r_s = 2.12$, $\gamma = 782$~mN/m)
 have Wigner--Seitz radii differing by only 2.4\%,
 yet their surface tensions differ by 46\%.
@@ -370,13 +370,21 @@ Dimer bond lengths were taken from experimental values
 (NIST Computational Chemistry Database).
 
 \subsection{DFT slab calculations}
+\label{sec:slab}
 
 To move beyond dimer proxies, we performed periodic DFT slab
 calculations using Quantum ESPRESSO
-v7.5~\cite{Giannozzi2009,Giannozzi2017} for five metals
-spanning sp and $d$ character:
+v7.5~\cite{Giannozzi2009,Giannozzi2017}.
+The initial study covered five metals spanning sp and $d$ character:
 Na(110), K(110) (alkali, BCC), Al(111) (sp, FCC),
 Cu(111) ($d^{10}s^1$, FCC), and Zn(0001) ($d^{10}s^2$, HCP).
+Subsequently, nine additional metals were added
+(Li, Be, Mg, Ca, Si, Ga, Ti, Fe, Ag) using the same methodology
+with surface orientations, pseudopotentials, and cutoffs adapted
+to each element (see Supplementary Table~S1 and the input files
+at the linked GitHub repository).
+Fe and Ti required spin-polarized calculations (nspin = 2);
+Ni did not converge and is excluded from the slab results.
 Seven-layer slabs were constructed with $\sim\!15$~\AA\ of vacuum,
 using PAW pseudopotentials~(PBE).
 Plane-wave cutoffs were 30~Ry for Na, K, Al and 40~Ry for Cu, Zn;
@@ -386,10 +394,23 @@ The planar-averaged charge density $\bar{n}(z)$ was
 extracted using \texttt{pp.x} and \texttt{average.x}.
 
 The interstitial charge density ratio
-$n_\mathrm{mid}/n_\mathrm{bulk}$---the electron density at
-the midpoint between adjacent layers, normalized by the
-bulk-like average---serves as a direct measure of how
-uniformly electrons are distributed across the unit cell.
+$n_\mathrm{mid}/n_\mathrm{bulk}$ is defined as follows.
+$n_\mathrm{mid}$: the planar-averaged valence charge density
+$\bar{n}(z)$ evaluated at the midpoint $z = (z_i + z_{i+1})/2$
+between adjacent atomic layers, averaged over all interior
+midpoints (excluding the two outermost layer boundaries to
+avoid surface effects).
+$n_\mathrm{bulk}$: the spatial average of $\bar{n}(z)$ over
+the central three layers of the slab
+($z \in [z_2 - d/2,\; z_4 + d/2]$, where $d$ is the
+interlayer spacing).
+A ratio near unity indicates uniform valence density
+(delocalized electrons); a ratio well below unity indicates
+density depletion between layers (localized electrons).
+Values exceeding unity (as observed for Na and K) indicate
+that the valence $s$-electron density at the midpoint actually
+exceeds the bulk average---characteristic of nearly-free-electron
+metals.
 
 \subsection{Valence electron decomposition}
 
@@ -483,10 +504,12 @@ experimental~$\gamma$.
 \begin{table}[htb]
   \centering
   \caption{Dimer $\delta_\mathrm{IPR}$ (B3LYP/def2-SVP)
-    compared with Miedema's boundary density~$n_\mathrm{ws}$
-    and experimental surface tension~$\gamma$.
+    compared with Miedema's $n_\mathrm{ws}^{1/3}$
+    (de~Boer \textit{et al.}~\cite{deBoer1988}, in (d.u.)$^{1/3}$)
+    and experimental surface tension~$\gamma$ at melting
+    (Keene~\cite{Keene1993} / Mills \& Su~\cite{MillsSu2006}).
     $\delta_\mathrm{IPR}^\mathrm{val}$: valence-only
-    (core states excluded).}
+    (core states excluded by energy threshold).}
   \label{tab:delta_nws}
   \begin{ruledtabular}
   \begin{tabular}{lcccccc}
@@ -494,34 +517,38 @@ experimental~$\gamma$.
       $\delta_\mathrm{IPR}^\mathrm{val}$ &
       $n_\mathrm{ws}^{1/3}$ & $\gamma$ (mN/m) \\
     \hline
-    Li  & $2s^1$           & 0.131 & 0.186 & 1.30 &  398 \\
-    Be  & $2s^2$           & 0.153 & 0.231 & 1.67 & 1145 \\
-    Na  & $3s^1$           & 0.087 & 0.134 & 1.10 &  191 \\
-    Mg  & $3s^2$           & 0.065 & 0.091 & 1.33 &  559 \\
-    Al  & $3s^23p^1$       & 0.079 & 0.121 & 1.39 & 1050 \\
-    Si  & $3s^23p^2$       & 0.070 & 0.142 & 1.50 &  865 \\
-    K   & $4s^1$           & 0.044 & 0.046 & 0.95 &  101 \\
-    Ca  & $4s^2$           & 0.048 & 0.058 & 1.07 &  361 \\
-    Ti  & $3d^24s^2$       & 0.036 & 0.063 & 1.25 & 1650 \\
-    Fe  & $3d^64s^2$       & 0.042 & 0.069 & 1.39 & 1872 \\
-    Ni  & $3d^84s^2$       & 0.051 & 0.082 & 1.39 & 1778 \\
-    Cu  & $3d^{10}4s^1$    & 0.044 & 0.057 & 1.47 & 1285 \\
-    Zn  & $3d^{10}4s^2$    & 0.040 & 0.052 & 1.32 &  782 \\
-    Ga  & $4s^24p^1$       & 0.049 & 0.061 & 1.31 &  718 \\
-    Ag  & $4d^{10}5s^1$    & 0.044 & 0.051 & 1.36 &  903 \\
+    Li  & $2s^1$                & 0.131 & 0.186 & 1.42 &  398 \\
+    Be  & $2s^2$                & 0.153 & 0.231 & 1.96 & 1145 \\
+    Na  & $3s^1$                & 0.087 & 0.134 & 1.18 &  191 \\
+    Mg  & $3s^2$                & 0.065 & 0.091 & 1.53 &  559 \\
+    Al  & $3s^23p^1$            & 0.079 & 0.121 & 1.77 & 1050 \\
+    Si  & $3s^23p^2$            & 0.070 & 0.142 & 1.89 &  865 \\
+    K   & $4s^1$                & 0.044 & 0.046 & 0.98 &  101 \\
+    Ca  & $4s^2$                & 0.048 & 0.058 & 1.37 &  361 \\
+    Ti  & $3d^24s^2$            & 0.036 & 0.063 & 1.62 & 1650 \\
+    Fe  & $3d^64s^2$            & 0.042 & 0.069 & 1.77 & 1872 \\
+    Ni  & $3d^84s^2$            & 0.051 & 0.082 & 1.77 & 1778 \\
+    Cu  & $3d^{10}4s^1$         & 0.044 & 0.057 & 1.77 & 1285 \\
+    Zn  & $3d^{10}4s^2$         & 0.040 & 0.052 & 1.59 &  782 \\
+    Ga  & $3d^{10}4s^24p^1$     & 0.049 & 0.061 & 1.73 &  718 \\
+    Ag  & $4d^{10}5s^1$         & 0.044 & 0.051 & 1.63 &  903 \\
   \end{tabular}
   \end{ruledtabular}
 \end{table}
 
 The Pearson correlation between all-electron
-$\delta_\mathrm{IPR}$ and $n_\mathrm{ws}$ is weak
-($r = 0.20$, $p = 0.47$; $n = 15$),
+$\delta_\mathrm{IPR}$ and $n_\mathrm{ws}^{1/3}$ is weak
+($r = 0.14$, $p = 0.62$; $n = 15$),
 and between $\delta_\mathrm{IPR}$ and~$\gamma$ is not
-significant ($r = -0.21$).
+significant ($r = -0.18$).
 The valence-only $\delta_\mathrm{IPR}^\mathrm{val}$
-modestly improves the $n_\mathrm{ws}$ correlation
-($r = 0.33$, $p = 0.23$), consistent with the expectation
+modestly improves the $n_\mathrm{ws}^{1/3}$ correlation
+($r = 0.26$, $p = 0.35$), consistent with the expectation
 that core-electron contamination weakens the signal.
+(All correlations are computed against $n_\mathrm{ws}^{1/3}$
+as tabulated by de~Boer \textit{et al.}~\cite{deBoer1988};
+using $n_\mathrm{ws}$ directly gives slightly higher values:
+$r = 0.23$ and $0.35$.)
 However, neither version of $\delta_\mathrm{IPR}$ is a
 strong predictor of $n_\mathrm{ws}$ or $\gamma$ at the
 dimer level.
@@ -717,9 +744,9 @@ Fig.~\ref{fig:ablation}).
     Metal & Config. & Type & Full & Valence & $\gamma$ (mN/m) \\
     \hline
     Na & $3s^1$ & sp & 0.127 & \textbf{1.093} & 191 \\
-    K  & $4s^1$ & sp & 0.137 & \textbf{1.130} & 110 \\
-    Al & $3s^2 3p^1$ & sp & 0.975 & \textbf{0.963} & 1140 \\
-    Cu & $3d^{10}4s^1$ & $d$ & 0.258 & \textbf{0.329} & 1330 \\
+    K  & $4s^1$ & sp & 0.137 & \textbf{1.130} & 101 \\
+    Al & $3s^2 3p^1$ & sp & 0.975 & \textbf{0.963} & 1050 \\
+    Cu & $3d^{10}4s^1$ & $d$ & 0.258 & \textbf{0.329} & 1285 \\
     Zn & $3d^{10}4s^2$ & $d$ & 0.186 & \textbf{0.279} & 782 \\
   \end{tabular}
   \end{ruledtabular}
@@ -1263,7 +1290,7 @@ Seven key results support this proposal:
     (Na = 0.127, appearing similar to $d$-metals),
     while valence decomposition recovers the correct trend
     (Na = 1.093).
-    This establishes that \emph{surface tension is governed by
+    This supports the interpretation that \emph{surface tension is governed by
     valence electron delocalization, not total electron density.}
 
   \item Maximally localized Wannier function spreads
@@ -1272,7 +1299,7 @@ Seven key results support this proposal:
     have 6--19$\times$ larger average spreads than
     $d$-metals (Cu = 1.9, Zn = 0.7~\AA$^2$).
     This bulk-only measure requires no surface calculation,
-    establishing delocalization as an intrinsic electronic
+    supporting delocalization as an intrinsic electronic
     property.
 
   \item The cross-element correlation $r(\delta, \rho_\mathrm{boundary})$

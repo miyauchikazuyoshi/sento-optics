@@ -1,5 +1,19 @@
 % Optical Response Classification of Carbon Allotropes
 % via Electronic Delocalization and Effective Conduction Dimensionality
+% Draft v9 — April 2026
+% Changes from v8 (detailed review response):
+%   - D_eff: separated D_eff^all and D_eff^vis with explicit equations;
+%     decision tree uses D_eff^vis throughout
+%   - Disorder robustness: unified to delta*(D_eff+1); +1 offset
+%     physically motivated for D_eff=0 systems (C60)
+%   - C60: explicitly identified as cluster proxy for fcc solid
+%   - Wannier: distinguished total Omega from gauge-invariant Omega_I;
+%     sum rule applies to Omega_I, not total spread
+%   - "complete predictive chain" -> "proof-of-concept chain"
+%   - "group-velocity tensor" -> "interband velocity tensor"
+%   - "no electronic response" -> "no direct interband absorption"
+%   - Fixed broken cross-refs: tab:bandgap, sec:disorder
+%   - Draft label: v7 -> v9
 % Draft v8 — April 2026
 % Changes from v7 (Stanford Agentic Reviewer response):
 %   - Fixed "no first-principles" contradiction: Methods now explicitly
@@ -43,7 +57,7 @@
 
 \begin{document}
 
-\preprint{Draft v7}
+\preprint{Draft v9}
 
 \title{Classifying Optical Appearance beyond the Band Gap: \\
 Effective Conduction Dimensionality and Electronic Delocalization \\
@@ -74,8 +88,8 @@ As supporting evidence, we compute the full
 tight-binding Hamiltonian $\to$ Kubo formula $\to$
 $\varepsilon(\omega)$ $\to$ Fresnel reflectivity chain for each system
 and test disorder robustness via Anderson disorder simulations.
-Systems with high $\delta \times D_\mathrm{eff}$ maintain their optical
-response under disorder, while low-$\delta \times D_\mathrm{eff}$
+Systems with high $\delta \times (D_\mathrm{eff}+1)$ maintain their
+optical response under disorder, while low-$\delta \times (D_\mathrm{eff}+1)$
 systems rapidly decohere.
 
 The framework does not replace band-gap theory but extends it: $E_g$
@@ -255,64 +269,79 @@ that the ordering is robust across different measurement approaches.
   operational definition}
 \label{sec:Deff}
 
-$D_\mathrm{eff}$ is defined as the \textbf{effective rank of the
-group-velocity tensor} evaluated for electronic states near the Fermi
-level or band edges:
-
+We define two variants of the effective conduction dimensionality.
+The \textbf{all-energy} version sums over all interband transitions:
 \begin{equation}
-  D_\mathrm{eff}
+  D_\mathrm{eff}^\mathrm{all}
     = \frac{\mathrm{Tr}(\mathbf{T})^2}{\mathrm{Tr}(\mathbf{T}^2)},
   \quad
   T_{\alpha\beta}
     = \frac{1}{N_k} \sum_{\bm{k}} \sum_{n \in \mathrm{occ}} \sum_{m \in \mathrm{unocc}}
     v_{nm}^{\alpha}\, v_{nm}^{\beta *},
-  \label{eq:Deff}
+  \label{eq:Deff_all}
+\end{equation}
+where $v_{nm}^{\alpha} = \langle n\bm{k} | \partial_\alpha H | m\bm{k} \rangle$
+is the interband velocity matrix element.
+
+For optical classification, the relevant quantity is the
+\textbf{visible-window} version, which restricts the sum to
+transitions with energy $\hbar\omega_{nm} < E_\mathrm{vis}
+\approx 3.1$~eV:
+\begin{equation}
+  D_\mathrm{eff}^\mathrm{vis}
+    = \frac{\mathrm{Tr}(\mathbf{T}^\mathrm{vis})^2}
+           {\mathrm{Tr}((\mathbf{T}^\mathrm{vis})^2)},
+  \quad
+  T_{\alpha\beta}^\mathrm{vis}
+    = \frac{1}{N_k} \sum_{\bm{k}}
+      \sum_{\substack{n,m \\ \hbar\omega_{nm} < E_\mathrm{vis}}}
+    v_{nm}^{\alpha}\, v_{nm}^{\beta *}.
+  \label{eq:Deff_vis}
 \end{equation}
 
-\noindent where $v_{nm}^{\alpha} = \langle n\bm{k} | \partial_\alpha H | m\bm{k} \rangle$
-is the interband velocity matrix element. This definition yields
-$D_\mathrm{eff} = d$ for a system with $d$ equivalent conduction
-directions and $D_\mathrm{eff} = 0$ for a system with no band
-dispersion (molecular solid).
+\noindent \textbf{The decision tree and classification tables throughout
+this paper use $D_\mathrm{eff}^\mathrm{vis}$.}
+For gapless systems (metals, graphite, SWCNTs),
+$D_\mathrm{eff}^\mathrm{all} = D_\mathrm{eff}^\mathrm{vis}$.
+For wide-gap systems (diamond, h-BN),
+$D_\mathrm{eff}^\mathrm{all} > 0$ but
+$D_\mathrm{eff}^\mathrm{vis} = 0$,
+because all transitions lie outside the visible range.
+When we write $D_\mathrm{eff}$ without superscript in the
+classification context, it refers to $D_\mathrm{eff}^\mathrm{vis}$.
 
 This definition is \emph{purely electronic and structural}: it depends
 only on the band dispersion $E(\bm{k})$ and therefore avoids
 circularity with the optical response it is used to classify.
 
-\emph{Energy windowing and the h-BN case.}
-The sum in Eq.~\ref{eq:Deff} runs over \emph{all} occupied-to-unoccupied
-interband transitions, without restriction to a particular energy window.
-For h-BN, the $\pi$-band dispersion is substantial ($W_\pi \approx
-2.4$~eV), but the band gap $E_g = 5.95$~eV places all interband
-transitions in the deep UV. The resulting velocity matrix elements
-$v_{nm}$ are nonzero, and $T_{\alpha\beta}$ reflects the in-plane
-anisotropy. However, none of these transitions contribute to the
-\emph{visible-range} optical response, which is the target of our
-classification.
+\emph{The h-BN case.}
+For h-BN, $D_\mathrm{eff}^\mathrm{all} = 2$ (in-plane $\pi$-band
+dispersion is substantial, $W_\pi \approx 2.4$~eV), but
+$D_\mathrm{eff}^\mathrm{vis} = 0$ because $E_g = 5.95$~eV places
+all interband transitions in the deep UV. The classification uses
+$D_\mathrm{eff}^\mathrm{vis} = 0$, correctly assigning h-BN to
+the ``transparent'' category.
 
-We acknowledge that $D_\mathrm{eff}$ and $E_g$ are not fully
-independent: a large $E_g$ reduces the density of visible-energy
-transitions, indirectly suppressing the optical weight that enters
-$T_{\alpha\beta}$. The key point is that $D_\mathrm{eff}$ provides
-\emph{additional} information beyond $E_g$: among materials with the
-same $E_g \approx 0$ (graphite, metals, SWCNTs), $D_\mathrm{eff}$
-correctly resolves the luster degeneracy that $E_g$ alone cannot lift.
-The partial correlation with $E_g$ is a feature, not a bug---it
-reflects the physical reality that both variables derive from the
-same band structure.
+We acknowledge that $D_\mathrm{eff}^\mathrm{vis}$ and $E_g$ are
+not fully independent: a large $E_g$ pushes transitions outside
+the visible window, reducing $D_\mathrm{eff}^\mathrm{vis}$.
+The key point is that $D_\mathrm{eff}^\mathrm{vis}$ provides
+\emph{additional} information beyond $E_g$: among materials with
+$E_g \approx 0$ (graphite, metals, SWCNTs),
+$D_\mathrm{eff}^\mathrm{vis}$ correctly resolves the luster
+degeneracy that $E_g$ alone cannot lift.
 
-\emph{Limitation: frequency-resolved $D_\mathrm{eff}(\omega)$.}
-A more rigorous formulation would restrict the sum in
-Eq.~\ref{eq:Deff} to transitions within an energy window
-$[\omega - \Delta\omega, \omega + \Delta\omega]$, yielding a
-frequency-resolved $D_\mathrm{eff}(\omega)$ that tracks which
-spatial directions contribute to the optical response at each photon
-energy. The present work uses the all-energy definition for
-simplicity and because it is sufficient to classify the systems
-studied here. However, for materials where qualitatively different
-transitions dominate in different spectral ranges (e.g., interband
-$d$-to-$s$ vs.\ intraband Drude in transition metals), a
-frequency-resolved $D_\mathrm{eff}(\omega)$ would be necessary.
+\emph{Limitation: beyond the binary vis-window.}
+$D_\mathrm{eff}^\mathrm{vis}$ uses a sharp cutoff at
+$E_\mathrm{vis} = 3.1$~eV. A more refined formulation would use
+a frequency-resolved $D_\mathrm{eff}(\omega)$ with a smooth
+weighting function, tracking which spatial directions contribute
+at each photon energy. For the systems studied here, the binary
+visible-window is sufficient because the classification depends
+only on whether $D_\mathrm{eff}^\mathrm{vis}$ is zero or nonzero.
+For transition metals where interband $d$-to-$s$ and intraband
+Drude contributions dominate different spectral ranges, a
+frequency-resolved treatment would be necessary.
 This extension is left for future work.
 
 \begin{table}[h]
@@ -349,8 +378,8 @@ The two variables $E_g$ and $D_\mathrm{eff}$ define a decision tree:
 
 \begin{enumerate}
   \item $E_g > E_\mathrm{vis} \approx 3.1$~eV? \\
-    $\to$ \textbf{Yes}: Transparent (no electronic response in the
-    visible range). \\
+    $\to$ \textbf{Yes}: Transparent (no direct interband absorption in
+    the visible range). \\
     $\to$ \textbf{No}: proceed to step~2.
   \item $E_g > 0$? \\
     $\to$ \textbf{Yes}: Colored (selective absorption). \\
@@ -404,13 +433,13 @@ second-order effects include:
 \subsection{Collection of $\delta$-proxy data from published sources}
 
 The $\delta$-proxy indicators ($W_\pi$, $1/m^*$, $E_g$) in
-Tables~\ref{tab:bandwidth}--\ref{tab:bandgap} were obtained from
+Tables~\ref{tab:bandwidth}--\ref{tab:invmass} and the band-gap data below were obtained from
 published literature and open databases.
 Separately, first-principles DFT~+~Wannier90 calculations for
 diamond, graphite, silicon, and germanium were performed as an
 independent confirmation of the $\delta$ ordering; these are described
 in Sec.~\ref{sec:wannier_confirmation}. The main classification
-analysis (Secs.~\ref{sec:results}--\ref{sec:disorder}) relies
+analysis (Secs.~\ref{sec:results}--\ref{sec:effective_gloss}) relies
 exclusively on literature-derived data and tight-binding models.
 
 \subsubsection{$\pi$-band width $W_\pi$}
@@ -459,7 +488,12 @@ graphene and graphite: 0~eV; h-BN: 5.95~eV~\cite{Cassabois2016}.
 \subsection{Tight-binding simulation with optical conductivity}
 
 Tight-binding models were constructed for four systems (diamond,
-1D chain as SWCNT proxy, graphene, and C$_{60}$ cluster).
+1D chain as SWCNT proxy, graphene, and C$_{60}$ as an isolated
+60-atom cluster, serving as a proxy for the fcc C$_{60}$ solid).
+The cluster approximation neglects intermolecular hopping
+($t \sim 30$~meV~\cite{Hebard1991}), which is justified for
+intramolecular optical transitions but means the bulk optical
+properties are approximated by those of the isolated molecule.
 For diamond and graphene, full Slater--Koster models (s, $p_x$, $p_y$,
 $p_z$; 8 bands per unit cell) were used to capture both $\sigma$- and
 $\pi$-band contributions to the optical response.
@@ -485,7 +519,7 @@ The normal-incidence reflectivity follows from
 $R = |(\tilde{n}-1)/(\tilde{n}+1)|^2$ with
 $\tilde{n} = \sqrt{\varepsilon_1 + i\varepsilon_2}$.
 
-The same velocity matrix elements define the group-velocity tensor
+The same interband velocity matrix elements define the optical velocity tensor
 $\langle v_\alpha v_\beta \rangle$, from which $D_\mathrm{eff}$ is
 computed as the effective rank (Eq.~\ref{eq:Deff}). The simulation
 thus derives $D_\mathrm{eff}$ and $\varepsilon(\omega)$ from the
@@ -525,9 +559,16 @@ geometries are $\theta = 20^\circ$, $60^\circ$, and $85^\circ$.
 
 \subsection{Coherence preservation test: Anderson disorder}
 
-To directly test the hypothesis that $\delta \times D_\mathrm{eff}$
-determines coherence preservation under realistic conditions, we
-introduce Anderson disorder into the tight-binding Hamiltonian:
+To directly test the hypothesis that delocalization determines
+coherence preservation under realistic conditions, we introduce
+Anderson disorder into the tight-binding Hamiltonian.
+We quantify the combined delocalization--dimensionality effect
+using $\delta \times (D_\mathrm{eff}^\mathrm{vis} + 1)$: the $+1$
+offset ensures that molecular systems with
+$D_\mathrm{eff}^\mathrm{vis} = 0$ (such as C$_{60}$) retain a
+nonzero score proportional to their intrinsic delocalization $\delta$,
+since even zero-dimensional systems possess some spectral robustness.
+The disorder model is:
 
 \begin{equation}
   H \to H + \sum_i \epsilon_i |i\rangle\langle i|,
@@ -558,9 +599,20 @@ weight, $N_\omega = 500$ grid points):
          \sum_i (\sigma_W^i - \bar{\sigma}_W)^2}}.
   \label{eq:corr}
 \end{equation}
-A value near unity means the spectral shape is preserved
-(coherence maintained); $\mathrm{corr} \ll 1$ means spectral
-features are destroyed (coherence lost).
+A value near unity means the spectral \emph{shape} is preserved;
+$\mathrm{corr} \ll 1$ means spectral features are destroyed.
+\emph{Caveat:} Pearson correlation is invariant to affine
+transformations, so a spectrum that retains its shape but drops
+in absolute amplitude will still yield $\mathrm{corr} \approx 1$.
+The correlation is therefore a \emph{shape retention proxy},
+not a direct measure of specular intensity retention.
+A norm-sensitive metric (e.g.,
+$\int |\sigma_W - \sigma_0|\,d\omega / \int \sigma_0\,d\omega$)
+would be needed to capture amplitude degradation.
+We use the shape-based metric here because the
+decision-tree classification depends on spectral \emph{category}
+(transparent / colored / black / lustrous) rather than on
+absolute reflectivity values.
 
 \subsection{Effective gloss under disorder}
 
@@ -1053,9 +1105,9 @@ The solid-state verification presented here demonstrates that electronic
 delocalization~$\delta$ is a fundamental variable governing optical
 response. The Anderson disorder simulations
 (Sec.~\ref{sec:coherence}) provide the first direct numerical evidence:
-systems with high $\delta \times D_\mathrm{eff}$ preserve their optical
-spectra under disorder, while low-$\delta \times D_\mathrm{eff}$
-systems rapidly decohere. This result is consistent with the broader
+systems with high $\delta \times (D_\mathrm{eff}+1)$ preserve their
+optical spectra under disorder, while
+low-$\delta \times (D_\mathrm{eff}+1)$ systems rapidly decohere. This result is consistent with the broader
 hypothesis that $\delta$---whether electronic or nuclear---universally
 determines whether an interface acts as a coherent or incoherent quantum
 barrier.
@@ -1224,7 +1276,7 @@ as a second classification axis alongside~$E_g$:
 \subsection{First-principles confirmation via Wannier spread}
 \label{sec:wannier_confirmation}
 
-The main classification (Secs.~\ref{sec:results}--\ref{sec:disorder})
+The main classification (Secs.~\ref{sec:results}--\ref{sec:effective_gloss})
 relies on literature-derived proxies and tight-binding models.
 These proxies support the existence of~$\delta$ but do not compute it
 from first principles. As an \emph{independent confirmation}, we
@@ -1267,8 +1319,11 @@ equals the frequency-weighted integral of the optical absorption:
 \end{equation}
 This identity, rooted in quantum geometry~\cite{RhimKim2025},
 establishes a rigorous mathematical link between electronic
-delocalization and optical response: $\delta$ and optical absorption
-are not merely correlated---they are related by a sum rule.
+delocalization and optical response: the gauge-invariant spread
+$\Omega_I$ and optical absorption are related by an exact identity.
+Since the total MLWF spread~$\Omega \geq \Omega_I$, the ordering
+$\Omega(\mathrm{diamond}) < \Omega(\mathrm{graphite})$ implies the
+same ordering for~$\Omega_I$, supporting the $\delta$ hypothesis.
 
 Our classification of carbon allotropes by~$\delta \times D_\mathrm{eff}$
 can be understood as exploiting this identity in the forward
@@ -1430,13 +1485,14 @@ into the correct optical-response category (transparent, colored,
 black, or lustrous); the sole exception---single-layer graphene---requires
 the layer count~$N$ as a third parameter.
 
-Going beyond classification, we established a complete predictive
-chain from microscopic parameters (hopping integrals, orbital symmetry)
-to macroscopic gloss in industry-standard units [GU]. Anderson disorder
-simulations provide the first numerical evidence for the coherence
-preservation hypothesis: systems with high $\delta \times D_\mathrm{eff}$
-maintain their optical response under atomic-scale disorder, while
-molecular systems ($D_\mathrm{eff} = 0$) rapidly decohere. This yields
+Going beyond classification, we constructed a proof-of-concept chain
+from microscopic parameters (hopping integrals, orbital symmetry)
+to an exploratory effective-gloss estimate in industry-standard
+units [GU]. Anderson disorder simulations provide numerical evidence
+for the coherence preservation hypothesis: systems with high
+$\delta \times (D_\mathrm{eff}+1)$ maintain their optical response
+under atomic-scale disorder, while molecular systems
+($D_\mathrm{eff} = 0$) rapidly decohere. This yields
 a prediction inaccessible to Fresnel optics alone: materials with
 similar clean-surface reflectivity may exhibit very different effective
 gloss depending on their disorder robustness.
@@ -1451,9 +1507,12 @@ by first-principles Wannier function calculations: the Wannier spread
 of diamond (0.95~\AA$^2$) and graphite (6.38~\AA$^2$) reproduces the
 expected ordering with a 6.7-fold ratio. Furthermore, a recently
 proven optical sum rule~\cite{CardenasCastillo2024} establishes that
-the Wannier spread equals the frequency-weighted integral of optical
-absorption, providing a rigorous mathematical foundation for the
-$\delta$--optical connection proposed here.
+the gauge-invariant part of the Wannier spread~$\Omega_I$ equals the
+frequency-weighted integral of optical absorption, providing a rigorous
+mathematical foundation for the $\delta$--optical connection proposed
+here. (The reported MLWF values are total spreads~$\Omega$, which
+include a gauge-dependent part; the sum rule strictly applies
+to~$\Omega_I$.)
 Extension to liquid, interfacial, and
 cross-element systems---where $E_g$ is ill-defined but $\delta$ may
 still apply---is proposed as a target for future work.

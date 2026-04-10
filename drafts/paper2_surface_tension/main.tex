@@ -76,7 +76,8 @@ independently confirm this hierarchy: sp metals
 have 6--19$\times$ larger average spreads than $d$-metals
 (Cu: 1.9, Zn: 0.7~\AA$^2$), providing a bulk-only measure
 of delocalization without invoking surfaces.
-These results support the interpretation that Miedema's~$n_\mathrm{ws}$
+These results support the interpretation that the sp/$d$ uniformity
+difference underlying Miedema's~$n_\mathrm{ws}$
 is a proxy for \emph{valence} electron delocalization:
 $n_\mathrm{ws}$ is high not because the total electron count
 is high, but because delocalized valence electrons spread
@@ -517,38 +518,48 @@ experimental~$\gamma$.
       $\delta_\mathrm{IPR}^\mathrm{val}$ &
       $n_\mathrm{ws}^{1/3}$ & $\gamma$ (mN/m) \\
     \hline
-    Li  & $2s^1$                & 0.131 & 0.186 & 1.42 &  398 \\
-    Be  & $2s^2$                & 0.153 & 0.231 & 1.96 & 1145 \\
-    Na  & $3s^1$                & 0.087 & 0.134 & 1.18 &  191 \\
-    Mg  & $3s^2$                & 0.065 & 0.091 & 1.53 &  559 \\
-    Al  & $3s^23p^1$            & 0.079 & 0.121 & 1.77 & 1050 \\
-    Si  & $3s^23p^2$            & 0.070 & 0.142 & 1.89 &  865 \\
-    K   & $4s^1$                & 0.044 & 0.046 & 0.98 &  101 \\
-    Ca  & $4s^2$                & 0.048 & 0.058 & 1.37 &  361 \\
-    Ti  & $3d^24s^2$            & 0.036 & 0.063 & 1.62 & 1650 \\
+    Li  & $2s^1$                & 0.131 & 0.186 & 0.98 &  398 \\
+    Be  & $2s^2$                & 0.153 & 0.231 & 1.67 & 1145 \\
+    Na  & $3s^1$                & 0.087 & 0.134 & 0.82 &  191 \\
+    Mg  & $3s^2$                & 0.065 & 0.091 & 1.17 &  559 \\
+    Al  & $3s^23p^1$            & 0.079 & 0.121 & 1.39 & 1050 \\
+    Si  & $3s^23p^2$            & 0.070 & 0.142 & 1.50 &  865 \\
+    K   & $4s^1$                & 0.044 & 0.046 & 0.65 &  101 \\
+    Ca  & $4s^2$                & 0.048 & 0.058 & 0.91 &  361 \\
+    Ti  & $3d^24s^2$            & 0.036 & 0.063 & 1.52 & 1650 \\
     Fe  & $3d^64s^2$            & 0.042 & 0.069 & 1.77 & 1872 \\
-    Ni  & $3d^84s^2$            & 0.051 & 0.082 & 1.77 & 1778 \\
-    Cu  & $3d^{10}4s^1$         & 0.044 & 0.057 & 1.77 & 1285 \\
-    Zn  & $3d^{10}4s^2$         & 0.040 & 0.052 & 1.59 &  782 \\
-    Ga  & $3d^{10}4s^24p^1$     & 0.049 & 0.061 & 1.73 &  718 \\
-    Ag  & $4d^{10}5s^1$         & 0.044 & 0.051 & 1.63 &  903 \\
+    Ni  & $3d^84s^2$            & 0.051 & 0.082 & 1.75 & 1778 \\
+    Cu  & $3d^{10}4s^1$         & 0.044 & 0.057 & 1.47 & 1285 \\
+    Zn  & $3d^{10}4s^2$         & 0.040 & 0.052 & 1.32 &  782 \\
+    Ga  & $3d^{10}4s^24p^1$     & 0.049 & 0.061 & 1.31 &  718 \\
+    Ag  & $4d^{10}5s^1$         & 0.044 & 0.051 & 1.36 &  903 \\
   \end{tabular}
   \end{ruledtabular}
 \end{table}
 
-The Pearson correlation between all-electron
-$\delta_\mathrm{IPR}$ and $n_\mathrm{ws}^{1/3}$ is weak
-($r = 0.14$, $p = 0.62$; $n = 15$),
-and between $\delta_\mathrm{IPR}$ and~$\gamma$ is not
-significant ($r = -0.18$).
-The valence-only $\delta_\mathrm{IPR}^\mathrm{val}$
-modestly improves the $n_\mathrm{ws}^{1/3}$ correlation
-($r = 0.26$, $p = 0.35$), consistent with the expectation
-that core-electron contamination weakens the signal.
-(All correlations are computed against $n_\mathrm{ws}^{1/3}$
-as tabulated by de~Boer \textit{et al.}~\cite{deBoer1988};
-using $n_\mathrm{ws}$ directly gives slightly higher values:
-$r = 0.23$ and $0.35$.)
+The Pearson correlation between $\delta_\mathrm{IPR}$ and
+Miedema's $n_\mathrm{ws}^{1/3}$ is essentially zero:
+all-electron $r = -0.03$ ($p = 0.90$; $n = 15$),
+valence-only $r = 0.10$ ($p = 0.73$).
+The correlation with~$\gamma$ is also not significant
+($r = -0.18$).
+
+This confirms that $\delta_\mathrm{IPR}$ is \emph{not}
+a quantitative predictor of $n_\mathrm{ws}$ or $\gamma$
+at the dimer level. However, as shown in
+Sec.~\ref{sec:slab}, the DFT-computed absolute midpoint
+density $n_\mathrm{mid}$ correlates strongly with
+$n_\mathrm{ws}^{1/3}$ ($r = 0.79$, $p = 0.0007$),
+and the sp/$d$ separation in the normalized ratio
+$n_\mathrm{mid}/n_\mathrm{bulk}$ is highly significant
+($p = 0.00008$). The distinction between
+$\delta$--$n_\mathrm{ws}$ (uncorrelated) and
+$n_\mathrm{mid}$--$n_\mathrm{ws}$ (correlated) reflects
+the fact that $\delta$ measures the \emph{uniformity}
+of electron distribution (a normalized ratio), while
+$n_\mathrm{ws}$ measures \emph{absolute} boundary
+density, which depends on both uniformity and total
+electron count.
 However, neither version of $\delta_\mathrm{IPR}$ is a
 strong predictor of $n_\mathrm{ws}$ or $\gamma$ at the
 dimer level.
@@ -579,7 +590,7 @@ This sp/$d$ bifurcation explains why $\delta_\mathrm{IPR}$
 correlates strongly with the dimer midpoint density
 ($r = 0.89$; both measure wavefunction spread directly)
 but weakly with Miedema's $n_\mathrm{ws}$
-($r = 0.33$; which reflects the \emph{net} result of both
+($r = 0.10$; which reflects the \emph{net} result of both
 direct delocalization and indirect screening).
 $\delta$ and $n_\mathrm{ws}$ measure related but distinct
 quantities: $\delta$ captures how freely electrons spread,
@@ -1056,7 +1067,7 @@ $\delta$ captures how freely valence electrons spread
 how much charge arrives at the cell boundary including
 indirect contributions from $d$-electron screening.
 This distinction explains why the dimer
-$\delta$--$n_\mathrm{ws}$ correlation is moderate ($r = 0.33$)
+$\delta$--$n_\mathrm{ws}^{1/3}$ correlation is weak ($r = 0.10$)
 despite the strong $\delta$--midpoint-density correlation
 ($r = 0.89$): midpoint density measures the same physics
 as $\delta$ (wavefunction spread), whereas Miedema's

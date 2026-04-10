@@ -53,12 +53,15 @@ ELEMENTS = {
     'Ti':  {'bond': 1.942, 'n_core': 18, 'spin': 4, 'type': 'd'},
 }
 
-# Miedema n_ws values (de Boer 1988, in density units 10^33 /m^3)
-MIEDEMA_NWS = {
-    'Li': 2.85, 'Na': 1.65, 'K': 0.95, 'Be': 7.55, 'Mg': 3.55,
-    'Ca': 2.55, 'Al': 5.55, 'Si': 6.75, 'Ga': 5.15, 'Cu': 5.55,
-    'Zn': 4.05, 'Fe': 5.55, 'Ni': 5.55, 'Ag': 4.35, 'Au': 5.15,
-    'Ti': 4.25,
+# Miedema n_ws^{1/3} values (de Boer et al. 1988, in (d.u.)^{1/3})
+# Source: Wikipedia/HandWiki "Miedema's model", cross-verified
+# WARNING: Previous version had WRONG values (n_ws in different units).
+# These are the correct n_ws^{1/3} as tabulated by de Boer.
+MIEDEMA_NWS13 = {
+    'Li': 0.98, 'Na': 0.82, 'K': 0.65, 'Be': 1.67, 'Mg': 1.17,
+    'Ca': 0.91, 'Al': 1.39, 'Si': 1.50, 'Ga': 1.31, 'Cu': 1.47,
+    'Zn': 1.32, 'Fe': 1.77, 'Ni': 1.75, 'Ag': 1.36, 'Au': 1.57,
+    'Ti': 1.52,
 }
 
 # Surface tension (mN/m) at melting
@@ -258,10 +261,10 @@ def main():
           f"{'n_ws':>6} {'γ':>6}")
     print("-" * 52)
 
-    elems_ok = [e for e in results if e in MIEDEMA_NWS]
+    elems_ok = [e for e in results if e in MIEDEMA_NWS13]
     for e in sorted(elems_ok, key=lambda x: ELEMENTS[x]['type']):
         r = results[e]
-        nws = MIEDEMA_NWS.get(e, 0)
+        nws = MIEDEMA_NWS13.get(e, 0)
         gamma = GAMMA.get(e, 0)
         print(f"{e:>4} {ELEMENTS[e]['type']:>4} {r['delta_all']:>8.4f} "
               f"{r['delta_valence']:>8.4f} {r['boundary_ratio']:>8.4f} "
@@ -271,7 +274,7 @@ def main():
     delta_all = np.array([results[e]['delta_all'] for e in elems_ok])
     delta_val = np.array([results[e]['delta_valence'] for e in elems_ok])
     ratios = np.array([results[e]['boundary_ratio'] for e in elems_ok])
-    nws = np.array([MIEDEMA_NWS[e] for e in elems_ok])
+    nws = np.array([MIEDEMA_NWS13[e] for e in elems_ok])
     gamma = np.array([GAMMA[e] for e in elems_ok])
 
     print("\n=== Correlations (Pearson r) ===")
@@ -333,7 +336,7 @@ def main():
             for e in elems_ok:
                 r = results[e]
                 x = r['delta_all'] if i == 0 else r['delta_valence']
-                y = r['boundary_ratio'] if i < 2 else MIEDEMA_NWS[e]
+                y = r['boundary_ratio'] if i < 2 else MIEDEMA_NWS13[e]
                 c = colors[ELEMENTS[e]['type']]
                 ax.scatter(x, y, c=c, s=60, zorder=3, edgecolors='w', linewidths=0.5)
                 ax.annotate(e, (x, y), xytext=(4, 4), textcoords='offset points',

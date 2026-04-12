@@ -44,14 +44,14 @@
         </div>
       </div>
       <p class="hero-punch" data-en="Both are interface properties. Both lack a microscopic explanation. Both trace back to a single variable." data-ja="どちらも界面現象。どちらもミクロな説明がない。どちらも一つの変数に帰着する。"></p>
-      <p class="hero-program" data-en="A three-paper research program: optical response (verified), surface tension (verified), phase definition (hypothesis)." data-ja="3部作の研究プログラム: 光学応答（検証済み）、表面張力（検証済み）、相の定義（仮説）。"></p>
+      <p class="hero-program" data-en="A three-paper research program: optical response (verified), surface tension &amp; liquid description (solid verified, liquid hypothesis), phase definition (hypothesis)." data-ja="3部作の研究プログラム: 光学応答（検証済み）、表面張力・液体記述（固体は実証済み、液体は仮説）、相の定義（仮説）。"></p>
     </div>
     <div class="hero-water"></div>
   </section>
 
   <!-- Plain-text summary for first-time visitors -->
   <section id="summary">
-    <p class="summary-text" data-en="We propose that optical appearance and surface tension of materials are organized by a single existing quantity: electronic delocalization (IPR / Wannier spread). Paper 1 tests this for optical classification in carbon allotropes. Paper 2 tests the sp/d electron uniformity difference underlying surface tension. Paper 3 is a forward hypothesis extending to phase definition. This is not a new theory — it is a reinterpretation of known quantities as a unified descriptor, validated by numerical analysis." data-ja="光学的外観と表面張力が、既存の物理量（電子非局在化度: IPR / Wannier spread）で統一的に記述できることを提案する。Paper 1は炭素同素体の光学分類で検証。Paper 2は表面張力の背後にあるsp/d電子均一性差を検証。Paper 3は相の定義への仮説的拡張。新理論ではなく、既知の量の統一的記述子としての再解釈とその数値的検証。"></p>
+    <p class="summary-text" data-en="We propose that optical appearance and surface tension of materials are organized by a single existing quantity: electronic delocalization (IPR / Wannier spread). Paper 1 tests this for optical classification in carbon allotropes. Paper 2.1 verifies the sp/d electron uniformity difference in solids (p=0.00008), then proposes a two-variable (δ_nuc, δ_elec) framework for liquid description — because surface tension is a liquid property that δ_elec alone cannot predict. Paper 3 is a forward hypothesis extending to phase definition. This is not a new theory — it is a reinterpretation of known quantities as a unified descriptor, validated by numerical analysis." data-ja="光学的外観と表面張力が、既存の物理量（電子非局在化度: IPR / Wannier spread）で統一的に記述できることを提案する。Paper 1は炭素同素体の光学分類で検証。Paper 2.1は固体でのsp/d電子均一性差を実証（p=0.00008）した上で、液体の記述には(δ_nuc, δ_elec)の2変数が必要であることを提案する — 表面張力は液体の性質であり、δ_elecだけでは予測できないため。Paper 3は相の定義への仮説的拡張。新理論ではなく、既知の量の統一的記述子としての再解釈とその数値的検証。"></p>
   </section>
 
   <!-- The Idea -->
@@ -78,7 +78,7 @@
       </div>
       <div class="chain">
         <span class="chain-label" data-en="Surface tension" data-ja="表面張力"></span>
-        <code>δ → n<sub>ws</sub> → γ</code>
+        <code>(δ<sub>nuc</sub>, δ<sub>elec</sub>) → γ</code>
       </div>
       <div class="chain">
         <span class="chain-label" data-en="Phase identity" data-ja="相の分類"></span>
@@ -108,15 +108,15 @@
         </div>
       </div>
       <div class="paper-card">
-        <span class="paper-status status-near" data-en="Verified" data-ja="検証済み"></span>
-        <h3>Paper 2</h3>
-        <p class="paper-title" data-en="Why Does Miedema's n_ws Work?" data-ja="Miedemaのn_wsはなぜ機能するか？"></p>
-        <p data-en="Miedema's empirical parameter has predicted surface tension for 45 years, but nobody explained why it works. We show that sp and d metals differ dramatically in how uniformly their valence electrons spread to cell boundaries. DFT slab calculations on 14 metals: 2.5× ratio (p=0.00008)." data-ja="Miedemaの経験的パラメータは45年間表面張力を予測してきたが、なぜ機能するかは未説明だった。sp金属とd金属で、価電子がセル境界にどれだけ均一に到達するかが劇的に異なることを示す。14金属のDFTスラブ計算: 2.5倍差（p=0.00008）。"></p>
+        <span class="paper-status status-near" data-en="Verified + Hypothesis" data-ja="検証済み + 仮説"></span>
+        <h3>Paper 2.1</h3>
+        <p class="paper-title" data-en="Electronic Delocalization and Surface Tension: From sp/d Uniformity in Solids to the (δ_nuc, δ_elec) Description of Liquids" data-ja="電子非局在化と表面張力: 固体のsp/d均一性から液体の(δ_nuc, δ_elec)記述へ"></p>
+        <p data-en="sp/d uniformity difference verified in 14 metals (p=0.00008). But δ_elec alone cannot predict surface tension γ (r=−0.18) — because γ is a liquid property where nuclei are also delocalized. We propose a two-variable (δ_nuc, δ_elec) framework: electronic delocalization governs cohesive strength, nuclear delocalization enables surface self-healing. This connects Paper 1's optical framework with thermodynamic interface properties." data-ja="14金属でsp/d均一性差を実証（p=0.00008）。しかしδ_elecだけでは表面張力γを予測できない（r=−0.18）— γは液体の性質であり核も非局在化しているため。(δ_nuc, δ_elec)の2変数記述を提案: 電子非局在化が凝集力を、核非局在化が表面自己修復を支配する。Paper 1の光学的枠組みと熱力学的界面特性を接続。"></p>
         <div class="paper-stats">
-          <span data-en="14 metals · 2.5× · p=0.00008" data-ja="14金属 · 2.5倍 · p=0.00008"></span>
+          <span data-en="14 metals · p=0.00008 (solid) + (δ_nuc, δ_elec) hypothesis (liquid)" data-ja="14金属 · p=0.00008（固体）+ (δ_nuc, δ_elec) 仮説（液体）"></span>
         </div>
         <div class="paper-links">
-          <a href="https://zenodo.org/records/19425541" target="_blank" rel="noopener">DOI</a>
+          <a href="https://zenodo.org/records/19425541" target="_blank" rel="noopener">DOI (v10)</a>
           <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/drafts/paper2_surface_tension/main.pdf" target="_blank" rel="noopener" data-en="PDF (EN)" data-ja="PDF (英語)"></a>
           <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/drafts/paper2_surface_tension/main_ja.pdf" target="_blank" rel="noopener" data-en="PDF (JA)" data-ja="PDF (日本語)"></a>
         </div>

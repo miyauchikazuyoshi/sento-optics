@@ -652,4 +652,92 @@ section {
   .phase-container { max-width: 100%; }
   #phase-svg { min-height: 350px; }
   .phase-tooltip { font-size: 0.8rem; max-width: 180px; }
+
+  .answer-grid { grid-template-columns: 1fr; }
+}
+
+/* === Answer Section === */
+#answer {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+#answer h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.answer-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.answer-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.answer-icon {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.answer-card h3 {
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.answer-card p {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* === Hero answer line === */
+.hero-answer {
+  font-size: 1.3rem;
+  color: var(--gold);
+  font-weight: 600;
+  margin-top: 1.5rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* === Story Section === */
+#story {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+#story h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.story-text p {
+  font-size: 1.05rem;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+.story-text p:last-child {
+  color: var(--text-dim);
+  font-style: italic;
+  font-size: 0.95rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
 }

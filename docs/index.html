@@ -75,15 +75,43 @@
           <p data-en="Liquids have surface tension. The water holds its shape against gravity." data-ja="液体は表面張力を持つ。水は重力に逆らって形を保つ。"></p>
         </div>
       </div>
-      <p class="hero-punch" data-en="Both are interface properties. Both lack a microscopic explanation. Both trace back to a single variable." data-ja="どちらも界面現象。どちらもミクロな説明がない。どちらも一つの変数に帰着する。"></p>
-      <p class="hero-program" data-en="A three-paper research program: optical response (verified), surface tension &amp; liquid description (solid verified, liquid hypothesis), phase definition (hypothesis)." data-ja="3部作の研究プログラム: 光学応答（検証済み）、表面張力・液体記述（固体は実証済み、液体は仮説）、相の定義（仮説）。"></p>
+      <p class="hero-answer" data-en="Both properties trace back to one thing: how freely particles spread out. We call it δ (delocalization)." data-ja="どちらも一つのことに帰着する: 粒子がどれだけ自由に広がれるか。これをδ（非局在化度）と呼ぶ。"></p>
     </div>
     <div class="hero-water"></div>
   </section>
 
-  <!-- Plain-text summary for first-time visitors -->
-  <section id="summary">
-    <p class="summary-text" data-en="We propose that optical appearance and surface tension of materials are organized by a single existing quantity: electronic delocalization (IPR / Wannier spread). Paper 1 tests this for optical classification in carbon allotropes. Paper 2.1 verifies the sp/d electron uniformity difference in solids (p=0.00008), then proposes a two-variable (δ_nuc, δ_elec) framework for liquid description — because surface tension is a liquid property that δ_elec alone cannot predict. Paper 3 is a forward hypothesis extending to phase definition. This is not a new theory — it is a reinterpretation of known quantities as a unified descriptor, validated by numerical analysis." data-ja="光学的外観と表面張力が、既存の物理量（電子非局在化度: IPR / Wannier spread）で統一的に記述できることを提案する。Paper 1は炭素同素体の光学分類で検証。Paper 2.1は固体でのsp/d電子均一性差を実証（p=0.00008）した上で、液体の記述には(δ_nuc, δ_elec)の2変数が必要であることを提案する — 表面張力は液体の性質であり、δ_elecだけでは予測できないため。Paper 3は相の定義への仮説的拡張。新理論ではなく、既知の量の統一的記述子としての再解釈とその数値的検証。"></p>
+  <!-- The Answer — one screen, no jargon -->
+  <section id="answer">
+    <h2 data-en="The Short Answer" data-ja="答え（30秒版）"></h2>
+    <div class="answer-grid">
+      <div class="answer-card">
+        <div class="answer-icon">&#x2728;</div>
+        <h3 data-en="Why do liquids shine?" data-ja="なぜ液体は光る？"></h3>
+        <p data-en="Electrons in liquid metals are free to spread across many atoms. This collective spreading produces mirror-like reflection. Water electrons are less free — so its luster is faint." data-ja="液体金属の電子は多くの原子にわたって自由に広がれる。この集団的な広がりが鏡のような反射を生む。水の電子はそれほど自由ではない — だから光沢が弱い。"></p>
+      </div>
+      <div class="answer-card">
+        <div class="answer-icon">&#x1F4A7;</div>
+        <h3 data-en="Why do liquids have surface tension?" data-ja="なぜ液体は表面張力を持つ？"></h3>
+        <p data-en="You need two things: electrons holding the liquid together (cohesion), and atoms mobile enough to repair the surface when it's disturbed (self-healing). Solids have cohesion but no self-healing. Gases have mobility but no cohesion. Only liquids have both." data-ja="2つのことが必要: 液体をまとめる電子の結合力（凝集）と、表面が乱されたときに修復できる原子の運動性（自己修復）。固体は凝集力があるが修復できない。気体は動けるが凝集力がない。液体だけが両方を持つ。"></p>
+      </div>
+      <div class="answer-card">
+        <div class="answer-icon">&#x1F52C;</div>
+        <h3 data-en="The evidence" data-ja="証拠"></h3>
+        <p data-en="DFT calculations on 14 metals show that &ldquo;how freely electrons spread&rdquo; cleanly separates metals into two groups — with a statistical significance of p&nbsp;=&nbsp;0.00008. That's a 1-in-12,500 chance of being a coincidence." data-ja="14金属のDFT計算で、「電子の広がり方」が金属を2グループにきれいに分離することを示した — 統計的有意性 p = 0.00008。偶然である確率は12,500分の1。"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Story -->
+  <section id="story">
+    <h2 data-en="The Story" data-ja="この研究の話"></h2>
+    <div class="story-text">
+      <p data-en="In March 2026, staring at the bathwater in a Japanese sentō, I noticed that the water surface was shining — reflecting the ceiling lights almost like a mirror. At the same time, the surface was holding its shape, curved up where it met the edge of the tub. Luster and surface tension. Two interface properties, visible on the same surface, at the same moment." data-ja="2026年3月、銭湯の湯船を眺めていて、水面が光っていることに気づいた — 天井の照明をほぼ鏡のように反射している。同時に、水面は形を保っていた。浴槽の縁では表面が盛り上がっている。光沢と表面張力。2つの界面特性が、同じ表面に、同時に見えている。"></p>
+      <p data-en="I looked it up. No one had explained both with a single variable. Existing theories handle them separately: optics uses dielectric functions, surface tension uses boundary densities. But if both are interface properties of the same liquid, shouldn't there be a common origin?" data-ja="調べてみた。両方を1つの変数で説明した人はいなかった。既存の理論はバラバラ: 光学は誘電関数、表面張力は境界密度。でも同じ液体の界面特性なら、共通の起源があるはずでは？"></p>
+      <p data-en="It turned out the answer was already there — in a quantity physicists have used since the 1950s to study electron localization. It just hadn't been applied this way. The inverse participation ratio (IPR) measures how freely electrons spread across space. Metals have high IPR: electrons are everywhere. Insulators have low IPR: electrons are stuck on atoms." data-ja="答えはすでにあった — 物理学者が1950年代から電子の局在化を研究するために使ってきた量の中に。ただ、こういう使い方をされたことがなかっただけだ。逆参加率（IPR）は、電子がどれだけ自由に空間に広がるかを測る。金属はIPRが高い: 電子はどこにでもいる。絶縁体はIPRが低い: 電子は原子に縛られている。"></p>
+      <p data-en="That's the electronic side. But surface tension is measured in liquids, where atoms are also mobile. So I needed a second variable: how freely the atoms themselves spread (nuclear delocalization). The combination of electron freedom and atom freedom — that's what determines whether a substance shines and holds a surface." data-ja="それが電子の側。でも表面張力は液体で測定される。液体では原子も動く。だから第2の変数が必要だった: 原子自体がどれだけ自由に広がるか（核の非局在化度）。電子の自由度と原子の自由度の組み合わせ — それが、物質が光り、表面を保つかを決めている。"></p>
+      <p data-en="I'm an independent researcher. This is not funded by any institution. The code, data, and papers are all open." data-ja="独立研究者として取り組んでいる。どの機関の資金も受けていない。コード、データ、論文はすべてオープン。"></p>
+    </div>
   </section>
 
   <!-- The Idea -->
@@ -134,9 +162,9 @@
           <span data-en="6/7 correct (7/7 with layer count)" data-ja="6/7正答（積層数で7/7）"></span>
         </div>
         <div class="paper-links">
+          <a href="paper1.html" data-en="Details" data-ja="詳細"></a>
+          <a href="papers/paper1.pdf" target="_blank" rel="noopener" data-en="PDF (EN)" data-ja="PDF (英語)"></a>
           <a href="https://zenodo.org/records/19425523" target="_blank" rel="noopener">DOI</a>
-          <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/drafts/paper1_optics/main.pdf" target="_blank" rel="noopener" data-en="PDF (EN)" data-ja="PDF (英語)"></a>
-          <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/drafts/paper1_optics/main_ja.pdf" target="_blank" rel="noopener" data-en="PDF (JA)" data-ja="PDF (日本語)"></a>
         </div>
       </div>
       <div class="paper-card">
@@ -148,9 +176,9 @@
           <span data-en="14 metals · p=0.00008 (solid) + (δ_nuc, δ_elec) hypothesis (liquid)" data-ja="14金属 · p=0.00008（固体）+ (δ_nuc, δ_elec) 仮説（液体）"></span>
         </div>
         <div class="paper-links">
-          <a href="https://zenodo.org/records/19425541" target="_blank" rel="noopener">DOI (v10)</a>
-          <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/drafts/paper2_surface_tension/main.pdf" target="_blank" rel="noopener" data-en="PDF (EN)" data-ja="PDF (英語)"></a>
-          <a href="https://github.com/miyauchikazuyoshi/sento-optics/blob/main/drafts/paper2_surface_tension/main_ja.pdf" target="_blank" rel="noopener" data-en="PDF (JA)" data-ja="PDF (日本語)"></a>
+          <a href="paper2.html" data-en="Details" data-ja="詳細"></a>
+          <a href="papers/paper2.pdf" target="_blank" rel="noopener" data-en="PDF (EN)" data-ja="PDF (英語)"></a>
+          <a href="https://zenodo.org/records/19425541" target="_blank" rel="noopener">DOI</a>
         </div>
       </div>
       <div class="paper-card">

@@ -153,7 +153,109 @@ CGのヒューリスティックが物理と一致するのは、人間の視覚
 
 ---
 
-## 8. Paper 2.1 Discussionへの反映案
+## 8. 量子-古典接続の最先端研究との関係（2026-04-13追記）
+
+δが「量子っぽい」のはなぜか。そして最先端研究のどこに着地しうるか。
+
+### 8.1 最重要接続: von Weizsäcker ≡ Fisher information ≡ quantum potential ≡ 表面張力
+
+以下の4つの量は**数学的に同一の構造**を持つ:
+
+```
+Q (quantum potential)        = -(ℏ²/2m)(∇²√ρ)/√ρ       [Madelung 1926, Bohm 1952]
+T_W (von Weizsäcker KE)      = (ℏ²/8m) ∫ |∇ρ|²/ρ dr    [von Weizsäcker 1935]
+I_F (Fisher information)     ∝ T_W                       [Nagy 2022, 2025]
+γ (DFT surface tension)      ∝ gradient expansion 第1項 ∝ T_W  [PRB 28, 4374, 1983]
+```
+
+全て「密度勾配の鋭さ」を測っている。δ_IPR（密度分布の均一性）はこの勾配構造の逆数的な量。
+
+**この接続の意味**: 表面張力のDFT計算で使われるgradient項が、量子力学のquantum potentialと同じ数学だという事実は、「表面張力が量子力学的な電子の非局在化から生じる」というδ枠組みの主張に**数学的基盤**を与える。
+
+**先行状況**: 各等号は個別に既知（Nagy 2022がFisher-DFT接続を証明）。しかし「IPR/δ → Fisher information → 表面張力」の因果連鎖を明示的に述べた論文は**調査した限り存在しない**。
+
+**引用**: Nagy, Int. J. Quantum Chem. (2022); J. Comput. Chem. (2025)
+
+### 8.2 Quantum Chaos: IPRの出自と古典系への拡張
+
+IPRの本来の文脈はAnderson localization（Wegner 1980, Evers & Mirlin RMP 2008）。波動関数がHilbert空間上でどれだけ広がるかを測る。
+
+**δとの関係**: δ_IPRはこの道具を「波動関数」ではなく「原子位置の確率分布」に適用する。Hilbert空間上の広がり → 実空間上の広がり。道具は同じ、適用対象が新しい。
+
+**注意点**: IPRをHilbert空間外（古典的確率分布）に適用する場合、物理的正当化が必要。正当化の根拠は: (1) IPR = exp(-H₂) はRényi-2 entropyの指数関数であり、**任意の確率分布**に定義可能、(2) ガラス物理学ではphononの振動モードのIPRが標準的に使われている（ただし固有ベクトルのIPR）。
+
+**完全に新規な一歩**: 原子位置分布そのもの（固有状態ではなく、実空間確率分布）にIPRを適用して相を分類する — これは先行例がほぼない。
+
+**引用**: Evers & Mirlin, Rev. Mod. Phys. 80, 1355 (2008); Wegner, Z. Physik B 36, 209 (1980)
+
+### 8.3 Classical Entanglement: 非分離性の古典版
+
+Konrad & Forbes (2024) がquantum entanglementとclassical non-separabilityの**操作的区別**を初めて明確化:
+- Quantum: 複数測定の統計的相関（realism破れ）
+- Classical: 単一測定の条件付き結果（realism保存）
+- 数学的non-separabilityは共通
+
+**δとの関係**: 液体中の(δ_nuc, δ_elec)は、核自由度と電子自由度の間のnon-separabilityを記述していると解釈可能。電子の広がり方が核の配置に依存し、核の運動が電子構造に影響する — Born-Oppenheimer近似が破れる極限ではこれが顕在化する。
+
+**ただし**: この接続は**投機的**。entanglement witnessを古典統計力学に体系的に適用した研究は存在しない。論文に書くなら「future direction」としてのみ。
+
+**引用**: Konrad & Forbes, Phil. Trans. R. Soc. A 382, 20230342 (2024)
+
+### 8.4 Pilot Wave Hydrodynamics (Bush/Couder)
+
+MITのBushグループがbouncing droplet実験で量子アナログを再現（回折、干渉、Anderson localization等）。
+
+**δとの関係**: pilot wave系では、液滴（粒子）と表面波（連続場）が結合して量子的振る舞いを生む。これは「粒子-連続体のクロスオーバー」の実験的デモンストレーション。δが中間値をとる液体でこのクロスオーバーが起きる、というδ枠組みの主張と**概念的に整合**。
+
+**ただし**: pilot wave系は1粒子の量子力学アナログであり、多体系（液体）への拡張は行われていない。
+
+**引用**: Bush, Frumkin, Saenz, Appl. Phys. Lett. 125, 030503 (2024)
+
+### 8.5 Nelson Stochastic Mechanics: 古典拡散からSchrödinger方程式
+
+Nelson (1966) は拡散係数 ℏ/(2m) のBrownian motionからSchrödinger方程式を導出した。Born ruleが独立公理ではなく、確率過程の分布として内包される。
+
+**δ_nucとの直接接続**: δ_nuc = MSD/a² は拡散方程式が支配方程式。Nelsonの枠組みでは、拡散方程式が量子力学の基盤。つまりδ_nucの支配方程式と量子力学の支配方程式が**同一の数学的構造**を持つ。
+
+この接続は「液体のδ_nucが量子っぽい」という直感に**最も直接的な数学的根拠**を与える。液体中の原子拡散（古典的）と量子力学の確率振幅の拡散（量子的）が同じ方程式で記述される。
+
+**ただし**: Nelsonの理論自体が物理学コミュニティでは議論が分かれる（解釈問題）。引用する場合は慎重に。
+
+### 8.6 Trachenkoの液体理論: k-gap と部分的局在化
+
+Trachenko (Cambridge UP, 2023) はFrenkel緩和時間τで液体を記述。液体のtransverse phononはある波数以上でのみ伝播（k-gap）。
+
+**δとの関係**: k-gapは「液体のcollective modeが部分的にlocalizeする」ことを意味する。IPRはまさにこの部分的局在化を定量する道具。k-gap（周波数/波数領域）とδ（実空間）の橋渡しが可能かもしれない。
+
+**Trachenkoのτとδの関係**: τ（時間的）とδ（空間的）は独立な情報を持つ。τ × δ の結合変数がありうる。**AIMDデータで検証可能**。
+
+### 8.7 最先端との距離マップ
+
+| 最先端研究 | δとの距離 | 接続の強さ | 論文に書けるか |
+|-----------|----------|----------|-------------|
+| **von Weizsäcker ≡ Fisher ≡ γ gradient** | 数学的に直接 | ★★★★★ | Discussion: 数式レベルで引用可能 |
+| **Quantum chaos IPR** | 道具が同一 | ★★★★ | Methods: IPRの出自として引用 |
+| **Nelson stochastic mechanics** | 支配方程式が同一 | ★★★★ | Discussion: 拡散方程式の二重の意味 |
+| **Trachenko k-gap** | 相補的 | ★★★ | Discussion: τ vs δ の比較 |
+| **Pilot wave (Bush)** | 概念的アナログ | ★★ | Introduction: 動機づけとして |
+| **Classical entanglement** | 投機的 | ★ | Future work としてのみ |
+| **ML softness** | 相補的（data-driven vs first-principles）| ★★ | Related work として |
+
+### 8.8 「δが量子っぽい」の精密な意味
+
+「量子っぽい」は以下の3つの意味で正当化できる:
+
+1. **数学的**: IPR = exp(-H₂) はRényi entropy。情報理論的量は量子/古典の区別なく定義可能
+2. **構造的**: δ_nucの支配方程式（拡散方程式）がSchrödinger方程式と同じ数学（Nelson 1966）
+3. **物理的**: 表面張力のgradient項がquantum potentialと同一構造（von Weizsäcker ≡ Fisher）
+
+「量子っぽい」のではなく、**量子力学と古典液体が同じ数学的構造を共有している**。δはその共有構造を顕在化させる変数。
+
+**注意**: 「古典液体が量子力学的に振る舞う」とは主張していない。「同じ数学が両方に現れ、δがその数学を測る」と主張している。この区別は論文で明確にすべき。
+
+---
+
+## 9. Paper 2.1 Discussionへの反映案
 
 > "Unlike the Knudsen number, which depends on the extrinsic system
 > size L, δ is determined by intrinsic electronic structure and nuclear
@@ -182,3 +284,4 @@ CGのヒューリスティックが物理と一致するのは、人間の視覚
 ---
 
 *統合版 2026-04-13。個別メモの思考の軌跡を1枚のマップに集約。*
+*2026-04-13 追記: セクション8（量子-古典接続の最先端研究）を追加。*

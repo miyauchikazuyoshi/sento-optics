@@ -804,6 +804,90 @@ existing theories can be located:
 \end{itemize}
 
 
+\subsection{Mathematical connection: $\delta$, Fisher information,
+and the surface tension gradient}
+\label{sec:fisher}
+
+The empirical connection between $\delta_\mathrm{elec}$ and
+surface properties established in Part~I has a deeper
+mathematical basis.
+The DFT surface energy of a metal, in the gradient
+expansion~\cite{Perdew1990}, contains a leading
+inhomogeneity correction proportional to the
+von~Weizs\"acker kinetic energy functional:
+\begin{equation}
+  T_W[\rho] = \frac{\hbar^2}{8m}
+  \int \frac{|\nabla\rho(\mathbf{r})|^2}{\rho(\mathbf{r})}
+  \,d^3r.
+  \label{eq:vw}
+\end{equation}
+This functional is mathematically identical to the
+Fisher information~\cite{Nagy2022}:
+\begin{equation}
+  I_F[\rho] = \int
+  \frac{|\nabla\rho(\mathbf{r})|^2}{\rho(\mathbf{r})}
+  \,d^3r = \frac{8m}{\hbar^2}\,T_W[\rho],
+  \label{eq:fisher}
+\end{equation}
+and proportional to the quantum potential of
+Madelung--Bohm hydrodynamics~\cite{Madelung1926}:
+$Q = -(\hbar^2/2m)\,(\nabla^2\!\sqrt{\rho})/\sqrt{\rho}$.
+All three quantities measure the \emph{sharpness of
+density gradients}.
+
+The delocalization index $\delta$ measures the
+complementary property: \emph{density uniformity}.
+A high $\delta$ (delocalized electrons, nearly uniform
+$\rho$) implies small $|\nabla\rho|^2/\rho$ and hence
+small $T_W$, $I_F$, and surface energy gradient cost.
+Conversely, low $\delta$ ($d$-electrons concentrated at
+nuclei, large density gradients) implies large $T_W$
+and higher surface energy cost at the cell boundary.
+
+This provides a mathematical rationale for the empirical
+sp/$d$ separation observed in Sec.~\ref{sec:results_solid}:
+sp metals have small $I_F$ (uniform density, high $\delta$)
+while $d$ metals have large $I_F$ (sharp density gradients,
+low $\delta$).
+The gradient expansion of the surface energy thus connects
+$\delta$ to $\gamma$ through a chain of established
+mathematical identities:
+\begin{equation}
+  \delta_\mathrm{elec} \;\leftrightarrow\;
+  I_F^{-1} \;\leftrightarrow\;
+  T_W^{-1} \;\leftrightarrow\;
+  \text{reduced gradient cost}
+  \;\to\; \gamma.
+  \label{eq:chain}
+\end{equation}
+We emphasize that this chain provides a mathematical
+\emph{connection}, not a quantitative prediction:
+the full surface energy involves exchange-correlation
+contributions beyond the gradient expansion,
+and $\delta_\mathrm{IPR}$ at the dimer level is only
+a proxy for the bulk $I_F$.
+Nevertheless, the structural identity
+$T_W \equiv (\hbar^2/8m)\,I_F$ explains
+\emph{why} a delocalization measure should correlate
+with surface properties at all.
+
+An intriguing parallel exists for $\delta_\mathrm{nuc}$.
+The governing equation for nuclear delocalization in
+liquids is the diffusion equation
+(Eq.~\eqref{eq:diffusion}), which has the same
+mathematical structure as the Schr\"odinger equation
+in Nelson's stochastic mechanics~\cite{Nelson1966}---a
+formulation that derives quantum mechanics from
+classical diffusion with diffusion coefficient
+$\hbar/(2m)$.
+This structural parallel between the governing equations
+of $\delta_\mathrm{nuc}$ (classical diffusion) and
+quantum mechanics (Schr\"odinger equation)
+suggests that the ``quantum-like'' character of
+$\delta$ is not a metaphor but a reflection of
+shared mathematical structure.
+
+
 % =====================================================================
 \section{Limitations and Future Directions}
 \label{sec:future}

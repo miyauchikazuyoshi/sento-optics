@@ -24,9 +24,34 @@
 | **液体** | Kn << 1 | δ_nuc: 中間値 |
 | **気体** | Kn >> 1 | δ_nuc: 極大 |
 | **問題点** | **固体と液体を区別できない**（どちらもKn << 1） | 区別できる |
+| **物質固有？** | **No**（系サイズLに依存） | **Yes**（電子構造・核運動で決まる） |
+| **materials informatics** | descriptorとして不使用 | descriptorになりうる |
 
 Knだけでは固体と液体が同じ領域に潰れる。
 δを加えると、Kn << 1 の中に δ_nuc の値域で固体と液体が分離する。
+
+---
+
+## Knが材料探索パラメータになれない理由
+
+Knは**プロセス変数**であり物質固有の量ではない。同じ材料でもLを変えればKnが変わる。
+だからMaterials Project等のhigh-throughput databaseにもKnはdescriptorとして登録されていない。
+
+### Knが使われている場面（プロセス側に限定）
+- **薄膜成膜（PVD/MBE）**: Knudsen cellでの分子線エピタキシー、成膜速度予測
+- **ナノ多孔質断熱材**: 孔径 < 平均自由行程(~70nm) → Knudsen effectで熱伝導率激減（aerogel設計）
+- **ナノスケール熱輸送**: CNT周囲のKnudsen layer形成
+
+### δとの決定的な違い
+
+Knが材料探索に使えないのは「外的条件（L）に依存するプロセス変数」だから。
+δは「内的電子構造・核運動で決まる物質固有の量」だから、材料descriptorになれる。
+
+同じ「粒子の自由度」を測っていても:
+- Kn: 外的条件依存 → プロセス最適化に有用
+- δ: 内的構造依存 → 物質探索・物性予測に有用
+
+**Paper 2.1 Discussion候補**: "Unlike the Knudsen number, which depends on the extrinsic system size L, δ is determined by intrinsic electronic structure and nuclear dynamics, making it suitable as a materials descriptor."
 
 ---
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://miyauchikazuyoshi.github.io/sento-optics/sitemap.xml

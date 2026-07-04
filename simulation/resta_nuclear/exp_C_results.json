@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "date": "2026-07-04",
+    "formula": "s = xi2_xx * Eg / (hbar^2/2m_e); xi2_xx = (Omega/WF)/3",
+    "hbar2_2me_eVA2": 3.81,
+    "omega_source": "simulation/wannier_carbon/README.md"
+  },
+  "results": {
+    "Diamond": {
+      "xi2_xx_A2": 0.318,
+      "Eg_indirect_eV": 5.47,
+      "Eg_direct_eV": 7.3,
+      "saturation_indirect": 0.4565511811023622,
+      "saturation_direct": 0.6092913385826771,
+      "inequality_holds": true
+    },
+    "Si": {
+      "xi2_xx_A2": 1.0163333333333333,
+      "Eg_indirect_eV": 1.12,
+      "Eg_direct_eV": 3.4,
+      "saturation_indirect": 0.2987646544181977,
+      "saturation_direct": 0.9069641294838146,
+      "inequality_holds": true
+    },
+    "Ge": {
+      "xi2_xx_A2": 0.7583333333333333,
+      "Eg_indirect_eV": 0.66,
+      "Eg_direct_eV": 0.8,
+      "saturation_indirect": 0.13136482939632546,
+      "saturation_direct": 0.15923009623797027,
+      "inequality_holds": true
+    },
+    "Graphite": {
+      "xi2_xx_A2": 2.125,
+      "Eg_eV": 0,
+      "note": "metal/semimetal: bound is infinite, inequality trivially holds"
+    },
+    "K": {
+      "xi2_xx_A2": 1.2493333333333334,
+      "Eg_eV": 0,
+      "note": "metal/semimetal: bound is infinite, inequality trivially holds"
+    }
+  }
+}

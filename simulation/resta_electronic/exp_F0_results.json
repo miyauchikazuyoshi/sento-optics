@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "date": "2026-07-05",
+    "wfc": "/Users/miyauchikazuyoshi/Documents/GitHub/sento-optics/simulation/surface_tension/aimd/tmp/Na_liquid.save/wfc1.hdf5",
+    "L_ang": 13.8133,
+    "n_occ_bands": 288,
+    "n_elec": 576,
+    "approx": [
+      "no PAW augmentation",
+      "integer occupation",
+      "single snapshot"
+    ]
+  },
+  "log_z_full": {
+    "x": -129.63602980382552,
+    "y": -129.7476527912799,
+    "z": -132.82277124194493
+  },
+  "geom_mean_semicore": {
+    "x": 0.6744591597226722,
+    "y": 0.6744610045227851,
+    "z": 0.6744579908240071
+  },
+  "geom_mean_3s": {
+    "x": 0.4088622907371263,
+    "y": 0.4054790930545241,
+    "z": 0.37595369896971703
+  },
+  "lambda2_A2": {
+    "x": 4.351093152422443,
+    "y": 4.354839657287647,
+    "z": 4.4580526826620295
+  },
+  "sensitivity_logz_x": {
+    "286": -127.1374619439904,
+    "290": -129.59396153309714
+  },
+  "verdict": {
+    "F0_1": true,
+    "F0_2": false,
+    "F0_3": true
+  }
+}

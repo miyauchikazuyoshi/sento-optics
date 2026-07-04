@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "date": "2026-07-05",
+    "model": "delta_c = A*T_m + B/sqrt(M_eff)",
+    "caveat": "literature values need primary-source check"
+  },
+  "systems": {
+    "H2/D2": {
+      "Tm_light_K": 13.96,
+      "Tm_heavy_K": 18.73,
+      "dT_K": 4.77,
+      "M_light": 2.0,
+      "M_heavy": 4.0,
+      "B_over_A_K": 23.031597385039333,
+      "f_ZP": 0.5384482935326631,
+      "note": "Λ*(H2)=1.73"
+    },
+    "Ne20/Ne22": {
+      "Tm_light_K": 24.54,
+      "Tm_heavy_K": 24.69,
+      "dT_K": 0.15000000000000213,
+      "M_light": 20.0,
+      "M_heavy": 22.0,
+      "B_over_A_K": 14.414647965484637,
+      "f_ZP": 0.11609654979945483,
+      "note": "Λ*(Ne)=0.59"
+    },
+    "H2O/D2O (libr.)": {
+      "Tm_light_K": 273.15,
+      "Tm_heavy_K": 276.97,
+      "dT_K": 3.82000000000005,
+      "M_light": 1.0,
+      "M_heavy": 2.0,
+      "B_over_A_K": 13.042295808265392,
+      "f_ZP": 0.045571792110725026,
+      "note": "libration ~600 cm⁻¹"
+    },
+    "H2O/D2O (transl.)": {
+      "Tm_light_K": 273.15,
+      "Tm_heavy_K": 276.97,
+      "dT_K": 3.82000000000005,
+      "M_light": 18.0,
+      "M_heavy": 20.0,
+      "B_over_A_K": 315.82090838084554,
+      "f_ZP": 0.21415968758657075,
+      "note": "transl. ~50-200 cm⁻¹"
+    }
+  },
+  "surface_tension": {
+    "gamma_H2O": 71.98,
+    "gamma_D2O": 71.87,
+    "Tc_H2O": 647.1,
+    "Tc_D2O": 643.85,
+    "gamma0_H2O": 156.34404281524553,
+    "gamma0_D2O": 156.9548742802652,
+    "corresponding_states_ratio": 0.003906969872472077
+  },
+  "verdict": {
+    "D1": true,
+    "D2": true,
+    "D3": true
+  }
+}

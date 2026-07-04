@@ -481,3 +481,7 @@ coth 公式（振動）と拡散方程式（拡散）は異なる時間スケー
 - Ackland et al. (2017) Science — Li の量子核効果
 - Cardenas-Castillo et al. (2024) PRB 110, 075203 — Wannier-光学 sum rule
 - Remsing & Klein (2020) — 液体 Si MLWF
+
+---
+
+*2026-07-04 追記: 本メモの coth 公式（§1）が「なぜ」量子と古典を連続化できるのか — 非局在性という変数の選択そのものに理由がある（原点実在性・加法性・測定構造）— を memo_delocalization_as_primary_variable.md で言語化した。§7 の「古典的非局在 ≠ 量子コヒーレンス」の注意はそちらでスコープ宣言に格上げ。4象限統一像（電子/核 × T=0/有限T が全て ln|z|² 型）と同位体プローブの予言も同メモ参照。*

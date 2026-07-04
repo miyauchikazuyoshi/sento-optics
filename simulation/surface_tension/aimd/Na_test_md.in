@@ -1,0 +1,54 @@
+&CONTROL
+    calculation   = 'md'
+    restart_mode  = 'from_scratch'
+    prefix        = 'Na_test'
+    outdir        = './tmp/'
+    pseudo_dir    = '../qe_slab/pseudo/'
+    tprnfor       = .true.
+    tstress       = .true.
+    dt            = 40.0
+    nstep         = 20
+    verbosity     = 'high'
+/
+
+&SYSTEM
+    ibrav         = 1
+    celldm(1)     = 13.05
+    nat           = 8
+    ntyp          = 1
+    ecutwfc       = 30.0
+    ecutrho       = 240.0
+    occupations   = 'smearing'
+    smearing      = 'mv'
+    degauss       = 0.02
+    nosym         = .true.
+    noinv         = .true.
+/
+
+&ELECTRONS
+    electron_maxstep = 200
+    conv_thr         = 1.0d-6
+    mixing_beta      = 0.3
+/
+
+&IONS
+    ion_dynamics    = 'verlet'
+    ion_temperature = 'andersen'
+    tempw           = 471.0
+    nraise          = 10
+/
+
+ATOMIC_SPECIES
+  Na  22.990  Na.pbe-spn-kjpaw_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS (crystal)
+  Na  0.125  0.125  0.125
+  Na  0.125  0.625  0.625
+  Na  0.625  0.125  0.625
+  Na  0.625  0.625  0.125
+  Na  0.375  0.375  0.375
+  Na  0.375  0.875  0.875
+  Na  0.875  0.375  0.875
+  Na  0.875  0.875  0.375
+
+K_POINTS gamma

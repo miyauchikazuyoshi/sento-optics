@@ -105,3 +105,24 @@
 
 - 水銀の仕事関数：4.5eV。閾値波長2735Å。
   - Kazda, C. B. (1924). Energy Content of Mercury Arc Lines and the Photoelectric Effect for Mercury. PhD Thesis, Caltech.
+
+## 電子局在の理論（Kohn–Resta–SWM 系譜）— 2026-07-04 追加
+
+δ枠組みの直系の理論的祖先。詳細な気付きは theory/connections/memo_kohn_resta_swm_lineage.md。
+
+- Kohn, W. (1964). Theory of the Insulating State. *Phys. Rev.* 133, A171. [DOI](https://doi.org/10.1103/PhysRev.133.A171)
+  - 絶縁体/金属の違いは励起でなく基底状態の局在（多体配置空間の切断）にあるという原点。Paper 3 の哲学の系譜。
+- Resta, R. & Sorella, S. (1999). Electron Localization in the Insulating State. *Phys. Rev. Lett.* 82, 370. [arXiv](https://arxiv.org/abs/cond-mat/9808151) / [DOI](https://doi.org/10.1103/PhysRevLett.82.370)
+  - 周期系の局在位相 z_N と局在長 λ²。絶縁体で有限、金属で発散。λ² = Ω_I/(3m_b)（Eq. 18）で MV の Wannier spread と接続。z_nuc 提案（memo_nuclear_resta_phase.md）の源泉。
+- Souza, I., Wilkens, T. & Martin, R. M. (2000). Polarization and localization in insulators: generating function approach. *Phys. Rev. B* 62, 1666. [arXiv](https://arxiv.org/abs/cond-mat/9911007) / [DOI](https://doi.org/10.1103/PhysRevB.62.1666)
+  - 局在長と光学伝導度の fluctuation-dissipation sum rule（Eq. 49）。Cardenas-Castillo (2024) の祖先 — **必ずこちらを先に引く**。三分類（絶縁体/理想導体/非理想導体、Eq. 50）と ξ² ≤ ℏ²/2m_eE_g（Eq. 52）。
+- Resta, R. (2002). Why are insulators insulating and metals conducting? *J. Phys.: Condens. Matter* 14, R625. [DOI](https://doi.org/10.1088/0953-8984/14/20/201)
+  - 初期レビュー（ペイウォール）。
+- Resta, R. (2011). The Insulating State of Matter: A Geometrical Theory. *Eur. Phys. J. B*. [arXiv](https://arxiv.org/abs/1012.5776)
+  - 幾何学的定式化のレビュー。band/Mott/Anderson/量子Hall/topological を統一。**arXiv で全文入手可 — 読む順番の1冊目に推奨**。
+- Sgiarovello, C., Peressi, M. & Resta, R. (2001). Electron localization in the insulating state: Application to crystalline semiconductors. *Phys. Rev. B* 64, 115202. [arXiv](https://arxiv.org/abs/cond-mat/0101440)
+  - λ² の半導体への実計算例。
+- Selloni, A., Carnevali, P., Car, R. & Parrinello, M. (1987). Localization, hopping, and diffusion of electrons in molten salts. *Phys. Rev. Lett.* 59, 823.
+  - 位相量 z を液体・無秩序系（溶融塩中の電子）に適用した直接の先行。z_nuc の新規性照合に必須。
+- Grasselli, F. & Baroni, S. (2019). Topological quantization and gauge invariance of charge transport in liquid insulators. *Nat. Phys.* 15, 967. [arXiv](https://arxiv.org/abs/1902.07256) / [DOI](https://doi.org/10.1038/s41567-019-0562-0)
+  - Berry 位相的量が液体イオン系で well-defined であることの先行（対象は輸送係数であり相分類ではない）。

@@ -205,3 +205,7 @@ Priority 4: HSE06 / GW+BSE（将来課題）
 2. postw90 で Ω → ε₂(ω) の直接接続を実証
 3. 三因子モデルは sum rule の Penn 近似として位置づけ
 4. d 電子遮蔽の Wannier spread への影響を定量化
+
+---
+
+*2026-07-04 追記（Claude との議論より）: **本メモの「δ→光学が仮説から定理になった」は要修正。** Cardenas-Castillo (2024) の sum rule は Souza-Wilkens-Martin (2000) PRB 62, 1666 の fluctuation-dissipation sum rule（局在テンソル ⟨r²⟩_c ∝ ∫ Re σ(ω)/ω dω）の系譜であり、定理は実質2000年から存在する。引用は SWM を先に、Cardenas-Castillo は「バンド分解・現代版」として位置づけること。系譜全体（Kohn 1964 → Resta & Sorella 1999 → SWM 2000 → MLWF）と5つの気付きは memo_kohn_resta_swm_lineage.md。*

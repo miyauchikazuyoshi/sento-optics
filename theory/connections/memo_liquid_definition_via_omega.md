@@ -108,3 +108,10 @@ JPCB 124, 3180 / arXiv:2003.12158
 → 全て我々の新規性として残っている。
 
 詳細: memo_remsing_klein_liquid_si.md
+
+---
+
+*2026-07-04 追記（Claude との議論より）: 本メモには2つの要修正点がある。
+(1) 表の「気体: 弾道的 ∝ t²」は平均自由時間以下でのみ正確 — 長時間では気体も拡散的。修正は memo_liquid_definition_gap_defense.md §5.1。
+(2) 金属では Ω が熱力学極限で発散する（Resta の局在長の発散 = 金属の定義）ため、「液体金属で Ω 大」はセルサイズ依存の量 — 正しい扱い（Drude weight との2枚看板）は memo_kohn_resta_swm_lineage.md §3。
+また δ_nuc の時間窓によらない静的再定義案として memo_nuclear_resta_phase.md を参照。*

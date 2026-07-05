@@ -27,6 +27,9 @@ drafts/conference_targets_2026.md
 # AIMD calculation outputs (large files, reproducible from inputs)
 simulation/surface_tension/aimd/tmp/
 
+# resta_electronic QE outputs (large files, reproducible from inputs)
+simulation/resta_electronic/tmp/
+
 # QE slab calculation outputs (large files)
 simulation/surface_tension/qe_slab/tmp*/
 simulation/surface_tension/qe_slab/pseudo/

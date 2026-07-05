@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "date": "2026-07-05",
+    "L_ang": 11.28,
+    "n_occ_bands": 256,
+    "approx": [
+      "no PAW augmentation (diag-corrected blocks)",
+      "single crystal snapshot (T=0)"
+    ]
+  },
+  "logz_full": {
+    "x": -41.033093699261045,
+    "y": -41.033093348743435,
+    "z": -41.033093439513294
+  },
+  "lambda2": {
+    "x": 1.0331960921161225,
+    "y": 1.0331960832902363,
+    "z": 1.0331960855757831
+  },
+  "blocks_norm_corrected": {
+    "Na 2s": 0.9895149710133608,
+    "Na 2p": 0.9822379170623832,
+    "Cl 3s": 0.9647031794490452,
+    "Cl 3p": 0.9336042295830167
+  },
+  "contrast": {
+    "lambda2_liquid_Na": 4.38799516412404,
+    "lambda2_NaCl": 1.0331960869940473
+  },
+  "verdict": {
+    "F2_1": true,
+    "F2_2": true,
+    "F2_3": true
+  }
+}

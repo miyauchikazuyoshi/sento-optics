@@ -34,6 +34,25 @@ Phase identity:     (δ_nuc, δ_elec) → solid / liquid / gas / plasma / ...
 
 The deeper insight: quantum mechanics uses the **second moment** of probability distributions (variance, spread, uncertainty) as a fundamental descriptor because the first moment is inherently uncertain. The δ framework extends this strategy to classical systems — wherever "how much particles spread" matters more than "where particles are," δ is the natural variable.
 
+## Symbol Map
+
+The framework uses a family of delocalization measures. Minimal orientation:
+
+| Symbol | Meaning | Where | Status |
+|--------|---------|-------|--------|
+| δ | Umbrella: "how far particles spread" | everywhere | framework concept |
+| δ_elec | Electronic delocalization | Papers 1–3 | core proposal; operational proxies cross-validated (r = 0.73–0.89) |
+| δ_nuc | Nuclear delocalization | Paper 3, melting | coth-unified quantum↔classical (theory); for validation see z_nuc |
+| z_nuc | Nuclear Resta phase (= translational order parameter, reinterpreted) | "solid / non-solid" axis | **validated in classical MD** (4/4 pre-registered criteria; melting detected as a 2-decade signal); AIMD pending |
+| z_elec, λ² | Electronic Resta phase / localization length (Kohn–Resta–SWM lineage) | "metal / insulator" axis | computed: liquid Na (metallic, \|z\| ~ 10⁻⁵⁷) vs NaCl crystal (λ² = 1.03 Å², isotropic) |
+| Ω, Ω_I | (Gauge-invariant) Wannier spread | optics sum rule | computed for C, Si, Ge, graphite, K |
+| IPR | Inverse participation ratio | early proxy | superseded by the Ω/λ² route (fails to discriminate within identical structures) |
+| D_eff | Effective conduction dimensionality | Paper 1 | validated on the carbon set; shown numerically = number of diverging-λ directions (TB) |
+| s | Saturation index 2m_eE_gξ²/ℏ² | ML-descriptor map | computed for C/Si/Ge: separates gap-limited (Si 0.91) from core-screening-limited (Ge 0.16) |
+| q300, f_ZP | Zero-point fraction of nuclear spread | isotope calibration; phase-0 map | calibrated from isotope shifts (H₂ 54% > Ne 12% > H₂O ~5%); 10k-material map in progress |
+
+Full definitions: [`theory/core/glossary.md`](theory/core/glossary.md)
+
 ## Papers
 
 Claims that have been numerically verified and survived self-criticism are written into papers.
@@ -74,11 +93,11 @@ Status: Preprint v8. **DOI: [10.5281/zenodo.19425541](https://zenodo.org/records
 - Code: [`simulation/surface_tension/`](simulation/surface_tension/)
 - Draft: [`drafts/paper2_surface_tension/main.tex`](drafts/paper2_surface_tension/main.tex)
 
-### Paper 3: Microscopic Redefinition of "Liquid" (planned)
+### Paper 3: A Phase-Descriptor Plane for Matter — What Is a Liquid? (planned)
 
-**Claim** (hypothesis): The liquid state is characterized by (δ_nuc, δ_elec) — nuclear delocalization (diffusion) and electronic delocalization (Wannier spread). The liquid–gas distinction is not δ_nuc (both have mobile particles) but δ_elec (electronic overlap → cohesion → fixed volume).
+**Hypothesis** (proposed, under numerical test): the (δ_nuc, δ_elec) plane — nuclear delocalization ("solid/non-solid" axis, via the nuclear Resta phase) × electronic delocalization ("metal/insulator" axis, via the localization length) — organizes solid, liquid, gas, metal and insulator in one coordinate system. The liquid–gas distinction is carried not by δ_nuc (both have mobile particles) but by δ_elec (electronic overlap → cohesion → fixed volume). Whether this *descriptor plane* can be upgraded to a *definition* of the liquid state is exactly what the numerical program is testing.
 
-Status: Theoretical framework stage. No numerical verification yet.
+Status: Framework + methods validated on model systems (classical MD: 4/4 pre-registered criteria, melting detected; liquid-Na vs NaCl electronic contrast computed). Full liquid-state AIMD in progress.
 
 - Theory: [`theory/phase/paper3_phase_diagram_theory.md`](theory/phase/paper3_phase_diagram_theory.md)
 

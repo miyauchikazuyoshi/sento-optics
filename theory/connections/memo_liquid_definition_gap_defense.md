@@ -51,6 +51,37 @@ Kohn (1964) を精読するとさらに強い形になる: 直積ではなく「
 
 ---
 
+## 4.5 言い方の較正 — 外部レビューより（2026-07-05 追記）
+
+リポジトリ全体を読んだ外部AIレビューから得た定型文。診断は「素朴な新規性から
+成熟した新規性へ移行した。ただし Abstract/Introduction で既存と差分を最初に
+宣言しないと『既存理論をなぞっただけ』に見える」。
+
+**危険な言い方（避ける）**:
+- ❌ "δ is a new fundamental physical quantity."
+  — localization length / quantum metric / Resta phase / IPR / DW / order parameter にほぼ吸収される
+- ❌ "We define liquid by z_nuc."
+  — z_nuc は液体と気体を区別しない（memo_nuclear_resta_phase.md §3 が自認する制約）
+
+**強い言い方（使う）**:
+> We propose a unified delocalization-coordinate view of material response and
+> phase identity, using established localization measures from the
+> Kohn–Resta–SWM lineage as operational descriptors for electronic and
+> nuclear delocalization.
+
+> 本研究は、Kohn–Resta–SWM 系譜の局在性指標を、電子・核の非局在度という
+> 共通座標へ再配置し、光学応答・界面物性・相分類を横断的に記述する枠組み
+> として提示する。
+
+**売り方**: 初出は「液体の定義」ではなく **(z_nuc, z_elec) phase-descriptor
+plane** として（README は 2026-07-05 にこの形へ調整済み）。定義への格上げは
+検証後の結論部で。
+
+**新規性の置き場所**（部品は全て既存 — ρ_k, λ², coth, DW）:
+1. 問いの向き — 金属/絶縁体の定義 → 相・界面・光学の横断記述
+2. 電子と核を同じ ln|z|² 型数学で一つの相平面に置く構成
+3. 物量戦（ML 記述子）に耐える設計条件（パラメータフリー・無人・自己診断）
+
 ## 5. 注意点3つ
 
 ### 5.1 「気体 ∝ t²」の修正（投稿前に必須）

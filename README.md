@@ -146,6 +146,19 @@ sento-optics/
 └── review/                             # Literature surveys, reviewer responses
 ```
 
+## Theory's Job, Redefined
+
+For most of the 20th century, theory's task ran all the way from principles to concrete predictions — *this compound, this structure, this property*. That last stretch is becoming machine work: universal ML potentials and generative models now explore material space faster and wider than any human theorist.
+
+What remains — and grows — is what machines cannot supply:
+
+1. **Inventing variables.** ML interpolates within a given representation; deciding *which quantity to see the world through* (the d-band center, topological invariants, δ) is still theory's job.
+2. **Supplying constraints.** ML predictions break silently outside the training distribution. Inequalities and sum rules (e.g., ξ² ≤ ℏ²/2m_eE_g) are walls that survive extrapolation.
+3. **Inventing questions.** "What is a liquid?" does not emerge from a dataset.
+4. **Understanding.** Compressing ten thousand predictions into one sentence — *luster is the divergence of a localization length* — is not a by-product of prediction.
+
+This program is built on that division of labor: theory's deliverable here is the *definition* of (δ_nuc, δ_elec) — parameter-free, automatable, self-diagnosing — and the downstream exploration of material space is a numbers game for machines (see [`drafts/strategy_ml_descriptor_2026-07-05.md`](drafts/strategy_ml_descriptor_2026-07-05.md)). The workflow of this repository — human intuition upstream, AI-assisted formalization and mass verification downstream — is itself a small-scale rehearsal of that future.
+
 ## AI Usage Disclosure
 
 **Author's original intuition:** The origin question ("What is a liquid?"), the bathhouse observations (luster + surface tension as interface properties), and the hypothesis that particle delocalization δ unifies them — these were conceived entirely by the author.
